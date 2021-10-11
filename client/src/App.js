@@ -8,6 +8,7 @@ import Navbar from "./components/navbar";
 import Edit from "./components/edit";
 import Create from "./components/create";
 import RecordList from "./components/recordList";
+import VideoController from "./components/video";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
       <Navbar />
       <Route exact path="/">
         <RecordList />
+        <VideoController source = "https://media.w3.org/2010/05/sintel/trailer_hd.mp4"/>
       </Route>
       <Route path="/edit/:id" component={Edit} />
       <Route path="/create">
