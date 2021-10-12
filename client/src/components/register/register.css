@@ -1,0 +1,19 @@
+.base-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -33,6 +33,11 @@ const Navbar = () => {
                 Create Record
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/components/register/index">
+                  Register
+              </NavLink>
+            </li>
           </ul>
         </div>
       </nav>
