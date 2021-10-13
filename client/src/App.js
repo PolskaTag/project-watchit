@@ -14,15 +14,14 @@ import Login from "./components/Login";
 import LandingPage from "./components/LandingPage";
 //import { Profile } from './components/profile';
 
-
 const App = () => {
   return (
     <div>
       <BrowserRouter>
         <Switch>
-          <Route component={Register} exact path="/register"/>
-          <Route component={Login} exact path="/login"/>
-          <Route component={LandingPage} exact path="/"/>
+          <Route component={Register} exact path="/register" />
+          {/* <Route component={Login} exact path="/login" />
+          <Route component={LandingPage} exact path="/" /> */}
         </Switch>
       </BrowserRouter>
     </div>

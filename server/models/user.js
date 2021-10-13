@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// User schema that we'll leverage when accessing db
 const userSchema = mongoose.Schema(
   {
     username: {
@@ -8,7 +9,7 @@ const userSchema = mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
+      required: false,
     },
     password: {
       type: String,
