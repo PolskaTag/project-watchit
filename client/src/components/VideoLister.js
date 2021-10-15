@@ -20,7 +20,7 @@ function VideoLister() {
         <ul>
             {recording.map(recording => (
                 <li key={recording.id}>
-                    <a href=''><div>{recording.name}</div></a>
+                    <a href={recording.URL}><div>{recording.name}</div></a>
                     {recording.URL}
                 </li>
             ))}
