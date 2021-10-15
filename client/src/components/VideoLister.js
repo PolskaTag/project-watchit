@@ -5,13 +5,13 @@ function VideoLister() {
         {
             id: 1,
             name: '10142021',
-            timestamp:'',
+            timestamp:'9am',
             URL: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
         },
         {
             id: 2,
             name: '12252021',
-            timestamp:'',
+            timestamp:'10pm',
             URL: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
         },
     ]
@@ -20,8 +20,8 @@ function VideoLister() {
         <ul>
             {recording.map(recording => (
                 <li key={recording.id}>
-                    <a href={recording.URL}><div>{recording.name}</div></a>
-                    {recording.URL}
+                    <a href={recording.URL}> {recording.name}</a>
+                    {recording.timestamp}
                 </li>
             ))}
         </ul>
