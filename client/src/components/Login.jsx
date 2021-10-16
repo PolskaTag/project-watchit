@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useLayoutEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
@@ -13,32 +14,38 @@ function Login() {
             password: form[1].value
         }
 
-        fetch("/login", {
-            method: "POST",
-            header: {
-                "Content-type": "applications/json"
-            },
-            body: JSON.stringify(user)
-        })
-        .then(res => res.json())
+        try {
+            axios
+        .post("http://localhost:5000/login", user)
+        // .then(res => console.log(res))
         .then(data => {
-            localStorage.setItems("token", data.token)
+            localStorage.setItem("token", data.token);
+            console.log(data);
         })
+        } catch(err){
+            console.log("Error handling login " + err);
+        }
+        
     }
 
     useLayoutEffect(() => {
-        fetch("/isUserAuth", {
+        fetch("http://localhost:5000/isUserAuth", {
             headers: {
                 "x-access-token": localStorage.getItem("token")
             }
         })
-        .then(res => res.json())
-        .then(data => data.isLoggedIn ? history.push("/dashboard"): null)
+        .then(res => {
+            console.log("response from isUserAuth");
+            console.log(res);
+            res.json();
+        })
+        .then(data => data.isLoggedIn ? history.push("/home"): null)
+        .catch(err => console.log("User not logged in, log in damnit!"))
     }, [history])
 
     return (
         <form onSubmit={event => handleLogin(event)}>
-            <input required type="email"/>
+            <input required type="username"/>
             <input required type="password"/>
             <input required type="submit" value="Submit"/>
         </form>
