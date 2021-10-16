@@ -6,13 +6,20 @@
 }
 
 .register-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn {
     display: block;
     margin-left: auto;
     margin-right: auto;
     width: 50%;
 }
 
-.form-group {
+input {
     display: flex;
     align-items: center;
     justify-content: center;
