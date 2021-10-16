@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import { useLayoutEffect } from 'react'
-=======
 import axios from 'axios';
 import { useLayoutEffect, useState } from 'react'
->>>>>>> e6af1ac08b3d7152ded744885dd969dd5ca75c7a
 import { useHistory } from 'react-router-dom'
 import "./style/login.css";
 import loginImg from "./images/login2.png";
