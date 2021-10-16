@@ -19,7 +19,7 @@ function Navbar() {
     }
 
     useEffect(() => {
-        fetch("/isUserAuth", {
+        fetch("http://localhost:5000/isUserAuth", {
             headers: {
                 "x-access-token": localStorage.getItem("token")
             }

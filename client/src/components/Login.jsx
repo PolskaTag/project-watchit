@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import { useLayoutEffect } from 'react'
+=======
+import axios from 'axios';
+import { useLayoutEffect, useState } from 'react'
+>>>>>>> e6af1ac08b3d7152ded744885dd969dd5ca75c7a
 import { useHistory } from 'react-router-dom'
 import "./style/login.css";
 import loginImg from "./images/login2.png";
@@ -37,13 +42,18 @@ function Login() {
 }
 
     useLayoutEffect(() => {
-        fetch("/isUserAuth", {
+        fetch("http://localhost:5000/isUserAuth", {
             headers: {
                 "x-access-token": localStorage.getItem("token")
             }
         })
-        .then(res => res.json())
-        .then(data => data.isLoggedIn ? history.push("/dashboard"): null)
+        .then(res => {
+            console.log("response from isUserAuth");
+            console.log(res);
+            res.json();
+        })
+        .then(data => data.isLoggedIn ? history.push("/home"): null)
+        .catch(err => console.log("User not logged in, log in damnit!"))
     }, [history])
 
     return (
