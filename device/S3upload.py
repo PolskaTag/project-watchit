@@ -24,8 +24,13 @@ def upload_file(file_name, bucket, object_name=None):
     s3_client = boto3.client('s3')
     # s3_client = boto3.client('s3', aws_access_key_id=ACCESS_KEY,
     #                   aws_secret_access_key=SECRET_KEY)
+    # s3_client = boto3.client(
+    #     service_name='s3',
+    #     region_name='us-east-1',
+    #     endpoint_url='https://bucket.vpc-0ac1b5d92e63913cd.s3.us-east-1.vpce.amazonaws.com'
+    #     )
     try:
-        response = s3_client.upload_file(file_name, bucket, object_name)
+        response = s3_client.upload_file(file_name, bucket, object_name, ExtraArgs={'ContentType': 'application/pdf'})
     except ClientError as e:
         logging.error(e)
         return False
