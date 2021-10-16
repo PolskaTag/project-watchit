@@ -56,3 +56,6 @@ web-build/
 # ENV
 .env
 server/config.env
+
+#vscode
+.vscode

@@ -1,0 +1,24 @@
+const mongoose = require("mongoose");
+
+// User schema that we'll leverage when accessing db
+const userSchema = mongoose.Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: false,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
+const User = mongoose.model("User", userSchema);
+
+module.exports = User;
