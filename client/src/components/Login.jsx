@@ -1,10 +1,14 @@
-import { useLayoutEffect, useState } from 'react'
+import { useLayoutEffect } from 'react'
 import { useHistory } from 'react-router-dom'
+import "./style/login.css";
+import loginImg from "./images/login2.png";
+import Navbar from './Navbar';
+//import axios from 'axios'
 
 function Login() {
     const history = useHistory()
 
-    function handleLogin(e) {
+    async function handleLogin(e) {
         e.preventDefault()
 
         const form = e.target;
@@ -13,18 +17,24 @@ function Login() {
             password: form[1].value
         }
 
-        fetch("/login", {
+    try {
+        const res = await fetch("http://localhost:5000/login", {
             method: "POST",
-            header: {
-                "Content-type": "applications/json"
+            headers: {
+                "Content-type": "application/json"
             },
-            body: JSON.stringify(user)
+            body: JSON.stringify(user),
         })
-        .then(res => res.json())
-        .then(data => {
-            localStorage.setItems("token", data.token)
-        })
+        const data = await res.json()
+        console.log(data);
+        console.log(res);
+        localStorage.setItem("token", data.token)
+        localStorage.setItem("user", data.username)
+        console.log("token: " + localStorage.getItem("token"));
+    } catch(err) {
+        console.log("error");
     }
+}
 
     useLayoutEffect(() => {
         fetch("/isUserAuth", {
@@ -37,11 +47,18 @@ function Login() {
     }, [history])
 
     return (
-        <form onSubmit={event => handleLogin(event)}>
-            <input required type="email"/>
-            <input required type="password"/>
-            <input required type="submit" value="Submit"/>
-        </form>
+        <div className="container">
+            <div className="login-container">
+                <Navbar/>
+                <h2>Login</h2>
+                <img src={loginImg} className="register-logo" alt="login pic"/><br/>
+                <form onSubmit={event => handleLogin(event)}>
+                    <input required type="username"/><br/>
+                    <input required type="password"/><br/>
+                    <input required type="submit" value="Submit"/>
+                </form>
+            </div>
+        </div>
     )
 }
 

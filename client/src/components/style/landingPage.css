@@ -1,0 +1,25 @@
+body{
+     background-color: #cce9f6;
+}
+
+.base-container {
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.landing-logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    top: -200px;
+}
+
+h1 {
+    font-size: 60px;
+    font-family: "Arial";
+    font-weight: bold;
+}

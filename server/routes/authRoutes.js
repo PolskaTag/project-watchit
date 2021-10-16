@@ -36,12 +36,13 @@ router.route("/login").post((req, res) => {
               };
               jwt.sign(
                 payload,
-                process.env.PASSPORTSECRET,
+                process.env.SECRET,
                 { expiresIn: 86400 },
                 (err, token) => {
                   return res.json({
                     message: "Success",
                     token: "Bearer " + token,
+                    username: userLoggingIn.username.toLowerCase()
                   });
                 }
               );
