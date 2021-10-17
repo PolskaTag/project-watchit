@@ -1,55 +1,71 @@
 import axios from 'axios';
-import { useLayoutEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useLayoutEffect, useEffect, useState } from 'react'
+import { Link, Redirect, useHistory } from 'react-router-dom'
 import "./style/login.css";
-import loginImg from "./images/login2.png";
+import loginImg from "./images/login.png";
 import Navbar from './Navbar';
-//import axios from 'axios'
+import { render } from 'react-dom';
 
 function Login() {
+    const [errorMessage, setErrorMessage] = useState("");
     const history = useHistory()
 
     async function handleLogin(e) {
         e.preventDefault()
-
+        // console.log("submit clicked");
+        // console.log(e);
         const form = e.target;
         const user = {
             username: form[0].value,
             password: form[1].value
         }
 
-    try {
-        const res = await fetch("http://localhost:5000/login", {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify(user),
+        try {
+            await axios
+        .post("http://localhost:5000/login", user)
+        .then(data => {
+            localStorage.setItem("token", data.data.token);
+            localStorage.setItem("user", data.data.username);
+            setErrorMessage(data.data.message);
+            // console.log("handleLogin complete");
+            // console.log(data.data.token);
+            
         })
-        const data = await res.json()
-        console.log(data);
-        console.log(res);
-        localStorage.setItem("token", data.token)
-        localStorage.setItem("user", data.username)
-        console.log("token: " + localStorage.getItem("token"));
     } catch(err) {
-        console.log("error");
+        setErrorMessage(err);
     }
+
+    
+    // if (localStorage.getItem("token") == "undefined" || localStorage.getItem("token") == null) {
+    //     // alert("Error, try again");
+    //     console.log("Error logging in");
+    // }
+    // else {
+    //     // alert("Success, welcome: " + localStorage.getItem("user"));
+    //     window.location.replace("/profilepage");
+    // }
 }
 
     useLayoutEffect(() => {
+        console.log(":::::::::::::::useLayoutEffect::::::::::::::")
         fetch("http://localhost:5000/isUserAuth", {
-            headers: {
+            'method': "GET",
+            'headers': {
                 "x-access-token": localStorage.getItem("token")
             }
         })
         .then(res => {
-            console.log("response from isUserAuth");
-            console.log(res);
-            res.json();
+            // console.log(res);
+             return res.json();
         })
-        .then(data => data.isLoggedIn ? history.push("/home"): null)
-        .catch(err => console.log("User not logged in, log in damnit!"))
+        .then(data => {
+            // console.log("response from isUserAuth");
+            // console.log(data);
+            if(data.isLoggedIn){
+                history.push('/');
+                // console.log(history);
+            }
+        }).catch(err => setErrorMessage(err));
     }, [history])
 
     return (
@@ -57,13 +73,14 @@ function Login() {
             <div className="login-container">
                 <Navbar/>
                 <h2>Login</h2>
-                <img src={loginImg} className="register-logo" alt="login pic"/><br/>
-                <form onSubmit={event => handleLogin(event)}>
-                    <input required type="username"/><br/>
-                    <input required type="password"/><br/>
+                <img src={loginImg} className="login-logo" alt="login pic"/><br/>
+                <form onSubmit={(e) => handleLogin(e)}>
+                    <input required type="username" placeholder="Email"/><br/>
+                    <input required type="password" placeholder="Password"/><br/>
                     <input required type="submit" value="Submit"/>
                 </form>
             </div>
+            {errorMessage === "Success" ? <Redirect to="/ProfilePage"/>: console.log("Validation Error")}
         </div>
     )
 }
