@@ -21,8 +21,8 @@ function ProfilePage() {
   else {
 
     const user = localStorage.getItem("user");
-    console.log("User is logged in");
-    console.log(localStorage.getItem("token"));
+    // console.log("User is logged in");
+    // console.log(localStorage.getItem("token"));
 
       return (
         <div className="profile-container">
