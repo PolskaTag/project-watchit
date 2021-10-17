@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { useLayoutEffect, useState } from 'react'
+//import axios from 'axios';
+import { useLayoutEffect } from 'react'//, useState
 import { useHistory } from 'react-router-dom'
 import "./style/login.css";
 import loginImg from "./images/login2.png";
@@ -48,8 +48,18 @@ function Login() {
             console.log(res);
             res.json();
         })
-        .then(data => data.isLoggedIn ? history.push("/home"): null)
-        .catch(err => console.log("User not logged in, log in damnit!"))
+        .then(data =>{
+            if(data.isLoggedIn && data.role === 1){
+                history.push("/admin/user");
+            }
+            else if(data.isLoggedIn){
+                 history.push("/home");
+            }
+            else{
+                //TODO:return null or somepage
+            }
+        })
+        .catch(err => console.log("User not logged in! " + err))
     }, [history])
 
     return (

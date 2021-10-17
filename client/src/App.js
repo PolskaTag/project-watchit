@@ -8,7 +8,7 @@ import { Switch, BrowserRouter, Route } from "react-router-dom";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import LandingPage from "./components/LandingPage";
-import AdminLogin from "./components/AdminLogin";
+import AdminUser from "./components/AdminUser";
 // import Home from "./components/Home";
 //import { Profile } from './components/profile';
 import ProfilePage from "./components/ProfilePage";
@@ -19,7 +19,7 @@ const App = () => {
     <div>
       <BrowserRouter>
         <Switch>
-          <Route component={AdminLogin} exact path="/admin/login"/>
+          <Route component={AdminUser} exact path="/admin/user"/>
           <Route component={Register} exact path="/register" />
           <Route component={Login} exact path="/login" />
           <Route component={LandingPage} exact path="/" />

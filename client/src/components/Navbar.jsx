@@ -9,7 +9,7 @@ function Navbar() {
 
     async function logoutHandler() {
         if (localStorage.getItem("token") != null) {
-            console.log("User has been successfully logged out.");
+            console.log("User has been successfully logged out. " + username);
             localStorage.removeItem("token")
             await history.push("/login")
         }

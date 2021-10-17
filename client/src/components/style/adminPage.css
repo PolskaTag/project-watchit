@@ -1,0 +1,14 @@
+.admin-container h1 {
+  text-align: center;
+}
+
+.vid-btn {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+}
+
+.input-vid-search {
+  display: flex;
+  flex-direction: row;
+}
