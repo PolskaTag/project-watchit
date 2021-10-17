@@ -22,18 +22,20 @@ function LandingPage() {
         .then(data => data.isLoggedIn ? setUsername(data.username): null)
         .catch(err => alert(err))
     }, [])
+    console.log(Date());
+    console.log("token: " + localStorage.getItem("token"))
 
     return (
-        <div>
-            <Navbar/>
-
-            <div className="base-container">
+        <div className="container">
+            <div className="landing-container">
+                <Navbar/>
+            </div>
+            <div className="landing-image">
                 <img src={watchItLogo} className="landing-logo" alt="logo"/><br/>
                 <h1>WELCOME {username}</h1>
             </div>
-
         </div>   
     )
 }   
 
-export default LandingPage
+export default LandingPage;
