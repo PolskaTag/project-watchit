@@ -2,20 +2,27 @@ body{
      background-color: #cce9f6;
 }
 
-.base-container {
-    display: block;
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-left: auto;
-    margin-right: auto;
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.landing-logo {
+.landing-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.landing-image {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    position: relative;
+    position: absolute;
     top: -200px;
+    z-index: -1;
 }
 
 h1 {

@@ -35,6 +35,8 @@ function Login() {
     } catch(err) {
         console.log("error");
     }
+
+    window.location.reload(false);
 }
 
     useLayoutEffect(() => {
