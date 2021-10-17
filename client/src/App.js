@@ -11,6 +11,8 @@ import LandingPage from "./components/LandingPage";
 import AdminLogin from "./components/AdminLogin";
 // import Home from "./components/Home";
 //import { Profile } from './components/profile';
+import ProfilePage from "./components/ProfilePage";
+
 
 const App = () => {
   return (
@@ -22,6 +24,7 @@ const App = () => {
           <Route component={Login} exact path="/login" />
           <Route component={LandingPage} exact path="/" />
           {/* <Route component={Home} exact path="/Home"></Route> */}
+          <Route component={ProfilePage} exact path="/ProfilePage" />
         </Switch>
       </BrowserRouter>
     </div>

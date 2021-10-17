@@ -1,3 +1,5 @@
+require("dotenv").config({ path: "../config.env" });
+
 const express = require("express");
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
@@ -7,11 +9,13 @@ const { registrationValidation, loginValidation } = require("../validation");
 
 const router = express.Router();
 
-router.route("/isUserAuth").get(verifyJWT, (req, res) => {
+router.get("/isUserAuth", verifyJWT, (req, res) => {
   return res.json({ isLoggedIn: true, username: req.user.username });
 });
 
 router.route("/login").post((req, res) => {
+  console.log("::::::FUNCTION LOGIN::::::::");
+  console.log(req.body);
   const userLoggingIn = req.body;
 
   if (!userLoggingIn) return res.json({ message: "Server Error" });
@@ -34,14 +38,16 @@ router.route("/login").post((req, res) => {
                 id: dbUser._id,
                 username: dbUser.username,
               };
-              jwt.sign(
+              // console.log(process.env.JWT_SECRET);
+              const token = jwt.sign(
                 payload,
-                process.env.PASSPORTSECRET,
+                process.env.JWT_SECRET,
                 { expiresIn: 86400 },
                 (err, token) => {
                   return res.json({
                     message: "Success",
                     token: "Bearer " + token,
+                    username: userLoggingIn.username.toLowerCase()
                   });
                 }
               );
@@ -55,7 +61,7 @@ router.route("/login").post((req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  console.log(req);
+  console.log(req.body);
   const user = req.body;
 
   const takenUsername = await User.findOne({

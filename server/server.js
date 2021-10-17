@@ -14,6 +14,7 @@ app.use(express.json());
 // Connecting Routes to app
 app.use(require("./routes/userRoutes"));
 app.use(require("./routes/authRoutes"));
+app.use(require("./routes/files"));
 
 // Connecting to MongoDB
 mongoose
