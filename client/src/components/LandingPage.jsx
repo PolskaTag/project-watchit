@@ -1,8 +1,27 @@
+import { useLayoutEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import Navbar from './Navbar.jsx'
 import { Link } from 'react-router-dom'
 import UploadImage from './UploadImage.js'
 
 function LandingPage() {
+
+ const [username, setUsername] = useState(null)
+
+    useLayoutEffect(() => {
+        fetch("http://localhost:5000/isUserAuth", {
+            'method': "GET",
+            'headers': {
+                "x-access-token": localStorage.getItem("token")
+            }
+        })
+        .then(res => {
+            // console.log(res);
+            return res.json();
+        })
+        .then(data => data.isLoggedIn ? setUsername(data.username): null)
+        .catch(err => alert(err))
+    }, [])
 
     return (
         <div>
@@ -19,6 +38,8 @@ function LandingPage() {
                           in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
             </section>
             <UploadImage/>
+            <h1>Welcome {username}</h1>
+            
         </div>
         
     )

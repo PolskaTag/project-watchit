@@ -10,7 +10,10 @@ const { registrationValidation, loginValidation } = require("../validation");
 const router = express.Router();
 
 router.get("/isUserAuth", verifyJWT, (req, res) => {
-  return res.json({ isLoggedIn: true, username: req.user.username });
+  console.log(req.user);
+  results = res.json({ isLoggedIn: true, username: req.user.username });
+  // console.log(results.username);
+  return results;
 });
 
 router.route("/login").post((req, res) => {
