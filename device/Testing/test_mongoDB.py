@@ -14,6 +14,6 @@ collection_name = dbname["Test_Videos"]
 #         {'$unset' : {'video': ""}}
 #     )
 
-sample_video = {"Name": "Output.avi", "TimeStamp": datetime.now(), "RuleID": "1"}
+sample_video = {"Name": "Output.avi", "TimeStamp": datetime.now(), "VideoID": "1"}
 
 pv.new_video(collection_name, "user@user.com", sample_video)
