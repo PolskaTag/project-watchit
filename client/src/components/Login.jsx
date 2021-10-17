@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom'
 import "./style/login.css";
 import loginImg from "./images/login.png";
 import Navbar from './Navbar';
+import { render } from 'react-dom';
 //import axios from 'axios'
 
 function Login() {
@@ -32,7 +33,14 @@ function Login() {
         console.log("error");
     }
 
-    window.location.reload(false);
+    
+    if (localStorage.getItem("token") == "undefined" || localStorage.getItem("token") == null) {
+        alert("Error, try again");
+    }
+    else {
+        alert("Success, welcome: " + localStorage.getItem("user"));
+        window.location.replace("/profilepage");
+    }
 }
 
     useLayoutEffect(() => {

@@ -8,24 +8,26 @@ function ProfilePage() {
 
   const [username, setUsername] = useState(null)
 
-  if (localStorage.getItem("token") != null) {
+  if (localStorage.getItem("token") == "undefined" || localStorage.getItem("token") == null) {
+
+    return (
+      <div className="profile-container">
+          <Navbar/>
+          <h1>Please Log in</h1>
+      </div>
+    )
+  } 
+
+  else {
+
     const user = localStorage.getItem("user");
     console.log("User is logged in");
     console.log(localStorage.getItem("token"));
 
       return (
-        <div>
+        <div className="profile-container">
           <Navbar/>
           <h1>Welcome {user}</h1>
-        </div>
-      )
-  } 
-
-  else {
-      return (
-        <div className="profile-container">
-            <Navbar/>
-        <h1>Please Log in</h1>
         </div>
       )
   }
