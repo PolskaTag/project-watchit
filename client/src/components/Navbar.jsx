@@ -20,20 +20,22 @@ function Navbar() {
 
     useEffect(() => {
         fetch("http://localhost:5000/isUserAuth", {
-            headers: {
+            'headers': {
+                'method': "GET",
                 "x-access-token": localStorage.getItem("token")
             }
         })
-            .then(res => res.json())
+            .then(res =>  {
+                return res.json();
+            })
             .then(data => data.isLoggedIn ? console.log(setUsername(data.userName)) : null)
     }, [])
 
-    if (localStorage.getItem("token") != null) {
+    if (localStorage.getItem("token") == null || localStorage.getItem("token") == "undefined") {
         return (
             <div>
                 <ul>
                     <li className="navItem"><Link to="/login">Login</Link></li>
-                    <li className="navItem" onClick={logoutHandler}>LogoutHandler</li>
                     <li className="navItem"><Link to="/register">Register</Link></li>
                     <li className="navItem"><Link to="/ProfilePage">ProfilePage</Link></li>
                 </ul>
@@ -44,7 +46,7 @@ function Navbar() {
         return (
             <div>
                 <ul>
-                    <li className="navItem"><Link to="/login">Login</Link></li>
+                    <li className="navItem"><Link onClick={logoutHandler} to="/">Logout</Link></li>
                     <li className="navItem"><Link to="/register">Register</Link></li>
                     <li className="navItem"><Link to="/ProfilePage">ProfilePage</Link></li>
                 </ul>
