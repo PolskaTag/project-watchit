@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router'
 import { useLayoutEffect } from 'react'
-import loginImg from "./images/login2.png";
+import loginImg from "./images/register.png";
 import "./style/register.css";
 import Navbar from './Navbar';
 import axios from 'axios'

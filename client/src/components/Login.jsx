@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useLayoutEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import "./style/login.css";
-import loginImg from "./images/login2.png";
+import loginImg from "./images/login.png";
 import Navbar from './Navbar';
 //import axios from 'axios'
 
@@ -59,10 +59,10 @@ function Login() {
             <div className="login-container">
                 <Navbar/>
                 <h2>Login</h2>
-                <img src={loginImg} className="register-logo" alt="login pic"/><br/>
+                <img src={loginImg} className="login-logo" alt="login pic"/><br/>
                 <form onSubmit={event => handleLogin(event)}>
-                    <input required type="username"/><br/>
-                    <input required type="password"/><br/>
+                    <input required type="username" placeholder="Email"/><br/>
+                    <input required type="password" placeholder="Password"/><br/>
                     <input required type="submit" value="Submit"/>
                 </form>
             </div>
