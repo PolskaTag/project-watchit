@@ -1,5 +1,5 @@
 import Navbar from './Navbar.jsx'
-import { Link } from 'react-router-dom'
+//import { Link } from 'react-router-dom'
 
 function LandingPage() {
 
