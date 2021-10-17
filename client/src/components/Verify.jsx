@@ -2,7 +2,6 @@ import { useHistory } from 'react-router'
 import { useLayoutEffect } from 'react'
 import loginImg from "./images/login2.png";
 import "./style/register.css";
-import Navbar from './Navbar';
 import axios from 'axios'
 
 function Register() {
@@ -45,19 +44,14 @@ function Register() {
     }, [history])
 
     return (
-        <div className="container">
-            <div className="register-container">
-
-                <Navbar/>
-                <h2>Account Registration</h2>
-                <img src={loginImg} className="register-logo" alt="login pic"/><br/>
-                <form onSubmit={event => handleRegister(event)}>
-                    <input required type="username" name="username" placeholder="Username"/><br/>
-                    <input required type="password" name="password" placeholder="Password"/><br/>
-                    <input required type="password" name="confirm-password" placeholder="Confirm Password"/><br/>
-                    <input required type="submit" value="Register" className="btn"/><br/>
-                </form>
-            </div>
+        <div className="base-container">
+            <img src={loginImg} className="register-logo" alt="login pic"/><br/>
+            <form onSubmit={event => handleRegister(event)}>
+                <input required type="username" name="username" placeholder="Username"/><br/>
+                <input required type="password" name="password" placeholder="Password"/><br/>
+                <input required type="password" name="confirm-password" placeholder="Confirm Password"/><br/>
+                <input required type="submit" value="Register" className="btn"/><br/>
+            </form>
         </div>
     )
 }

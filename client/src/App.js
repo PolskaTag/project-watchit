@@ -4,12 +4,10 @@ import React from "react";
 import { Switch, BrowserRouter, Route } from "react-router-dom";
 
 // We import all the components we need in our app
-import Navbar from "./components/Navbar.jsx";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import LandingPage from "./components/LandingPage";
-// import Home from "./components/Home";
-//import { Profile } from './components/profile';
+import ProfilePage from "./components/ProfilePage";
 
 const App = () => {
   return (
@@ -18,8 +16,8 @@ const App = () => {
         <Switch>
           <Route component={Register} exact path="/register" />
           <Route component={Login} exact path="/login" />
-          <Route component={LandingPage} exact path="/" />
-          {/* <Route component={Home} exact path="/Home"></Route> */}
+          <Route component={LandingPage} exact path="/" /> 
+          <Route component={ProfilePage} exact path="/ProfilePage" />
         </Switch>
       </BrowserRouter>
     </div>

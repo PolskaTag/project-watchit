@@ -1,11 +1,15 @@
 import axios from 'axios';
 import { useLayoutEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import "./style/login.css";
+import loginImg from "./images/login2.png";
+import Navbar from './Navbar';
+//import axios from 'axios'
 
 function Login() {
     const history = useHistory()
 
-    function handleLogin(e) {
+    async function handleLogin(e) {
         e.preventDefault()
 
         const form = e.target;
@@ -20,14 +24,14 @@ function Login() {
         // .then(res => console.log(res))
         .then(data => {
             localStorage.setItem("token", data.data.token);
+            localStorage.setItem("user", data.data.username);
             console.log(data.data.token);
             
         })
-        } catch(err){
-            console.log("Error handling login " + err);
-        }
-        
+    } catch(err) {
+        console.log("error");
     }
+}
 
     useLayoutEffect(() => {
         fetch("http://localhost:5000/isUserAuth", {
@@ -49,11 +53,18 @@ function Login() {
     }, [history])
 
     return (
-        <form onSubmit={event => handleLogin(event)}>
-            <input required type="username"/>
-            <input required type="password"/>
-            <input required type="submit" value="Submit"/>
-        </form>
+        <div className="container">
+            <div className="login-container">
+                <Navbar/>
+                <h2>Login</h2>
+                <img src={loginImg} className="register-logo" alt="login pic"/><br/>
+                <form onSubmit={event => handleLogin(event)}>
+                    <input required type="username"/><br/>
+                    <input required type="password"/><br/>
+                    <input required type="submit" value="Submit"/>
+                </form>
+            </div>
+        </div>
     )
 }
 

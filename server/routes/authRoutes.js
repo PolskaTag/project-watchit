@@ -50,6 +50,7 @@ router.route("/login").post((req, res) => {
                   return res.json({
                     message: "Success",
                     token: "Bearer " + token,
+                    username: userLoggingIn.username.toLowerCase()
                   });
                 }
               );
