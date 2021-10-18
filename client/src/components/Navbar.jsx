@@ -31,7 +31,7 @@ function Navbar() {
             .then(data => data.isLoggedIn ? console.log(setUsername(data.userName)) : null)
     }, [])
 
-    if (localStorage.getItem("token") == null || localStorage.getItem("token") == "undefined") {
+    if (localStorage.getItem("token") === null || localStorage.getItem("token") === "undefined") {
         return (
             <div>
                 <ul>

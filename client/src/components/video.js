@@ -2,17 +2,16 @@ import React from 'react';
 import ReactPlayer from 'react-player';
 
 
-export default class VideoController extends React.Component{
-    constructor(props) {
-        super(props);
-    }
-    render(){
+ const VideoController =({url}) =>{
+    
         return (  
-          <ReactPlayer url={this.props.source}
-          controls={true}
-          />       
+          <div className="vid-controller">
+            <ReactPlayer url={url}
+            controls={true}
+            />  
+          </div>     
         );
-      };
 }
+
  
- 
+export default VideoController

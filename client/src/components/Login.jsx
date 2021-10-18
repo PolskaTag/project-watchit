@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { useLayoutEffect, useEffect, useState } from 'react'
-import { Link, Redirect, useHistory } from 'react-router-dom'
+import { useLayoutEffect,useState } from 'react'// useEffect, 
+import { Redirect, useHistory } from 'react-router-dom'//Link, 
 import "./style/login.css";
 import loginImg from "./images/login.png";
 import Navbar from './Navbar';
-import { render } from 'react-dom';
+//import { render } from 'react-dom';
 
 function Login() {
     const [errorMessage, setErrorMessage] = useState("");
@@ -55,7 +55,7 @@ function Login() {
             }
         })
         .then(res => {
-            // console.log(res);
+             console.log(res);
              return res.json();
         })
         .then(data => {

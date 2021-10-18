@@ -1,4 +1,4 @@
-import React, { useState } from "react";//useRef, 
+import React from "react";//useRef, , { useState } 
 //import ReactDOM from 'react-dom';
 import Navbar from './Navbar.jsx'
 import "./style/profilepage.css"
@@ -6,9 +6,9 @@ import "./style/profilepage.css"
 
 function ProfilePage() {
 
-  const [username] = useState(null)
+  //const [username] = useState(null)
 
-  if (localStorage.getItem("token") == "undefined" || localStorage.getItem("token") == null) {
+  if (localStorage.getItem("token") === "undefined" || localStorage.getItem("token") === null) {
 
     return (
       <div className="profile-container">
