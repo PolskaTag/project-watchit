@@ -6,11 +6,20 @@ import "./style/adminPage.css"
 
 
 function AdminUser() {
+    //code that might be needed after we axios
+  /*  <Select isSearchable  placeholder="Search for video" onChange={handleVideo}>
+                        {data.map(items =>(
+                            <option label={items.url} value={items.username}>
+                                {items.username}
+                            </option>
+                        )) }
+                    </Select>*/
    
       const actions = [
-        { label: "Sam", value: "https://watchit-east-bucket1.s3.amazonaws.com/https%3A//watchit-east-bucket1.s3.amazonaws.com/output2.avi?AWSAccessKeyId=AKIAYFVHGUKZZ3RKHI6T&Expires=1634528264&Signature=hsOzoi89nF1DVbsWT%2Fl9FtRWAgQ%3D" },
+        { label: "Sam", value: "https://watchit-east-bucket1.s3.amazonaws.com/output1.avi?AWSAccessKeyId=AKIAYFVHGUKZZ3RKHI6T&Expires=1634529315&Signature=ent3QtIixRHOrT6Q4QFogbpzv4I%3D" },
         { label: "Jennifer", value:"https://media.w3.org/2010/05/bunny/trailer.mp4" },
-        { label: "Magic", value: "https://media.w3.org/2010/05/bunny/movie.mp4" }
+        { label: "Magic", value: "https://media.w3.org/2010/05/bunny/movie.mp4" },
+        { label : "Rihanna", value: "https://www.youtube.com/watch?v=lWA2pjMjpBs"}
       ];
       const [url, setUrl] = useState(actions.value)
       const handleVideo = e =>{
