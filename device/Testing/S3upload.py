@@ -21,8 +21,12 @@ def upload_file(file_name, bucket, object_name=None):
         object_name = os.path.basename(file_name)
 
     # Upload the file
-    s3_client = boto3.client('s3') 
-    # s3_client = boto3.client('s3garsrasarts', aws_access_key_id=ACCESS_KEY,
+    s3_client = boto3.client(
+                            's3',
+                            aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'),
+                            aws_secret_access_key=os.environ.get('AWS_SECRET_KEY')
+                            )
+    # s3_client = boto3.client('s3', aws_access_key_id=ACCESS_KEY,
     #                   aws_secret_access_key=SECRET_KEY)
     # s3_client = boto3.client(
     #     service_name='s3',

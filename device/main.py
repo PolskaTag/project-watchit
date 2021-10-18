@@ -6,7 +6,7 @@ from video_upload import upload_video
 import wcamera as wc
 
 # Create a VideoCapture object
-cap = wc()
+cap = wc.standard_camera()
 
 # Check if camera opened successfully
 if not cap:
