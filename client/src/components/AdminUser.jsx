@@ -8,7 +8,7 @@ import "./style/adminPage.css"
 function AdminUser() {
    
       const actions = [
-        { label: "Sam", value: "https://watchit-east-bucket1.s3.amazonaws.com/output1.avi" },
+        { label: "Sam", value: "https://watchit-east-bucket1.s3.amazonaws.com/https%3A//watchit-east-bucket1.s3.amazonaws.com/output2.avi?AWSAccessKeyId=AKIAYFVHGUKZZ3RKHI6T&Expires=1634528264&Signature=hsOzoi89nF1DVbsWT%2Fl9FtRWAgQ%3D" },
         { label: "Jennifer", value:"https://media.w3.org/2010/05/bunny/trailer.mp4" },
         { label: "Magic", value: "https://media.w3.org/2010/05/bunny/movie.mp4" }
       ];
@@ -19,8 +19,6 @@ function AdminUser() {
           return (
             <div className="admin-container">       
               <h1>I am Admin user</h1>
-              <br />
-              <br/>
               <div className="input-vid-search" >
                 <label className="label-span-search" >
                     <span className="span-search">Search a User Videos</span>
