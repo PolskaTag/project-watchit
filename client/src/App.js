@@ -1,3 +1,4 @@
+
 import React from "react";
 
 // We use Route in order to define the different routes of our application
@@ -12,6 +13,7 @@ import AdminUser from "./components/AdminUser";
 // import Home from "./components/Home";
 //import { Profile } from './components/profile';
 import ProfilePage from "./components/ProfilePage";
+import VideoList from "./components/VideoList";
 
 
 const App = () => {
@@ -25,6 +27,7 @@ const App = () => {
           <Route component={LandingPage} exact path="/" />
           {/* <Route component={Home} exact path="/Home"></Route> */}
           <Route component={ProfilePage} exact path="/ProfilePage" />
+          <Route component={VideoList} exact path="/VideoList" />
         </Switch>
       </BrowserRouter>
     </div>

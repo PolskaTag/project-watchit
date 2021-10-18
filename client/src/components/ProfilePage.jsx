@@ -1,5 +1,6 @@
-import React from "react";//useRef, , { useState } 
-//import ReactDOM from 'react-dom';
+import axios from "axios";
+import React, { useRef, useState, useLayoutEffect } from "react";
+import ReactDOM from 'react-dom';
 import Navbar from './Navbar.jsx'
 import "./style/profilepage.css"
 
@@ -8,7 +9,24 @@ function ProfilePage() {
 
   //const [username] = useState(null)
 
-  if (localStorage.getItem("token") === "undefined" || localStorage.getItem("token") === null) {
+
+ 
+  useLayoutEffect(() => {
+        fetch("http://localhost:5000/isUserAuth", {
+            'method': "GET",
+            'headers': {
+                "x-access-token": localStorage.getItem("token")
+            }
+        })
+        .then(res => {
+            // console.log(res);
+            return res.json();
+        })
+        .then(data => data.isLoggedIn ? setUsername(data.username): null)
+        .catch(err => alert(err))
+    }, [])
+
+  if (localStorage.getItem("token") == "undefined" || localStorage.getItem("token") == null) {
 
     return (
       <div className="profile-container">
@@ -27,7 +45,7 @@ function ProfilePage() {
       return (
         <div className="profile-container">
           <Navbar/>
-          <h1>Welcome {user}</h1>
+          <h1>Welcome {username}</h1>
         </div>
       )
   }
