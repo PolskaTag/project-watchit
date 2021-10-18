@@ -32,7 +32,7 @@ function LandingPage() {
             </div>
             <div className="landing-image">
                 <img src={watchItLogo} className="landing-logo" alt="logo"/><br/>
-                <h1>WELCOME {username}</h1>
+                
             </div>
         </div>   
     )
