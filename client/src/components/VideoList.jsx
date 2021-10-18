@@ -41,8 +41,7 @@ const recording = [
         <ul class="video-list">
             {recording.map(recording => (
                 <li key={recording.id}>
-                    <a href={recording.URL}> {recording.name}</a>
-                    {recording.timestamp}
+                    Video <a href={recording.URL}>{recording.name}</a>  {recording.timestamp}
                 </li>
             ))}
         </ul>
@@ -70,10 +69,10 @@ function VideoList() {
     // console.log(localStorage.getItem("token"));
 
       return (
-        <div className="video-container">
+        <div className="video-page">
           <Navbar/> <br></br>
           <h1>{user}'s Video Recordings</h1>
-          <div className="video-list">{recordingList}</div>
+          <div>{recordingList}</div>
         </div>
         
       )

@@ -34,7 +34,7 @@ function Navbar() {
     if (localStorage.getItem("token") == null || localStorage.getItem("token") == "undefined") {
         return (
             <div>
-                <ul>
+                <ul className="navList">
                     <li className="navItem"><Link to="/login">Login</Link></li>
                     <li className="navItem"><Link to="/register">Register</Link></li>
                     <li className="navItem"><Link to="/ProfilePage">ProfilePage</Link></li>
@@ -46,7 +46,7 @@ function Navbar() {
     else {
         return (
             <div>
-                <ul>
+                <ul className="navList">
                     <li className="navItem"><Link onClick={logoutHandler} to="/">Logout</Link></li>
                     <li className="navItem"><Link to="/register">Register</Link></li>
                     <li className="navItem"><Link to="/ProfilePage">ProfilePage</Link></li>
