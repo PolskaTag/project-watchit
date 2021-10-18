@@ -1,6 +1,7 @@
 require("dotenv").config({ path: "./config.env" });
 const fs = require("fs");
 const S3 = require("aws-sdk/clients/s3");
+const { url } = require("inspector");
 
 const bucketName = process.env.AWS_BUCKET_NAME;
 const region = process.env.AWS_BUCKET_REGION;
@@ -12,6 +13,15 @@ const s3 = new S3({
   accessKeyId,
   secretAccessKey,
 });
+
+function getPresignedUrl(key) {
+  return s3.getSignedUrl("getObject", {
+    Bucket: bucketName,
+    Key: key,
+    Expires: 3000,
+  });
+}
+exports.getPresignedUrl = getPresignedUrl;
 
 // upload a file to s3
 function uploadFile(file) {

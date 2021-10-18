@@ -15,6 +15,7 @@ app.use(express.json());
 app.use(require("./routes/userRoutes"));
 app.use(require("./routes/authRoutes"));
 app.use(require("./routes/files"));
+app.use(require("./routes/video"));
 
 // Connecting to MongoDB
 mongoose

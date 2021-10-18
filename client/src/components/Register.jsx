@@ -1,5 +1,5 @@
 import { useHistory } from 'react-router'
-import { useLayoutEffect } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import loginImg from "./images/register.png";
 import "./style/register.css";
 import Navbar from './Navbar';
@@ -8,9 +8,11 @@ import axios from 'axios'
 function Register() {
     const history = useHistory()
 
+    const [errorMessage, setErrorMessage] = useState("");
+
     function handleRegister(e) {
         e.preventDefault()
-        console.warn(e)
+        // console.warn(e)
 
         const form = e.target
         const user = {
@@ -24,6 +26,7 @@ function Register() {
         axios
         .post("http://localhost:5000/register", user).then((response) => {
             console.log(response);
+            setErrorMessage(response.data.message);
         })
         // fetch("http://localhost:5000/register", {
         //     method: "POST",
@@ -36,12 +39,13 @@ function Register() {
 
     useLayoutEffect(() => {
         fetch("/isUserAuth", {
-            headers: {
+            'method': "GET",
+            'headers': {
                 "x-access-token": localStorage.getItem("token")
             }
         })
         .then(res => res.json())
-        .then(data => data.isLoggedIn ? history.push("/dashboard"): null)
+        .then(data => data.isLoggedIn ? history.push("/ProfilePage"): null)
     }, [history])
 
     return (
