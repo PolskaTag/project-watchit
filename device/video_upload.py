@@ -4,6 +4,11 @@ import boto3
 from datetime import datetime
 
 def upload_video(count):
+    """
+    This function is called after video is finished recording. 
+
+    :param count: used in naming of the video, used in a strictly iterative fashion. 
+    """
 
     name = f"output{count}.avi"
 

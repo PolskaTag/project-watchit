@@ -2,7 +2,11 @@ import cv2
 
 def standard_camera(width=480, height=640, fps=10):
     """
-    Creates camera stream with standard functions
+    Creates camera stream with standard parameters
+
+    :param width: width in pixels of the camera
+    :param height: height in pixels of the camera
+    :param fps: fps of the camera output
     """
 
     cap = cv2.VideoCapture(0)

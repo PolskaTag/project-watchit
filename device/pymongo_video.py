@@ -1,6 +1,9 @@
 from pymongo import MongoClient
 
 def get_database():
+    """
+    Grabs the database using credentials. In production we will obtain this using environmental variables instead of hardcoding.
+    """
 
     # Provide the mongodb atlas url to connect python to mongodb using pymongo
     CONNECTION_STRING = "mongodb+srv://Steven:cuOKOVR6J0uT7ytt@cluster.d9abx.mongodb.net/Users?retryWrites=true&w=majority"
@@ -12,6 +15,13 @@ def get_database():
     return client['Users']
 
 def new_video(collection, user, video):
+    """
+    Appends new video to mongoDB array of user
+
+    :param collection: collection of the documents to be updated
+    :param user: user email
+    :param video: dictionary of video information containing {videoID, url, filename, timestamp}
+    """
 
     collection.update_one(
         {"email" : user},
