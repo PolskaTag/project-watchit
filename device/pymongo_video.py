@@ -25,7 +25,7 @@ def new_video(collection, user, video):
     """
 
     collection.update_one(
-        {"email" : user},
+        {"username" : user},
         {"$push": {"videos": video}}
     )
 
