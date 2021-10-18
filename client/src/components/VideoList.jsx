@@ -17,6 +17,24 @@ const recording = [
             timestamp:'10pm',
             URL: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
         },
+        {
+            id: 22,
+            name: '122sdf52021',
+            timestamp:'10pm',
+            URL: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
+        },
+        {
+            id: 23,
+            name: '122asdf52021',
+            timestamp:'10pm',
+            URL: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
+        },
+        {
+            id: 24,
+            name: '1225asdf2021',
+            timestamp:'10pm',
+            URL: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
+        }
     ]
 	
 	const recordingList = (
@@ -52,11 +70,12 @@ function VideoList() {
     // console.log(localStorage.getItem("token"));
 
       return (
-        <div className="profile-container">
-          <Navbar/>
+        <div className="video-container">
+          <Navbar/> <br></br>
           <h1>{user}'s Video Recordings</h1>
-		    <div>{recordingList}</div>
+          <div className="video-list">{recordingList}</div>
         </div>
+        
       )
   }
 

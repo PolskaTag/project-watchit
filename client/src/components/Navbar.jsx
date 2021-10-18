@@ -38,6 +38,7 @@ function Navbar() {
                     <li className="navItem"><Link to="/login">Login</Link></li>
                     <li className="navItem"><Link to="/register">Register</Link></li>
                     <li className="navItem"><Link to="/ProfilePage">ProfilePage</Link></li>
+                    <li className="navItem"><Link to="/VideoList">VideoList</Link></li>
                 </ul>
             </div>
         )
@@ -49,6 +50,7 @@ function Navbar() {
                     <li className="navItem"><Link onClick={logoutHandler} to="/">Logout</Link></li>
                     <li className="navItem"><Link to="/register">Register</Link></li>
                     <li className="navItem"><Link to="/ProfilePage">ProfilePage</Link></li>
+                    <li className="navItem"><Link to="/VideoList">VideoList</Link></li>
                 </ul>
             </div>
         )
