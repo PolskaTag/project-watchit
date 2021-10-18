@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Navbar from './Navbar.jsx'
 import "./style/videolist.css"
 
-
+//predefined array with URLs for testing purposes
 const recording = [
         {
             id: 1,
@@ -37,6 +37,7 @@ const recording = [
         }
     ]
 	
+    //uses map to change the array so that it displays into a unordered table for viewing
 	const recordingList = (
         <ul class="video-list">
             {recording.map(recording => (
