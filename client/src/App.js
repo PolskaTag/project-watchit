@@ -9,6 +9,7 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import LandingPage from "./components/LandingPage";
 import ProfilePage from "./components/ProfilePage";
+import VideoList from "./components/VideoList";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Route component={Login} exact path="/login" />
           <Route component={LandingPage} exact path="/" /> 
           <Route component={ProfilePage} exact path="/ProfilePage" />
+          <Route component={VideoList} exact path="/VideoList" />
         </Switch>
       </BrowserRouter>
     </div>

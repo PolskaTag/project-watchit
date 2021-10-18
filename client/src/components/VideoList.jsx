@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Navbar from './Navbar.jsx'
 import "./style/videolist.css"
 
-
+//predefined array with URLs for testing purposes
 const recording = [
         {
             id: 1,
@@ -17,14 +17,32 @@ const recording = [
             timestamp:'10pm',
             URL: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
         },
+        {
+            id: 22,
+            name: '122sdf52021',
+            timestamp:'10pm',
+            URL: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
+        },
+        {
+            id: 23,
+            name: '122asdf52021',
+            timestamp:'10pm',
+            URL: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
+        },
+        {
+            id: 24,
+            name: '1225asdf2021',
+            timestamp:'10pm',
+            URL: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
+        }
     ]
 	
+    //uses map to change the array so that it displays into a unordered table for viewing
 	const recordingList = (
         <ul class="video-list">
             {recording.map(recording => (
                 <li key={recording.id}>
-                    <a href={recording.URL}> {recording.name}</a>
-                    {recording.timestamp}
+                    Video <a href={recording.URL}>{recording.name}</a>  {recording.timestamp}
                 </li>
             ))}
         </ul>
@@ -52,11 +70,12 @@ function VideoList() {
     // console.log(localStorage.getItem("token"));
 
       return (
-        <div className="profile-container">
-          <Navbar/>
+        <div className="video-page">
+          <Navbar/> <br></br>
           <h1>{user}'s Video Recordings</h1>
-		    <div>{recordingList}</div>
+          <div>{recordingList}</div>
         </div>
+        
       )
   }
 
