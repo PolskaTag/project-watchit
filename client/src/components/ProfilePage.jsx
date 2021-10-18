@@ -7,8 +7,10 @@ import "./style/profilepage.css"
 
 function ProfilePage() {
 
-  const [username, setUsername] = useState(null)
+  //const [username] = useState(null)
 
+
+ 
   useLayoutEffect(() => {
         fetch("http://localhost:5000/isUserAuth", {
             'method': "GET",
@@ -49,11 +51,11 @@ function ProfilePage() {
   }
 
 
-  return (
+  /*return (
     <div className="profile-container">
         <Navbar/>
     </div>
-  )
+  )*/
 }
 
 

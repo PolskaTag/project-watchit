@@ -9,7 +9,7 @@ function Navbar() {
 
     async function logoutHandler() {
         if (localStorage.getItem("token") != null) {
-            console.log("User has been successfully logged out.");
+            console.log("User has been successfully logged out. " + username);
             localStorage.removeItem("token")
             await history.push("/login")
         }
@@ -31,7 +31,7 @@ function Navbar() {
             .then(data => data.isLoggedIn ? console.log(setUsername(data.userName)) : null)
     }, [])
 
-    if (localStorage.getItem("token") == null || localStorage.getItem("token") == "undefined") {
+    if (localStorage.getItem("token") === null || localStorage.getItem("token") === "undefined") {
         return (
             <div>
                 <ul className="navList">
