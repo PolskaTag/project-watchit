@@ -7,7 +7,7 @@ import "./style/profilepage.css"
 
 function ProfilePage() {
 
-  //const [username] = useState(null)
+  const [username, setUsername] = useState(null)
 
 
  
