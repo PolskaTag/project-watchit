@@ -11,8 +11,8 @@ const router = express.Router();
 
 router.get("/isUserAuth", verifyJWT, (req, res) => {
   console.log(req.user);
-  results = res.json({ isLoggedIn: true, username: req.user.username });
-  // console.log(results.username);
+  results = res.json({ isLoggedIn: true, username: req.user.username, admin: req.user.admin });
+   console.log("I CAME HERE******** " + results.admin);
   return results;
 });
 

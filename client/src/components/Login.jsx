@@ -9,6 +9,7 @@ import Navbar from './Navbar';
 function Login() {
     const [errorMessage, setErrorMessage] = useState("");
     const history = useHistory()
+    const [checkAdmin, setCheckAdmin] = useState(false);
 
     async function handleLogin(e) {
         e.preventDefault()
@@ -26,6 +27,7 @@ function Login() {
         .then(data => {
             localStorage.setItem("token", data.data.token);
             localStorage.setItem("user", data.data.username);
+            //localStorage.setItem("adminStatus", data.data.admin);
             setErrorMessage(data.data.message);
             // console.log("handleLogin complete");
             // console.log(data.data.token);
@@ -45,7 +47,19 @@ function Login() {
     //     window.location.replace("/profilepage");
     // }
 }
+//{errorMessage === "Success" ? <Redirect to="/ProfilePage"/>: console.log("Validation Error")}
 
+/* if(errorMessage === "Success" && checkAdmin=== true){
+                <Redirect to= "/admin/user"/>
+             }
+             else if(errorMessage === "Success" && checkAdmin=== false){
+                <Redirect to="/ProfilePage"/>
+             }
+             else{
+                console.log("Validation Error")
+              //  alert("Please check your credentials!!!")
+             }
+            */
     useLayoutEffect(() => {
         console.log(":::::::::::::::useLayoutEffect::::::::::::::")
         fetch("http://localhost:5000/isUserAuth", {
@@ -56,14 +70,20 @@ function Login() {
         })
         .then(res => {
              console.log(res);
+             console.log(res.json)
              return res.json();
         })
         .then(data => {
+            setCheckAdmin(data.admin)
             // console.log("response from isUserAuth");
-            // console.log(data);
-            if(data.isLoggedIn){
-                history.push('/');
+             console.log(data);
+            if(data.isLoggedIn && data.admin){
+                history.push('/admin/user')
+                
                 // console.log(history);
+            }
+            else if(data.isLoggedIn && !data.admin){
+                history.push('/');
             }
         }).catch(err => setErrorMessage(err));
     }, [history])
@@ -81,6 +101,7 @@ function Login() {
                 </form>
             </div>
             {errorMessage === "Success" ? <Redirect to="/ProfilePage"/>: console.log("Validation Error")}
+            
         </div>
     )
 }
