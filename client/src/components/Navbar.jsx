@@ -11,7 +11,8 @@ function Navbar() {
         if (localStorage.getItem("token") != null) {
             console.log("User has been successfully logged out.");
             localStorage.removeItem("token")
-            await history.push("/login")
+            setUsername("");
+            // await history.push("/login")
         }
         else {
             console.log("No user is logged in.");
@@ -19,6 +20,7 @@ function Navbar() {
     }
 
     useEffect(() => {
+        // Check if user is authenticated
         fetch("http://localhost:5000/isUserAuth", {
             'headers': {
                 'method': "GET",
@@ -31,31 +33,19 @@ function Navbar() {
             .then(data => data.isLoggedIn ? console.log(setUsername(data.userName)) : null)
     }, [])
 
-    if (localStorage.getItem("token") == null || localStorage.getItem("token") == "undefined") {
-        return (
+    return (
             <div>
                 <ul className="navList">
+                    {!localStorage.getItem("token") ?
                     <li className="navItem"><Link to="/login">Login</Link></li>
+                    :
+                    <li className="navItem"><Link onClick={logoutHandler} to="/">Logout</Link></li>}
                     <li className="navItem"><Link to="/register">Register</Link></li>
                     <li className="navItem"><Link to="/ProfilePage">ProfilePage</Link></li>
                     <li className="navItem"><Link to="/VideoList">VideoList</Link></li>
                 </ul>
             </div>
-        )
-    }
-    else {
-        return (
-            <div>
-                <ul className="navList">
-                    <li className="navItem"><Link onClick={logoutHandler} to="/">Logout</Link></li>
-                    <li className="navItem"><Link to="/register">Register</Link></li>
-                    <li className="navItem"><Link to="/ProfilePage">ProfilePage</Link></li>
-                    <li className="navItem"><Link to="/VideoList">VideoList</Link></li>
-                </ul>
-            </div>
-        )
-    }
-
+    )
 }
 
 export default Navbar;
