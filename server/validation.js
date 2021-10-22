@@ -28,7 +28,20 @@ const loginValidation = (data) => {
   return loginSchema.validate(data);
 };
 
+// Schema for UDA
+const udaSchema = Joi.object({
+  userID: Joi.string().required(),
+  name: Joi.string().required(),
+  script: Joi.string().required(),
+});
+
+// validation function for a uda
+const udaValidation = (data) => {
+  return udaSchema.validate(data);
+};
+
 module.exports = {
   registrationValidation: registrationValidation,
   loginValidation: loginValidation,
+  udaValidation: udaValidation,
 };

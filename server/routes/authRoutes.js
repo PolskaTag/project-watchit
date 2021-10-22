@@ -12,13 +12,17 @@ const router = express.Router();
 router.get("/isUserAuth", verifyJWT, (req, res) => {
   console.log(req.user);
   results = res.json({ isLoggedIn: true, username: req.user.username });
-  // console.log(results.username);
   return results;
 });
 
+/**
+ * Login route that returns a jwt token if authorized.
+ *
+ * req: expects @param username @param password
+ *
+ * @returns {message, token, username}
+ */
 router.route("/login").post((req, res) => {
-  console.log("::::::FUNCTION LOGIN::::::::");
-  console.log(req.body);
   const userLoggingIn = req.body;
 
   if (!userLoggingIn) return res.json({ message: "Server Error" });
@@ -41,7 +45,6 @@ router.route("/login").post((req, res) => {
                 id: dbUser._id,
                 username: dbUser.username,
               };
-              // console.log(process.env.JWT_SECRET);
               const token = jwt.sign(
                 payload,
                 process.env.JWT_SECRET,
@@ -50,7 +53,7 @@ router.route("/login").post((req, res) => {
                   return res.json({
                     message: "Success",
                     token: "Bearer " + token,
-                    username: userLoggingIn.username.toLowerCase()
+                    username: userLoggingIn.username.toLowerCase(),
                   });
                 }
               );
@@ -63,6 +66,13 @@ router.route("/login").post((req, res) => {
   }
 });
 
+/**
+ * Register route that POSTS a user document to the db.
+ *
+ * req: expects @param username @param password @param confirmPassword
+ *
+ * @returns {message}
+ */
 router.post("/register", async (req, res) => {
   console.log(req.body);
   const user = req.body;
