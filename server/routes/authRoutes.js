@@ -11,8 +11,7 @@ const router = express.Router();
 
 router.get("/isUserAuth", verifyJWT, (req, res) => {
   console.log(req.user);
-  results = res.json({ isLoggedIn: true, username: req.user.username, admin: req.user.admin });
-   console.log("I CAME HERE******** " + results.admin);
+  results = res.json({ isLoggedIn: true, username: req.user.username });
   return results;
 });
 
@@ -89,6 +88,63 @@ router.post("/register", async (req, res) => {
     dbUser.save();
     return res.json({ message: "Success" });
   }
+});
+
+
+router.post("/adminregister", async (req, res) => {
+  console.log(req.body);
+  const user = req.body;
+
+  const takenUsername = await User.findOne({
+    username: user.username.toLowerCase(),
+  });
+
+  const validationError = registrationValidation(user).error;
+
+  if (validationError) {
+    return res.json({ message: validationError.details[0].message });
+  } else if (takenUsername) {
+    return res.json({ message: "Username has already been taken" });
+  } else {
+    user.password = await bcrypt.hash(req.body.password, 10);
+
+    const dbUser = new User({
+      username: user.username.toLowerCase(),
+      password: user.password,
+      email: user.email,
+      admin: user.admin,
+    });
+
+    dbUser.save();
+    return res.json({ message: "Success" });
+  }
+});
+
+router.get("/adminread", async(req, res) => {
+  await User.find({}, (err, result) =>{
+    if(err){
+      console.log(err);
+      res.send(err);
+    }
+    console.log("admineRead*** " + result);
+    return res.json(result);
+  })
+})
+
+router.get("/adminupdate", async(req, res) => {
+  const newName = req.body.newName;
+  const id = req.body.id;
+
+  try{
+   await User.findById(id, (err, updateName)=>{
+      updateName.name = newName
+      updateName.save();
+      res.send("update");
+    })
+  }catch(err){
+    console.log(err);
+  }
+  
 });
 
 module.exports = router;

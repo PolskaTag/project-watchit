@@ -3,7 +3,15 @@ import React, { useLayoutEffect, useState } from "react";
 import VideoController from "./video";
 import Select from 'react-select';
 import axios from 'axios';
+import AdminCreate from "../AdminCreate";
+import AdminRead from "../AdminRead";
+import AdminUpdate from "../AdminUpdate";
+import AdminDelete from "../AdminDelete";
 import "./style/adminPage.css"
+import hamImage from "./images/hamImg.png";
+import cancelButton from "./images/cancelButton.png";
+import MakeUserSelection from "./MakeUserSelection";
+import MakeVideoSelection from "./MakeVideoSelection";
 
 
 function AdminUser() {
@@ -15,11 +23,12 @@ function AdminUser() {
                             </option>
                         )) }
                     </Select>*/
-
+ 
       const [username, setUsername] = useState(null);
       const [videos, setVideos] = useState([]);
-      //const [user, newUser] = useState([]);
-      //const [foo, newFoo] = useState({})
+      const [active, setIsActive] = useState("videoSearch");
+      const [showDiv, setShowDiv] = useState(true);
+     
                     
       const users = [
         { username: "Sam", vidoeName: "https://watchit-east-bucket1.s3.amazonaws.com/output1.avi?AWSAccessKeyId=AKIAYFVHGUKZZ3RKHI6T&Expires=1634529315&Signature=ent3QtIixRHOrT6Q4QFogbpzv4I%3D" },
@@ -59,7 +68,7 @@ function AdminUser() {
     }, [])
 
     
-      let newUsers = []
+      /*let newUsers = []
       let i;
       for(i = 0; i < users.length; i++){
        // if(users[i].username!==users[i-1]){
@@ -69,9 +78,9 @@ function AdminUser() {
         //}
         newUsers.push(foo)
       }
-      console.log(newUsers)
+      console.log(newUsers)*/
 
-      let newUsers1 = []
+     /* let newUsers1 = []
       let j;
       for(j = 0; j < videos.length; j++){
        // if(users[i].username!==users[i-1]){
@@ -81,7 +90,7 @@ function AdminUser() {
         //}
         newUsers1.push(foo1)
       }
-      console.log(newUsers1)
+      console.log(newUsers1)*/
     
       
       const actions = [
@@ -98,30 +107,67 @@ function AdminUser() {
       ];
    
 
-      const [url, setUrl] = useState(actions.value)
+      const [url, setUrl] = useState("")
       const handleVideo = e =>{
         setUrl(e.value)
       }
           return (
-            <div className="admin-container">       
-              <h1>I am Admin user</h1>
-              <div className="input-vid-search" >
-                <label className="label-span-search" >
-                    <span className="span-search">Search a User Videos</span>
-                </label>
-        
-                <div className="select">
-                   <Select isSearchable  placeholder="Search for video" onChange={handleVideo} options={newUsers1}/>
-                </div>
-                <div className="select">
-                   <Select isSearchable  placeholder="Search for video" onChange={handleVideo} options={newUsers}/>
-                </div>
-                
-                </div>
-                <br/>
-                <div className="vid-con">
-                {url ? <VideoController url = {url}/>: null}
-                </div>
+            <div className="admin-container">  
+            <div id="links">
+            <img src={cancelButton} className="cancelButton" alt="cancel button" />
+                <ul>
+                    <li><button onClick={() => setIsActive("videoSearch")}>Video Search</button></li>
+                    <li><button onClick={() => setIsActive("create")}>Create a User</button></li>
+                    <li><button onClick={() => setIsActive("read")}>Find Users</button></li>
+                    <li><button onClick={() => setIsActive("update")}>Update a User</button></li>
+                    <li><button onClick={() => setIsActive("delete")}>Delete a User</button></li>
+                    
+                </ul>
+            </div>
+            <div className="header">         
+            <h2>WatchIt</h2>
+            <p className="pheader">Admin</p>
+            </div> 
+            <img src={hamImage} className="hamImg" alt="hamberger menu" />
+            {active==="videoSearch" &&
+            <><div className="input-vid-search">
+                  <div className="searchDiv">
+                  <label className="label-span-search">
+                    <span className="span-search">Search for all Videos</span>
+                  </label>
+                  <div className="select">
+                    <Select isSearchable placeholder="Search for all videos" onChange={handleVideo} options={MakeVideoSelection(videos)} className="innerSelect" />
+                  </div>
+                  </div>
+                  <div className="searchDiv">
+                  <label className="label-span-search  spacingMiddleSearch" >
+                    <span className="span-search">Search for User</span>
+                  </label>
+                  <div className="select" >
+                    <Select isSearchable placeholder="Search for a User" onChange={handleVideo} options={MakeUserSelection(users)} className="innerSelect" />
+                  </div>
+                  </div>
+                  {showDiv?
+                  <div className="searchDiv">
+                  <label className="label-span-search spacingEndSearch">
+                    <span className="span-search">Search for User's Videos</span>
+                  </label>
+                  <div className="select" >
+                    <Select isSearchable placeholder="Search for User's Videos" onChange={handleVideo}  className="innerSelect" />
+                  </div>
+                  </div> : null}
+
+              </div>
+              <br />
+              <div className="vid-container">
+              {url ? <VideoController url={url} className="innerVid" /> : null}
+              </div></>}
+            {active==="create" && <AdminCreate />}
+            {active==="read" && <AdminRead />}
+            {active==="update" && <AdminUpdate />}   
+            {active==="delete" && <AdminDelete />}   
+            <div id="sidebar">
+            </div>
             </div>
           )
     

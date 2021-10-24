@@ -5,6 +5,7 @@ const registerSchema = Joi.object({
   //username: Joi.string().min(4).max(30).alphanum().required(),
   username: Joi.string().min(4).max(30).required(),
   password: Joi.string().required().min(8).max(30),
+  admin: Joi.boolean(),
   confirmPassword: Joi.any()
     .equal(Joi.ref("password"))
     .required()
