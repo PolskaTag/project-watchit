@@ -10,6 +10,8 @@ function ProfilePage() {
 
   const [username, setUsername] = useState(null)
 
+
+ 
   useLayoutEffect(() => {
     // Checks if the user is authenticated
     fetch("http://localhost:5000/isUserAuth", {
@@ -24,13 +26,13 @@ function ProfilePage() {
     }, [])
 
 
-  return (
+  /*return (
     <div className="profile-container">
         <Navbar/>
         <h1>Welcome {username}</h1>
         {!localStorage.getItem("token") ? <Redirect to="/login"></Redirect>: null}
     </div>
-  )
+  )*/
 }
 
 

@@ -22,7 +22,7 @@ record = False
 start = time.time()
 
 # Define the codec and create VideoWriter object.The output is stored in 'output{count}.avi' file.
-out = cv2.VideoWriter(f'output{count}.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (frame_width,frame_height))
+out = cv2.VideoWriter(f'output{count}.mp4',cv2.VideoWriter_fourcc(*'mp4v'), 10, (frame_width,frame_height))
 
 while(True):
   ret, frame = cap.read()
@@ -40,12 +40,12 @@ while(True):
       record = True
     elif key & 0xFF == ord('q'):
       break
-      
+      q
     # Record for ten seconds then upload to S3 and update databases
     if time.time() - start > 10 and record:
       Thread(target=upload_video, args=(count, )).start()
       count += 1
-      out = cv2.VideoWriter(f'output{count}.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (frame_width,frame_height))
+      out = cv2.VideoWriter(f'output{count}.mp4',cv2.VideoWriter_fourcc(*'mp4v'), 10, (frame_width,frame_height))
       record = False
 
     # Write the frame into the file 'output.avi'
@@ -64,4 +64,4 @@ out.release()
 cv2.destroyAllWindows()
 
 # Remove extra file created by function
-os.remove(f'output{count}.avi')
+os.remove(f'output{count}.mp4')

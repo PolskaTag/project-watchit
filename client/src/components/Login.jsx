@@ -1,14 +1,15 @@
 import axios from 'axios';
-import { useLayoutEffect, useEffect, useState } from 'react'
-import { Link, Redirect, useHistory } from 'react-router-dom'
+import { useLayoutEffect,useState } from 'react'// useEffect, 
+import { Redirect, useHistory } from 'react-router-dom'//Link, 
 import "./style/login.css";
 import loginImg from "./images/login.png";
 import Navbar from './Navbar';
-import { render } from 'react-dom';
+//import { render } from 'react-dom';
 
 function Login() {
     const [errorMessage, setErrorMessage] = useState("");
     const history = useHistory()
+    const [checkAdmin, setCheckAdmin] = useState(false);
 
     // onSubmit function that handles login.
     async function handleLogin(e) {
@@ -33,8 +34,10 @@ function Login() {
         setErrorMessage(err);
     }
 }
+//{errorMessage === "Success" ? <Redirect to="/ProfilePage"/>: console.log("Validation Error")}
 
-    // 
+
+    
     useLayoutEffect(() => {
         fetch("http://localhost:5000/isUserAuth", {
             'method': "GET",
@@ -47,6 +50,9 @@ function Login() {
         })
         .then(data => {
             if(data.isLoggedIn){
+                history.push('/');
+            }
+            else if(data.isLoggedIn && !data.admin){
                 history.push('/');
             }
         }).catch(err => setErrorMessage(err));
@@ -65,6 +71,7 @@ function Login() {
                 </form>
             </div>
             {errorMessage === "Success" ? <Redirect to="/ProfilePage"/>: console.log("Validation Error")}
+            
         </div>
     )
 }
