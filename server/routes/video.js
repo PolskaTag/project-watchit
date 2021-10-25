@@ -11,7 +11,7 @@ const { route } = require("./authRoutes");
 const router = express.Router();
 
 // An api that gets all the videos from users
-router.route("/videos").get((req, res) => {
+router.route("/videos").get(verifyJWT, (req, res) => {
   // First find all the users with videos
   User.find({ "videos.0": { $exists: 1 } }).then((dbUser) => {
     // variable where we'll put our videos
