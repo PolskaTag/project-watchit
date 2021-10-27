@@ -126,25 +126,47 @@ router.get("/adminread", async(req, res) => {
       console.log(err);
       res.send(err);
     }
-    console.log("admineRead*** " + result);
+    console.log(result);
     return res.json(result);
   })
 })
 
-router.get("/adminupdate", async(req, res) => {
-  const newName = req.body.newName;
+/*router.get("/adminreadone", async(req, res) => {
+  await User.findOne({_id: req.body._id.toLowerCase()}, (err, result) =>{
+    if(err){
+      console.log(err);
+      res.send(err);
+    }
+    console.log(result);
+    return res.json(result);
+  })
+})*/
+
+router.put("/adminupdate", async(req, res) => {
+  const newName = req.body.username;
   const id = req.body.id;
+  //const admin = req.body.admin
 
   try{
-   await User.findById(id, (err, updateName)=>{
-      updateName.name = newName
-      updateName.save();
+   await User.findById(id, (err, updatedName)=>{//, updateAdmin
+      updatedName.name = newName
+     // updateAdmin.admin = admin
+      //updateAdmin.save();
+      updatedName.save();
       res.send("update");
     })
   }catch(err){
     console.log(err);
   }
   
+});
+
+router.delete("/admindelete/:id", async(req, res) =>{
+  const id = req.params.id;
+
+  await User.findByIdAndDelete(id).exec;
+  res.send("Deleted");
+  console.log("Deleted");
 });
 
 module.exports = router;

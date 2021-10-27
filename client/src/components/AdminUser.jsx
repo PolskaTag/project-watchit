@@ -12,6 +12,7 @@ import hamImage from "./images/hamImg.png";
 import cancelButton from "./images/cancelButton.png";
 import MakeUserSelection from "./MakeUserSelection";
 import MakeVideoSelection from "./MakeVideoSelection";
+import { unstable_renderSubtreeIntoContainer } from "react-dom";
 
 
 function AdminUser() {
@@ -27,7 +28,10 @@ function AdminUser() {
       const [username, setUsername] = useState(null);
       const [videos, setVideos] = useState([]);
       const [active, setIsActive] = useState("videoSearch");
-      const [showDiv, setShowDiv] = useState(true);
+      const [showCancelDiv, setShowCancelDiv] = useState(true);
+      const [showHambergerDiv, setShowHamberDiv] = useState(true);
+      const [showExtraSelectDiv, setEtraSelectDiv] = useState(true);
+      const [showSidebarDiv, setShowSidebarDiv ] = useState(true);
      
                     
       const users = [
@@ -91,7 +95,20 @@ function AdminUser() {
         newUsers1.push(foo1)
       }
       console.log(newUsers1)*/
-    
+    function setHamber(){
+      setShowHamberDiv(true);
+      setShowCancelDiv(false);
+      setShowSidebarDiv(false);
+      console.log("Hamber set")
+    }
+
+    function setCancel(){
+      setShowHamberDiv(false);
+      setShowCancelDiv(true);
+      setShowSidebarDiv(true);
+      console.log("Cancel set")
+    }
+
       
       const actions = [
         { label: "Sam", value: "https://watchit-east-bucket1.s3.amazonaws.com/output1.avi?AWSAccessKeyId=AKIAYFVHGUKZZ3RKHI6T&Expires=1634529315&Signature=ent3QtIixRHOrT6Q4QFogbpzv4I%3D" },
@@ -106,15 +123,17 @@ function AdminUser() {
        // { label : "Chris Brown", value: "https://www.youtube.com/watch?v=iGs1gODLiSQ"}
       ];
    
-
+     
       const [url, setUrl] = useState("")
       const handleVideo = e =>{
         setUrl(e.value)
       }
           return (
             <div className="admin-container">  
+            {showCancelDiv? <img src={cancelButton} className="cancelButton" alt="cancel button" onClick={setHamber} /> : null}
+            {showSidebarDiv && <div id="sidebar">
             <div id="links">
-            <img src={cancelButton} className="cancelButton" alt="cancel button" />
+            <div id="arrow"><p>&#10095;</p></div>
                 <ul>
                     <li><button onClick={() => setIsActive("videoSearch")}>Video Search</button></li>
                     <li><button onClick={() => setIsActive("create")}>Create a User</button></li>
@@ -124,11 +143,13 @@ function AdminUser() {
                     
                 </ul>
             </div>
+            </div>}
             <div className="header">         
             <h2>WatchIt</h2>
             <p className="pheader">Admin</p>
             </div> 
-            <img src={hamImage} className="hamImg" alt="hamberger menu" />
+
+            {showHambergerDiv? <img src={hamImage} className="hamImg" alt="hamberger menu" onClick={setCancel} /> : null}
             {active==="videoSearch" &&
             <><div className="input-vid-search">
                   <div className="searchDiv">
@@ -141,13 +162,13 @@ function AdminUser() {
                   </div>
                   <div className="searchDiv">
                   <label className="label-span-search  spacingMiddleSearch" >
-                    <span className="span-search">Search for User</span>
+                    <span className="span-search">Search for a User</span>
                   </label>
                   <div className="select" >
                     <Select isSearchable placeholder="Search for a User" onChange={handleVideo} options={MakeUserSelection(users)} className="innerSelect" />
                   </div>
                   </div>
-                  {showDiv?
+                  {showExtraSelectDiv?
                   <div className="searchDiv">
                   <label className="label-span-search spacingEndSearch">
                     <span className="span-search">Search for User's Videos</span>
@@ -159,6 +180,8 @@ function AdminUser() {
 
               </div>
               <br />
+              <br />
+              <br />
               <div className="vid-container">
               {url ? <VideoController url={url} className="innerVid" /> : null}
               </div></>}
@@ -166,8 +189,6 @@ function AdminUser() {
             {active==="read" && <AdminRead />}
             {active==="update" && <AdminUpdate />}   
             {active==="delete" && <AdminDelete />}   
-            <div id="sidebar">
-            </div>
             </div>
           )
     

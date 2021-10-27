@@ -4,9 +4,12 @@ import Select from 'react-select';
 import MakeUserSelection from './components/MakeUserSelection';
 import Display from './components/Display';
 
+
 function AdminRead() {
 
     const [users, setUsers] = useState([])
+    const [user, setUser] = useState([])
+    const [selectUser, setSelectUser] = useState("")
     
     useEffect(() =>{
         axios.get("http://localhost:5000/adminread")
@@ -15,54 +18,48 @@ function AdminRead() {
             setUsers(newUsers)
         });
     }, []);
-    console.log(users);
-   /* let newUsers = []
-    let i;
-    for(i = 0; i < users.length; i++){
-     // if(users[i].username!==users[i-1]){
-      let foo = {}
-      foo['label' ] = users[i].username
-      foo['value'] = users[i].vidoeName
-      //}
-      newUsers.push(foo)
-    }*/
-
-  /*  <div>
-    {active==="update" && <AdminUpdate />}   
-    {active==="delete" && <AdminDelete />} </div>*/
     
-   /* {users.map((val, key) =>{
-           return(
-            <div key={key}>
-                <h2>{val.userName}</h2>
-                </div>
-                  );  
-           })} */
-         // return <h1>YES!!!</h1>
-// {url ? <VideoController url={url} className="innerVid" /> : null}
-
-      const [selectUser, setSelectUser] = useState(users.username)
+           
       const handleUser = e =>{
-        setSelectUser(e.username)
+        setSelectUser(e.value)
+        let i;
+        for (i = 0; i < users.length; i++){
+            if(users[i]._id === e.value){
+                setUser(users[i]);
+                console.log("I AM USER I")
+                console.log(users[i])
+                
+            }
+        }
       }
+      
+      const deleteUser = (id) =>{
+        axios.delete(`http://localhost:5000/admindelete/${id}`)
+        .then((response) =>{
+            console.log(response);
+        });
+      };
 
-      const posts = [
-        {id: 1, username: 'Hello World', videos: 'Welcome to learning React!'},
-        {id: 2, username: 'Installation', videos: 'You can install React from npm.'}
-      ];
       return(
-            <div>
-           {<> <div className="searchDiv adminread">
+            <div  >
+           {<><div className="adminreadDiv">
+                <div className="searchDiv adminread">
               <label className="label-span-search adminreadlabel">
-                  <span className="span-search">Search for User</span>
+                  <span className="span-search">Search for a User</span>
               </label>
               <div className="select">
                   <Select isSearchable placeholder="Search for a User" onChange={handleUser} options={MakeUserSelection(users)} className="innerSelect" />
               </div>
               </div>
-              <div>
-                  {<Display userDetails={users, selectUser} className="innerVid" />}</div></>}
-            </div>
+              <br/>
+              <br/>
+              <div className="displayDiv">
+              {user? <Display props={user}/> : null}  
+              </div>
+              <br/>
+              <button className="readBtn" onClick={() => deleteUser(selectUser)}>Delete User</button>      
+              </div></>}
+              </div>
       )
 }
 
