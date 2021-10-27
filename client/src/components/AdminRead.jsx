@@ -1,8 +1,8 @@
 import {useEffect, useState } from 'react'
 import axios from 'axios'
 import Select from 'react-select';
-import MakeUserSelection from './components/MakeUserSelection';
-import Display from './components/Display';
+import MakeUserSelection from './MakeUserSelection';
+import Display from './Display';
 
 
 function AdminRead() {

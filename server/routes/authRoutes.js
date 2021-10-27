@@ -159,7 +159,7 @@ router.put("/adminupdate", async(req, res) => {
   //const admin = req.body.admin
 
   try{
-   await User.findById(id, (err, updatedName)=>{//, updateAdmin
+   await User.updateOne(id, (err, updatedName)=>{//, updateAdmin
       updatedName.name = newName
      // updateAdmin.admin = admin
       //updateAdmin.save();

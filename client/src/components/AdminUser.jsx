@@ -3,16 +3,15 @@ import React, { useLayoutEffect, useState } from "react";
 import VideoController from "./video";
 import Select from 'react-select';
 import axios from 'axios';
-import AdminCreate from "../AdminCreate";
-import AdminRead from "../AdminRead";
-import AdminUpdate from "../AdminUpdate";
-import AdminDelete from "../AdminDelete";
+import AdminCreate from "./AdminCreate";
+import AdminRead from "./AdminRead";
+import AdminUpdate from "./AdminUpdate";
+import AdminDelete from "./AdminDelete";
 import "./style/adminPage.css"
 import hamImage from "./images/hamImg.png";
 import cancelButton from "./images/cancelButton.png";
 import MakeUserSelection from "./MakeUserSelection";
 import MakeVideoSelection from "./MakeVideoSelection";
-import { unstable_renderSubtreeIntoContainer } from "react-dom";
 
 
 function AdminUser() {

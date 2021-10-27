@@ -1,7 +1,7 @@
 import {useEffect, useState } from 'react'
 import axios from 'axios'
 import Select from 'react-select';
-import MakeUserSelection from './components/MakeUserSelection';
+import MakeUserSelection from './MakeUserSelection';
 
 
 function AdminUpdate() {
