@@ -10,9 +10,11 @@ const { registrationValidation, loginValidation } = require("../validation");
 const router = express.Router();
 
 router.get("/isUserAuth", verifyJWT, (req, res) => {
-  console.log(req.user);
-  results = res.json({ isLoggedIn: true, username: req.user.username });
-  return results;
+  res.json({
+    isLoggedIn: true,
+    username: req.user.username,
+    id: req.user.id,
+  });
 });
 
 /**
@@ -74,7 +76,7 @@ router.route("/login").post((req, res) => {
  * @returns {message}
  */
 router.post("/register", async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const user = req.body;
 
   const takenUsername = await User.findOne({
