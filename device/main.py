@@ -17,12 +17,12 @@ if not cap:
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 
-start_count = count = 1
+start_count = count = 5
 record = False
 start = time.time()
 
 # Define the codec and create VideoWriter object.The output is stored in 'output{count}.avi' file.
-out = cv2.VideoWriter(f'output{count}.mp4',cv2.VideoWriter_fourcc(*'mp4v'), 10, (frame_width,frame_height))
+out = cv2.VideoWriter(f'output{count}.mp4',cv2.VideoWriter_fourcc(*'avc1'), 10, (frame_width,frame_height))
 
 while(True):
   ret, frame = cap.read()
@@ -45,7 +45,7 @@ while(True):
     if time.time() - start > 10 and record:
       Thread(target=upload_video, args=(count, )).start()
       count += 1
-      out = cv2.VideoWriter(f'output{count}.mp4',cv2.VideoWriter_fourcc(*'mp4v'), 10, (frame_width,frame_height))
+      out = cv2.VideoWriter(f'output{count}.mp4',cv2.VideoWriter_fourcc(*'avc1'), 10, (frame_width,frame_height))
       record = False
 
     # Write the frame into the file 'output.avi'
