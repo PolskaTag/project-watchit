@@ -136,10 +136,8 @@ function AdminUser() {
                 <ul>
                     <li><button onClick={() => setIsActive("videoSearch")}>Video Search</button></li>
                     <li><button onClick={() => setIsActive("create")}>Create a User</button></li>
-                    <li><button onClick={() => setIsActive("read")}>Find Users</button></li>
-                    <li><button onClick={() => setIsActive("update")}>Update a User</button></li>
-                    <li><button onClick={() => setIsActive("delete")}>Delete a User</button></li>
-                    
+                    <li><button onClick={() => setIsActive("read")}>Find and Delete User</button></li>
+                    <li><button onClick={() => setIsActive("update")}>Update a User</button></li>                    
                 </ul>
             </div>
             </div>}
