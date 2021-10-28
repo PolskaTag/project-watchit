@@ -1,7 +1,7 @@
 const { boolean, date } = require("joi");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const Uda = require("./uda");
+const { Uda, udaSchema } = require("./uda");
 
 // User schema that we'll leverage when accessing db
 const userSchema = mongoose.Schema(
@@ -30,12 +30,7 @@ const userSchema = mongoose.Schema(
         time: Date,
       },
     ],
-    uda: [
-      {
-        type: Uda,
-        default: {},
-      },
-    ],
+    uda: [udaSchema],
   },
   { timestamps: true }
 )
