@@ -1,7 +1,4 @@
 const express = require("express");
-// recordRoutes is an instance of the express router.
-// We use it to define our routes.
-// The router will be added as a middleware and will take control of requests starting with path /record.
 const router = express.Router();
 const verifyJWT = require("../verifyJWT");
 const User = require("../models/user");
@@ -25,24 +22,6 @@ router.route("/u/:userId").get(verifyJWT, (req, res) => {
         username: "User not found",
         email: "",
         videos: [],
-        uda: [],
-        message: err,
-      })
-    );
-});
-
-router.route("/uda/:userId").get(verifyJTW, (req, res) => {
-  const userId = req.params.userId;
-
-  User.findOne({ userId: userId })
-    .then((dbUser) =>
-      res.json({
-        uda: dbUser.uda,
-        message: "Success",
-      })
-    )
-    .catch((err) =>
-      res.json({
         uda: [],
         message: err,
       })
