@@ -1,4 +1,3 @@
-
 import React, { useLayoutEffect, useState, useEffect } from "react";
 import VideoController from "./video";
 import Select from 'react-select';
@@ -12,20 +11,12 @@ import hamImage from "./images/hamImg.png";
 import cancelButton from "./images/cancelButton.png";
 import MakeUserSelection from "./MakeUserSelection";
 import MakeVideoSelection from "./MakeVideoSelection";
-//require("dotenv").config({ path: "../config.env" });
-//const { getPresignedUrl } = require("../../../../server/s3");
-//import { getPresignedUrl } from "../../../server/s3";
+import { Redirect} from 'react-router-dom'
+
 
 function AdminUser() {
-    //code that might be needed after we axios
-  /*  <Select isSearchable  placeholder="Search for video" onChange={handleVideo}>
-                        {data.map(items =>(
-                            <option label={items.url} value={items.username}>
-                                {items.username}
-                            </option>
-                        )) }
-                    </Select>*/
- 
+    
+      /*set variable states*/
       const [username, setUsername] = useState(null);
       const [videos, setVideos] = useState([]);
       const [active, setIsActive] = useState("videoSearch");
@@ -35,21 +26,7 @@ function AdminUser() {
       const [showSidebarDiv, setShowSidebarDiv ] = useState(true);
       const [users, setUsers] = useState([]);
 
-          
-                    
-     /* const users = [
-        { username: "Sam", vidoeName: "https://watchit-east-bucket1.s3.amazonaws.com/output1.avi?AWSAccessKeyId=AKIAYFVHGUKZZ3RKHI6T&Expires=1634529315&Signature=ent3QtIixRHOrT6Q4QFogbpzv4I%3D" },
-        { username: "Jennifer", vidoeName:"https://media.w3.org/2010/05/bunny/trailer.mp4" },
-        { username: "Magic", vidoeName: "https://media.w3.org/2010/05/bunny/movie.mp4" },
-        { username : "Rihanna", vidoeName: "https://www.youtube.com/watch?v=lWA2pjMjpBs"},
-        { username : "Rihanna", vidoeName: "https://www.youtube.com/watch?v=rp4UwPZfRis"},
-        { username : "Rihanna", vidoeName: "https://www.youtube.com/watch?v=JF8BRvqGCNs"},
-        { username : "Rihanna", vidoeName: "https://www.youtube.com/watch?v=uelHwf8o7_U"},
-        { username : "Chris Brown", vidoeName: "https://www.youtube.com/watch?v=z29nI8RQV0U"},
-        { username : "Chris Brown", vidoeName: "https://www.youtube.com/watch?v=6CFYIOF89hc"},
-        { username : "Chris Brown", vidoeName: "https://www.youtube.com/watch?v=iGs1gODLiSQ"}
-      ];*/
-
+      /*check user authorization*/
       useLayoutEffect(() => {
         fetch("http://localhost:5000/isUserAuth", {
             'method': "GET",
@@ -77,6 +54,7 @@ function AdminUser() {
     }, [])
 
 
+    /*get all the users in the database*/
     useEffect(() =>{
       axios.get("http://localhost:5000/adminread", { headers: {
         "x-access-token": localStorage.getItem("token")
@@ -88,29 +66,6 @@ function AdminUser() {
   }, []);
 
     
-      /*let newUsers = []
-      let i;
-      for(i = 0; i < users.length; i++){
-       // if(users[i].username!==users[i-1]){
-        let foo = {}
-        foo['label' ] = users[i].username
-        foo['value'] = users[i].vidoeName
-        //}
-        newUsers.push(foo)
-      }
-      console.log(newUsers)*/
-
-     /* let newUsers1 = []
-      let j;
-      for(j = 0; j < videos.length; j++){
-       // if(users[i].username!==users[i-1]){
-        let foo1 = {}
-        foo1['label' ] = videos[j].name
-        foo1['value'] = videos[j].url
-        //}
-        newUsers1.push(foo1)
-      }
-      console.log(newUsers1)*/
     function setHamber(){
       setShowHamberDiv(true);
       setShowCancelDiv(false);
@@ -124,39 +79,18 @@ function AdminUser() {
       setShowSidebarDiv(true);
       console.log("Cancel set")
     }
-
-      
-      const actions = [
-        { label: "Sam", value: "https://watchit-east-bucket1.s3.amazonaws.com/output1.avi?AWSAccessKeyId=AKIAYFVHGUKZZ3RKHI6T&Expires=1634529315&Signature=ent3QtIixRHOrT6Q4QFogbpzv4I%3D" },
-        { label: "Jennifer", value:"https://media.w3.org/2010/05/bunny/trailer.mp4" },
-        { label: "Magic", value: "https://media.w3.org/2010/05/bunny/movie.mp4" },
-        { label : "Rihanna", value: "https://www.youtube.com/watch?v=lWA2pjMjpBs"},
-        { label : "Rihanna", value: "https://www.youtube.com/watch?v=rp4UwPZfRis"},
-        //{ label : "Rihanna", value: "https://www.youtube.com/watch?v=JF8BRvqGCNs"},
-       // { label : "Rihanna", value: "https://www.youtube.com/watch?v=uelHwf8o7_U"},
-        //{ label : "Chris Brown", value: "https://www.youtube.com/watch?v=z29nI8RQV0U"},
-       // { label : "Chris Brown", value: "https://www.youtube.com/watch?v=6CFYIOF89hc"},
-       // { label : "Chris Brown", value: "https://www.youtube.com/watch?v=iGs1gODLiSQ"}
-      ];
-   
-     
+  
+     /*change the state of the videos url based on users selection*/
       const [url, setUrl] = useState("")
       const handleVideo = e =>{
         setUrl(e.value)
       }
 
-        /* result.push(users[i].videos);
-                users[i].videos.forEach((video) => {
-                  try{
-                    video.url = getPresignedUrl(video.name);
-                  }catch(e){
-                    console.log(e);
-                  }
-                });*/
+       
       const [newUserId, setNewUserId] = useState("")
       const [newUser, setNewUser] = useState("")
 
-      
+      /*get the user that was selected*/
       const handleUser = e =>{
        // let result = [];
          setNewUserId(e.value) 
@@ -171,6 +105,19 @@ function AdminUser() {
          }
       }
 
+      async function logoutHandler() {
+        if (localStorage.getItem("token") != null) {
+            console.log("User has been successfully logged out. " + username);
+            localStorage.removeItem("token")
+            setUsername("");
+            // await history.push("/login")
+            
+        }
+        else {
+            console.log("No user is logged in.");
+        }
+    }
+
           return (
             <div className="admin-container">  
             {showCancelDiv? <img src={cancelButton} className="cancelButton" alt="cancel button" onClick={setHamber} /> : null}
@@ -181,7 +128,8 @@ function AdminUser() {
                     <li><button onClick={() => setIsActive("videoSearch")}>Video Search</button></li>
                     <li><button onClick={() => setIsActive("create")}>Create a User</button></li>
                     <li><button onClick={() => setIsActive("read")}>Find and Delete User</button></li>
-                    <li><button onClick={() => setIsActive("update")}>Update a User</button></li>                    
+                    <li><button onClick={() => setIsActive("update")}>Update a User</button></li>       
+                    <li><button onClick={() => setIsActive("logOut")}>Log Out</button></li>               
                 </ul>
             </div>
             </div>}
@@ -229,7 +177,7 @@ function AdminUser() {
             {active==="create" && <AdminCreate />}
             {active==="read" && <AdminRead />}
             {active==="update" && <AdminUpdate />}   
-            {active==="delete" && <AdminDelete />}   
+            {active==="logOut" && logoutHandler()? <Redirect to="/"/> : null}   
             </div>
           )
     

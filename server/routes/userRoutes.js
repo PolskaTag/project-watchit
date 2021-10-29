@@ -32,23 +32,16 @@ router.route("/updateUserInfo").post(verifyJWT, (req, res) => {
   User.updateOne({ username: req.user.username });
 });
 
-router.route("/adminupdate").post((req, res) => {
-  const newName = req.body.username;
-  const id = req.body.id;
-  const admin = req.body.admin
 
-  
-   User.findById(id).then(updated =>{//, updateAdmin
-      updated.name = newName;
-      updated.admin = admin;
-     // updateAdmin.admin = admin
-      //updateAdmin.save();
-      updated.save();
-      res.send("updated");
-    })
-  .catch(err => res.status(400).json("error " + err));
-   
-  
+router.route("/adminupdate").post((req,res) => {
+  User.findById(req.body.id)
+  .then(updated => {
+  updated.username = req.body.username;
+  updated.admin = req.body.description;
+  updated.save()
+  .then(() => res.json('Exercise updated !'))
+  .catch(err => res.status(400).json('Error: '+ err));
+  });
 });
 
 router.route("/adminread").get(verifyJWT, (req, res) => {

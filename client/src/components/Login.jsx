@@ -38,9 +38,6 @@ function Login() {
         setErrorMessage(err);
     }
 }
-//{errorMessage === "Success" ? <Redirect to="/ProfilePage"/>: console.log("Validation Error")}
-
-
     
     useLayoutEffect(() => {
         fetch("http://localhost:5000/isUserAuth", {
@@ -75,8 +72,6 @@ function Login() {
                     <input required type="submit" value="Submit"/>
                 </form>
             </div>
-            {console.log("print meeeeeeeeeeeeeeee")}
-            {console.log(checkAdmin)}
             {errorMessage === "Success" && checkAdmin?<Redirect to="/admin/user"/>: console.log("Validation Error")}
             {errorMessage === "Success" && !checkAdmin?<Redirect to="/ProfilePage"/>: console.log("Validation Error")}
             

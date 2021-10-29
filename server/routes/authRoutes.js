@@ -137,42 +137,6 @@ router.post("/adminregister", async (req, res) => {
 });
 
 
-
-/*router.get("/adminreadone", async(req, res) => {
-  await User.findOne({_id: req.body._id.toLowerCase()}, (err, result) =>{
-    if(err){
-      console.log(err);
-      res.send(err);
-    }
-    console.log(result);
-    return res.json(result);
-  })
-})*/
-
-/*router.post("/adminupdate", async(req, res) => {
-  const newName = req.body.username;
-  const id = req.body.id;
-  const admin = req.body.admin
-
-  try{
-   await User.findById(id, (err, updated)=>{//, updateAdmin
-      updated.name = newName;
-      updated.admin = admin;
-      updated.admin = admin
-      //updateAdmin.save();
-      updated.save();
-      res.send("update");
-    })
-  }catch(err){
-    console.log(err);
-  }
-  
-});*/
-
-/*router.route("/updateUserInfo").post(verifyJWT, (req, res) => {
-  User.updateOne({ username: req.user.username });
-});*/
-
 router.delete("/admindelete/:id", async(req, res) =>{
   const id = req.params.id;
 
