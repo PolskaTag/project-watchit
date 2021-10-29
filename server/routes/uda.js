@@ -7,6 +7,7 @@ const router = express.Router();
 const verifyJWT = require("../verifyJWT");
 const User = require("../models/user");
 const Uda = require("../models/uda");
+const { db } = require("../models/user");
 
 // Get all UDAs - auth required
 router.route("/uda").get(verifyJWT, (req, res) => {
@@ -69,5 +70,17 @@ router.route("/uda/:userId/:udaId").delete(verifyJWT, (req, res) => {
 //     User.findOne({userId: req.params.userId}).then()
 
 // })
+
+//get details of a uda
+router.route("/uda/:userId").get(verifyJWT, (req,res) => {
+  User.findOne({userId: req.params.userId}).then((dbUser) => {
+    dbUser.uda.get({
+      udaName: req.body.udaName,
+      script: req.body.script,
+      params: req.body.params,
+    });
+    res.json(dbUser.uda);
+  })
+});
 
 module.exports = router;
