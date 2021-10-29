@@ -46,6 +46,7 @@ router.route("/login").post((req, res) => {
               const payload = {
                 id: dbUser._id,
                 username: dbUser.username,
+                admin: dbUser.admin,
               };
               const token = jwt.sign(
                 payload,
@@ -56,6 +57,8 @@ router.route("/login").post((req, res) => {
                     message: "Success",
                     token: "Bearer " + token,
                     username: userLoggingIn.username.toLowerCase(),
+                    admin: dbUser.admin,
+                  
                   });
                 }
               );
@@ -133,16 +136,7 @@ router.post("/adminregister", async (req, res) => {
   }
 });
 
-router.get("/adminread", async(req, res) => {
-  await User.find({}, (err, result) =>{
-    if(err){
-      console.log(err);
-      res.send(err);
-    }
-    console.log(result);
-    return res.json(result);
-  })
-})
+
 
 /*router.get("/adminreadone", async(req, res) => {
   await User.findOne({_id: req.body._id.toLowerCase()}, (err, result) =>{
@@ -155,29 +149,34 @@ router.get("/adminread", async(req, res) => {
   })
 })*/
 
-router.put("/adminupdate", async(req, res) => {
+/*router.post("/adminupdate", async(req, res) => {
   const newName = req.body.username;
   const id = req.body.id;
-  //const admin = req.body.admin
+  const admin = req.body.admin
 
   try{
-   await User.updateOne(id, (err, updatedName)=>{//, updateAdmin
-      updatedName.name = newName
-     // updateAdmin.admin = admin
+   await User.findById(id, (err, updated)=>{//, updateAdmin
+      updated.name = newName;
+      updated.admin = admin;
+      updated.admin = admin
       //updateAdmin.save();
-      updatedName.save();
+      updated.save();
       res.send("update");
     })
   }catch(err){
     console.log(err);
   }
   
-});
+});*/
+
+/*router.route("/updateUserInfo").post(verifyJWT, (req, res) => {
+  User.updateOne({ username: req.user.username });
+});*/
 
 router.delete("/admindelete/:id", async(req, res) =>{
   const id = req.params.id;
 
-  await User.findByIdAndDelete(id).exec;
+  User.findByIdAndDelete(id).exec();
   res.send("Deleted");
   console.log("Deleted");
 });

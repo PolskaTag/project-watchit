@@ -1,5 +1,5 @@
 
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState, useEffect } from "react";
 import VideoController from "./video";
 import Select from 'react-select';
 import axios from 'axios';
@@ -12,7 +12,9 @@ import hamImage from "./images/hamImg.png";
 import cancelButton from "./images/cancelButton.png";
 import MakeUserSelection from "./MakeUserSelection";
 import MakeVideoSelection from "./MakeVideoSelection";
-
+//require("dotenv").config({ path: "../config.env" });
+//const { getPresignedUrl } = require("../../../../server/s3");
+//import { getPresignedUrl } from "../../../server/s3";
 
 function AdminUser() {
     //code that might be needed after we axios
@@ -31,9 +33,11 @@ function AdminUser() {
       const [showHambergerDiv, setShowHamberDiv] = useState(true);
       const [showExtraSelectDiv, setEtraSelectDiv] = useState(true);
       const [showSidebarDiv, setShowSidebarDiv ] = useState(true);
-     
+      const [users, setUsers] = useState([]);
+
+          
                     
-      const users = [
+     /* const users = [
         { username: "Sam", vidoeName: "https://watchit-east-bucket1.s3.amazonaws.com/output1.avi?AWSAccessKeyId=AKIAYFVHGUKZZ3RKHI6T&Expires=1634529315&Signature=ent3QtIixRHOrT6Q4QFogbpzv4I%3D" },
         { username: "Jennifer", vidoeName:"https://media.w3.org/2010/05/bunny/trailer.mp4" },
         { username: "Magic", vidoeName: "https://media.w3.org/2010/05/bunny/movie.mp4" },
@@ -44,7 +48,7 @@ function AdminUser() {
         { username : "Chris Brown", vidoeName: "https://www.youtube.com/watch?v=z29nI8RQV0U"},
         { username : "Chris Brown", vidoeName: "https://www.youtube.com/watch?v=6CFYIOF89hc"},
         { username : "Chris Brown", vidoeName: "https://www.youtube.com/watch?v=iGs1gODLiSQ"}
-      ];
+      ];*/
 
       useLayoutEffect(() => {
         fetch("http://localhost:5000/isUserAuth", {
@@ -61,14 +65,27 @@ function AdminUser() {
         .catch(err => alert(err))
 
         // Make a request for the videos
-        axios.get('http://localhost:5000/videos')
+        axios.get('http://localhost:5000/videos', { headers: {
+          "x-access-token": localStorage.getItem("token")
+      }})
         .then((res) => {
-          // console.log(res.data);
+           console.log(res.data);
           const newVideos = [...res.data[0]];
           console.log(newVideos);
           setVideos(newVideos);
         })
     }, [])
+
+
+    useEffect(() =>{
+      axios.get("http://localhost:5000/adminread", { headers: {
+        "x-access-token": localStorage.getItem("token")
+    }})
+      .then((response) =>{
+          const newUsers = [...response.data];
+          setUsers(newUsers)
+      });
+  }, []);
 
     
       /*let newUsers = []
@@ -127,6 +144,33 @@ function AdminUser() {
       const handleVideo = e =>{
         setUrl(e.value)
       }
+
+        /* result.push(users[i].videos);
+                users[i].videos.forEach((video) => {
+                  try{
+                    video.url = getPresignedUrl(video.name);
+                  }catch(e){
+                    console.log(e);
+                  }
+                });*/
+      const [newUserId, setNewUserId] = useState("")
+      const [newUser, setNewUser] = useState("")
+
+      
+      const handleUser = e =>{
+       // let result = [];
+         setNewUserId(e.value) 
+         let i;
+         for (i = 0; i < users.length; i++){
+             if(users[i]._id === e.value){
+                 setNewUser(users[i].videos);
+                 console.log("I AM USER I")
+                 console.log(users[i])
+                 
+             }
+         }
+      }
+
           return (
             <div className="admin-container">  
             {showCancelDiv? <img src={cancelButton} className="cancelButton" alt="cancel button" onClick={setHamber} /> : null}
@@ -162,7 +206,7 @@ function AdminUser() {
                     <span className="span-search">Search for a User</span>
                   </label>
                   <div className="select" >
-                    <Select isSearchable placeholder="Search for a User" onChange={handleVideo} options={MakeUserSelection(users)} className="innerSelect" />
+                    <Select isSearchable placeholder="Search for a User" onChange={handleUser} options={MakeUserSelection(users)} className="innerSelect" />
                   </div>
                   </div>
                   {showExtraSelectDiv?
@@ -171,7 +215,7 @@ function AdminUser() {
                     <span className="span-search">Search for User's Videos</span>
                   </label>
                   <div className="select" >
-                    <Select isSearchable placeholder="Search for User's Videos" onChange={handleVideo}  className="innerSelect" />
+                    <Select isSearchable placeholder="Search for User's Videos" onChange={handleVideo} options={MakeVideoSelection(newUser)} className="innerSelect" />
                   </div>
                   </div> : null}
 

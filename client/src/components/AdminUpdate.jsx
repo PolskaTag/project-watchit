@@ -15,7 +15,9 @@ function AdminUpdate() {
     const [selectUser, setSelectUser] = useState("")
     
     useEffect(() =>{
-        axios.get("http://localhost:5000/adminread")
+        axios.get("http://localhost:5000/adminread",{ headers: {
+            "x-access-token": localStorage.getItem("token")
+        }})
         .then((response) =>{
             const newUsers = [...response.data];
             setUsers(newUsers)
@@ -23,10 +25,14 @@ function AdminUpdate() {
     }, []);
 
     const updateUser = (id) =>{
-        axios.put("http://localhost:5000/adminupdate", {
+        axios.post("http://localhost:5000/adminupdate", {
             id: id,
             username: newUsername,
             admin: newAdmin,
+        }).then((response) =>{
+            console.log(response);
+        }).catch(e => {
+            console.log(e);
         });
     };
 

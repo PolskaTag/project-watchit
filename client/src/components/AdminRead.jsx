@@ -12,7 +12,9 @@ function AdminRead() {
     const [selectUser, setSelectUser] = useState("")
     
     useEffect(() =>{
-        axios.get("http://localhost:5000/adminread")
+        axios.get("http://localhost:5000/adminread", { headers: {
+          "x-access-token": localStorage.getItem("token")
+      }})
         .then((response) =>{
             const newUsers = [...response.data];
             setUsers(newUsers)
@@ -34,6 +36,8 @@ function AdminRead() {
       }
       
       const deleteUser = (id) =>{
+        console.log("I AM ID")
+          console.log(id);
         axios.delete(`http://localhost:5000/admindelete/${id}`)
         .then((response) =>{
             console.log(response);

@@ -28,7 +28,11 @@ function Login() {
         .then(res => {
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("user", res.data.username);
+            setCheckAdmin(res.data.admin);
             setErrorMessage(res.data.message); 
+            console.log("check admin");
+            console.log(res.data.admin);
+            console.log(res.data);
         })
     } catch(err) {
         setErrorMessage(err);
@@ -49,10 +53,11 @@ function Login() {
              return res.json();
         })
         .then(data => {
-            if(data.isLoggedIn){
-                history.push('/');
+            
+            if(data.isLoggedIn && data.admin){
+                history.push('/admin/user'); 
             }
-            else if(data.isLoggedIn && !data.admin){
+            else if(data.isLoggedIn){
                 history.push('/');
             }
         }).catch(err => setErrorMessage(err));
@@ -70,7 +75,10 @@ function Login() {
                     <input required type="submit" value="Submit"/>
                 </form>
             </div>
-            {errorMessage === "Success" ? <Redirect to="/ProfilePage"/>: console.log("Validation Error")}
+            {console.log("print meeeeeeeeeeeeeeee")}
+            {console.log(checkAdmin)}
+            {errorMessage === "Success" && checkAdmin?<Redirect to="/admin/user"/>: console.log("Validation Error")}
+            {errorMessage === "Success" && !checkAdmin?<Redirect to="/ProfilePage"/>: console.log("Validation Error")}
             
         </div>
     )
