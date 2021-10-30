@@ -3,15 +3,10 @@ import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom';
 import { useState, useEffect } from 'react'
 import "./style/configWatcher.css"
-import { set } from 'mongoose'
-import { render } from '@testing-library/react'
 import { Tabs } from 'antd';
 import 'antd/lib/tabs/style/index.css';
 import Navbar from './Navbar.jsx'
 import axios from 'axios'
-
-
-
 
 function ConfigWatcher() {
 
