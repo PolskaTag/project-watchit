@@ -7,10 +7,7 @@ const router = express.Router();
 const verifyJWT = require("../verifyJWT");
 const User = require("../models/user");
 const Uda = require("../models/uda");
-<<<<<<< HEAD
 // This help convert the id from string to ObjectId for the _id.
-=======
->>>>>>> fadbc3d4392cad6810a20f7bf80ae3dc46686964
 const ObjectId = require("mongodb").ObjectId;
 
 // Get all UDAs - auth required
