@@ -8,11 +8,14 @@ import { render } from '@testing-library/react'
 import { Tabs } from 'antd';
 import 'antd/lib/tabs/style/index.css';
 import Navbar from './Navbar.jsx'
+import axios from 'axios'
 
 
 
 
 function ConfigWatcher() {
+
+    const [errorMessage, setErrorMessage] = useState("");
 
     const { TabPane } = Tabs;
 
@@ -35,6 +38,24 @@ function ConfigWatcher() {
 
     const handleChangeFour = () => {
         setCheckedFour(!checkedFour);
+    }
+
+    function handleNotification(e) {
+        e.preventDefault()
+        // console.warn(e)
+
+        const form = e.target
+        const email = {
+            username: form[0].value,
+        }
+
+        console.warn(JSON.stringify(email))
+
+        axios
+        .post("http://localhost:5000/notification", email).then((response) => {
+            console.log(response);
+            setErrorMessage(response.data.message);
+        })
     }
 
     return (
@@ -97,7 +118,7 @@ function ConfigWatcher() {
             <div id="tabs">
 
             </div>
-            <form>
+            <form onSubmit={event => handleNotification(event)}>
                 <Tabs defaultActiveKey="1" centered>
                     <TabPane tab="Notifications" key="1" id="tab1">
 

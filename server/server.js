@@ -17,6 +17,7 @@ app.use(require("./routes/authRoutes"));
 app.use(require("./routes/files"));
 app.use(require("./routes/video"));
 app.use(require("./routes/uda"));
+app.use(require("./routes/notification"));
 
 // Connecting to MongoDB
 mongoose
