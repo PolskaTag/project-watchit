@@ -61,15 +61,15 @@ router.route("/uda/:userId/:udaId").delete(verifyJWT, (req, res) => {
 });
 
 // Edit one of the users UDAs
-// router.route("/uda/update/:udaId").post(verifyJWT, (req, res) => {
-//     let updatedUda = {
-//         udaName: req.body.udaName,
-//         script: req.body.script,
-//         params: req.body.params
-//     };
-
-//     User.findOne({userId: req.params.userId}).then()
-
-// })
+router.route("/uda/edit/:userId/:udaId").post(verifyJWT, (req, res) => {
+  User.findOneAndUpdate(
+    { _id: ObjectId(req.params.userId) },
+    req.body,
+    { new: true },
+    (error, doc) => {
+      res.json(doc);
+    }
+  );
+});
 
 module.exports = router;
