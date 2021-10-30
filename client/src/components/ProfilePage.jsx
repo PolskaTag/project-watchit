@@ -53,6 +53,7 @@ function ProfilePage() {
       params: form[2].value
     }
 
+    //using userID to add to users document
     try {
       axios.post("http://localhost:5000/uda/" + userId + "/add", newUda,
        {headers: {'x-access-token': localStorage.getItem("token")}})
