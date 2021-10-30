@@ -10,9 +10,15 @@ const nodemailer = require("nodemailer");
 router.route('/notification').post((req, res) => {
     //let testAccount = await nodemailer.createTestAccount();
 
+    let timeStamp = new Date().toLocaleString();
+
+    console.log(req.body);
+
     const output = `
-    <p>You have a new email</p>
+    <p>Watcher ${req.body.watcherName} has been triggered at ${timeStamp}</p>
     `;
+
+    //let sendTo = 
 
     // create reusable transporter object using the default SMTP transport
     const transporter = nodemailer.createTransport({
@@ -31,7 +37,7 @@ router.route('/notification').post((req, res) => {
     // send mail with defined transport object
     let info =  transporter.sendMail({
         from: 'watchitalerts@gmail.com', // sender address
-        to: "jcbtylr91@gmail.com", // list of receivers
+        to: req.body.email, // list of receivers
         subject: "WatchIT Alert Notification", // Subject line
         text: "Text!", // plain text body
         html: output // html body

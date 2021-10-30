@@ -7,6 +7,7 @@ const router = express.Router();
 const verifyJWT = require("../verifyJWT");
 const User = require("../models/user");
 const Uda = require("../models/uda");
+const ObjectId = require("mongodb").ObjectId;
 
 // Get all UDAs - auth required
 router.route("/uda").get(verifyJWT, (req, res) => {
@@ -35,7 +36,7 @@ router.route("/uda/:userId").get(verifyJWT, (req, res) => {
 
 // Post a uda
 router.route("/uda/:userId/add").post(verifyJWT, (req, res) => {
-  User.findOne({ userId: req.params.userId }).then((dbUser) => {
+  User.findOne({ _id: ObjectId(req.params.userId) }).then((dbUser) => {
     // console.log(dbUser);
     dbUser.uda.push({
       udaName: req.body.udaName,
