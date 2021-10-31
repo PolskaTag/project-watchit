@@ -25,7 +25,10 @@ router.get("/isUserAuth", verifyJWT, (req, res) => {
  * @returns {message, token, username}
  */
 router.route("/login").post((req, res) => {
+  let timeStamp = new Date().toLocaleString();
+  console.log("Login Attempt @ " + timeStamp);
   const userLoggingIn = req.body;
+  console.log(userLoggingIn);
 
   if (!userLoggingIn) return res.json({ message: "Server Error" });
 
@@ -56,6 +59,7 @@ router.route("/login").post((req, res) => {
                     message: "Success",
                     token: "Bearer " + token,
                     username: userLoggingIn.username.toLowerCase(),
+                    userId: dbUser._id,
                   });
                 }
               );
@@ -103,7 +107,6 @@ router.post("/register", async (req, res) => {
   }
 });
 
-
 router.post("/adminregister", async (req, res) => {
   console.log(req.body);
   const user = req.body;
@@ -133,31 +136,30 @@ router.post("/adminregister", async (req, res) => {
   }
 });
 
-router.get("/adminread", async(req, res) => {
-  await User.find({}, (err, result) =>{
-    if(err){
+router.get("/adminread", async (req, res) => {
+  await User.find({}, (err, result) => {
+    if (err) {
       console.log(err);
       res.send(err);
     }
     console.log("admineRead*** " + result);
     return res.json(result);
-  })
-})
+  });
+});
 
-router.get("/adminupdate", async(req, res) => {
+router.get("/adminupdate", async (req, res) => {
   const newName = req.body.newName;
   const id = req.body.id;
 
-  try{
-   await User.findById(id, (err, updateName)=>{
-      updateName.name = newName
+  try {
+    await User.findById(id, (err, updateName) => {
+      updateName.name = newName;
       updateName.save();
       res.send("update");
-    })
-  }catch(err){
+    });
+  } catch (err) {
     console.log(err);
   }
-  
 });
 
 module.exports = router;
