@@ -61,4 +61,4 @@ server/config.env
 .vscode
 
 #watchit
-*.weights
+.weights
