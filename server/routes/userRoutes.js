@@ -32,4 +32,27 @@ router.route("/updateUserInfo").post(verifyJWT, (req, res) => {
   User.updateOne({ username: req.user.username });
 });
 
+
+router.route("/adminupdate").post((req,res) => {
+  User.findById(req.body.id)
+  .then(updated => {
+  updated.username = req.body.username;
+  updated.admin = req.body.description;
+  updated.save()
+  .then(() => res.json('Exercise updated !'))
+  .catch(err => res.status(400).json('Error: '+ err));
+  });
+});
+
+router.route("/adminread").get(verifyJWT, (req, res) => {
+  User.find({}, (err, result) =>{
+    if(err){
+      console.log(err);
+      res.send(err);
+    }
+    console.log(result);
+    return res.json(result);
+  })
+})
+
 module.exports = router;

@@ -6,7 +6,7 @@ function MakeUserSelection(props){
       for(i = 0; i < props.length; i++){
         let user = {}
         user['label' ] = props[i].username
-        user['value'] = props[i].username
+        user['value'] = props[i]._id
         newUsers.push(user)
       }
 
