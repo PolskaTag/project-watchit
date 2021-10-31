@@ -49,6 +49,7 @@ router.route("/login").post((req, res) => {
               const payload = {
                 id: dbUser._id,
                 username: dbUser.username,
+                admin: dbUser.admin,
               };
               const token = jwt.sign(
                 payload,
@@ -60,6 +61,7 @@ router.route("/login").post((req, res) => {
                     token: "Bearer " + token,
                     username: userLoggingIn.username.toLowerCase(),
                     userId: dbUser._id,
+                    admin: dbUser.admin,
                   });
                 }
               );
@@ -160,6 +162,14 @@ router.get("/adminupdate", async (req, res) => {
   } catch (err) {
     console.log(err);
   }
+});
+
+router.delete("/admindelete/:id", async (req, res) => {
+  const id = req.params.id;
+
+  User.findByIdAndDelete(id).exec();
+  res.send("Deleted");
+  console.log("Deleted");
 });
 
 module.exports = router;
