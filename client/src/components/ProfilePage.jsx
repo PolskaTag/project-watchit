@@ -115,14 +115,14 @@ function ProfilePage() {
         <h2>Id# {userId}</h2>
         </div>
         <br/>
-        {udaList ? <div style={{color: "#502b3a"}}><h1 style={{textAlign: "center"}}>{capitalize(username)} UDA List</h1><br/>{udaList}</div>: null}
+        {udaList ? <div style={{color: "#502b3a"},{fontSize: "1em"}}><h1 style={{textAlign: "center"}}>{capitalize(username)} UDA List</h1><br/>{udaList}</div>: null}
          <br/>
          {allUserList ? <div><h1 style={{textAlign: "center"}}>All UDA List</h1><br/>{allUserList}</div>: null}
         <div>
           <h1>Add a UDA</h1>
           <form onSubmit={addUda}>
             <div class="form-group">
-            <input required type="text" class="form-control" id="udaName"  placeholder="UDA Name"/>
+            <input required type="text" class="form-control" id="udaName" placeholder="UDA Name"/>
             <input required type="text" class="form-control" id="Script" placeholder="Script"/>
             <input required type="text" class="form-control" id="Params" placeholder="Params"/>
             <button type="submit" class="btn btn-primary">Submit</button>
