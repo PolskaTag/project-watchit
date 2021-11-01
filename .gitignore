@@ -59,3 +59,7 @@ server/config.env
 
 #vscode
 .vscode
+device/.vscode
+
+#Device
+__pycache__

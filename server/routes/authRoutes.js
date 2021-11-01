@@ -46,6 +46,7 @@ router.route("/login").post((req, res) => {
               const payload = {
                 id: dbUser._id,
                 username: dbUser.username,
+                admin: dbUser.admin,
               };
               const token = jwt.sign(
                 payload,
@@ -56,6 +57,8 @@ router.route("/login").post((req, res) => {
                     message: "Success",
                     token: "Bearer " + token,
                     username: userLoggingIn.username.toLowerCase(),
+                    admin: dbUser.admin,
+                  
                   });
                 }
               );
@@ -133,31 +136,13 @@ router.post("/adminregister", async (req, res) => {
   }
 });
 
-router.get("/adminread", async(req, res) => {
-  await User.find({}, (err, result) =>{
-    if(err){
-      console.log(err);
-      res.send(err);
-    }
-    console.log("admineRead*** " + result);
-    return res.json(result);
-  })
-})
 
-router.get("/adminupdate", async(req, res) => {
-  const newName = req.body.newName;
-  const id = req.body.id;
+router.delete("/admindelete/:id", async(req, res) =>{
+  const id = req.params.id;
 
-  try{
-   await User.findById(id, (err, updateName)=>{
-      updateName.name = newName
-      updateName.save();
-      res.send("update");
-    })
-  }catch(err){
-    console.log(err);
-  }
-  
+  User.findByIdAndDelete(id).exec();
+  res.send("Deleted");
+  console.log("Deleted");
 });
 
 module.exports = router;

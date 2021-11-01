@@ -27,7 +27,7 @@
 
 .vid-container {
   width: 48%;
-  height: 10vh;
+  height: 4em;
   margin: 0 auto;
 }
 
@@ -46,69 +46,6 @@
   padding: 0, 2em, 0em, 2em;
 }
 
-@media only screen and (max-width: 1150px) {
-  .vid-controller {
-    margin-top: -4em;
-  }
-}
-
-@media only screen and (max-width: 768px) {
-  .input-vid-search {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    margin-top: -18em;
-    width: 100%;
-  }
-
-  .spacingMiddleSearch {
-    margin-left: 2em;
-  }
-
-  .spacingEndSearch {
-    margin-left: -1.5em;
-  }
-
-  #ssidebar:hover {
-    width: 15em;
-    cursor: pointer;
-  }
-
-  .vid-container {
-    width: 60%;
-  }
-
-  .hamImg {
-    width: 3em;
-    height: 2em;
-    position: fixed;
-    margin-left: 0em;
-    margin-top: -18.2em;
-    visibility: visible;
-  }
-}
-
-@media only screen and (max-width: 600px) {
-  .vid-container {
-    width: 70%;
-    height: 7vh;
-    margin-top: -1em;
-  }
-  .hamImg {
-    width: 3em;
-    height: 2em;
-    position: fixed;
-    margin-left: 0em;
-    margin-top: -18.2em;
-    visibility: visible;
-  }
-
-  .vid-controller {
-    margin-top: -5em;
-  }
-}
-
 .input-vid-search label {
   margin-top: 1.5em;
 }
@@ -125,22 +62,37 @@
 #sidebar {
   /*background-color: rgba(97, 98, 71, .8);*/
   background-color: rgba(0, 0, 0, 0.9);
-  width: 20em;
-  height: 100vh;
-  z-index: 2;
+  width: 2em;
+  height: 37em;
+  z-index: 9;
   position: fixed;
-  margin-bottom: 0em;
+  margin-top: 2.5em;
   box-sizing: border-box;
   margin-left: 0em;
   transition: width 1s;
-  visibility: hidden;
+  visibility: visible;
 }
 
-#ssidebar:hover {
-  width: 15em;
+#arrow {
+  color: white;
+  font-size: 2em;
+  margin-top: 5em;
+  margin-left: 0.2em;
+  position: fixed;
+}
+
+#sidebar:hover {
+  width: 20em;
   cursor: pointer;
 }
 
+#sidebar:hover #arrow {
+  visibility: hidden;
+}
+
+#sidebar:hover #links li button {
+  visibility: visible;
+}
 #overlay {
   background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
   z-index: 2;
@@ -156,7 +108,7 @@
   position: absolute;
   margin-top: 2em;
 
-  width: 16.65em;
+  width: 100%;
   font-size: 1.2em;
   z-index: 15;
   margin-bottom: 0em;
@@ -167,7 +119,7 @@
 }
 
 #links li button {
-  width: 13.34em;
+  width: 100%;
   background-color: rgba(0, 0, 0, 0);
   font-size: 1.5rem;
   text-decoration: none;
@@ -178,6 +130,7 @@
   height: 4em;
   cursor: pointer;
   border: none;
+  visibility: hidden;
 }
 #links button:hover {
   /* background-color: rgba(218, 160, 61, .8);
@@ -203,10 +156,11 @@ ul {
 
 .cancelButton {
   width: 2em;
-  margin-top: -3em;
-  margin-left: 5em;
+  margin-top: -1.9em;
+  margin-left: -8.3em;
   position: fixed;
   visibility: hidden;
+  z-index: 20;
 }
 
 .hamImg {
@@ -215,6 +169,7 @@ ul {
   position: fixed;
   margin-left: 0em;
   margin-top: -18.2em;
+  visibility: hidden;
 }
 
 .header {
@@ -242,5 +197,206 @@ h3 {
 }
 
 .adminread {
-  margin-top: -25em;
+  margin-top: -1em;
+  position: relative;
+}
+
+.displayDiv {
+  margin-top: 2em;
+  border-style: groove;
+  width: 40%;
+  border-radius: 0.5em;
+  margin: 0 auto;
+  text-align: left;
+  padding-left: 1em;
+}
+
+.adminreadDiv {
+  margin-top: -15em;
+  position: relative;
+  box-sizing: border-box;
+  height: 20vh;
+}
+
+.adminreadlabel {
+  margin-top: 1.5em;
+}
+
+.readBtn {
+  width: 10em;
+  height: 2em;
+  background-color: #f2aa4c;
+  font-weight: bold;
+}
+
+.readBtn:hover {
+  cursor: pointer;
+  background-color: #80593c73;
+}
+
+@media only screen and (max-width: 1150px) {
+  .vid-controller {
+    margin-top: -4em;
+  }
+
+  .displayDiv {
+    font-size: 0.9rem;
+    margin-top: 2em;
+    border-style: groove;
+    width: 45%;
+    margin: 0 auto;
+  }
+}
+
+@media only screen and (max-width: 950px) {
+  #links li button {
+    width: 10em;
+    font-size: 1.5rem;
+  }
+  #sidebar {
+    width: 15em;
+  }
+  #sidebar:hover {
+    width: 15em;
+    cursor: pointer;
+  }
+  #links li button {
+    visibility: visible;
+  }
+  .hamImg {
+    visibility: visible;
+  }
+  .cancelButton {
+    margin-top: 0em;
+    width: 1.6em;
+    margin-left: -7.48em;
+    position: fixed;
+    visibility: visible;
+    z-index: 20;
+  }
+
+  .displayDiv {
+    font-size: 0.9rem;
+    margin-top: 2em;
+    border-style: groove;
+    width: 55%;
+    margin: 0 auto;
+  }
+  #arrow {
+    visibility: hidden;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .input-vid-search {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    margin-top: -18em;
+    width: 100%;
+  }
+
+  .spacingMiddleSearch {
+    margin-left: 2em;
+  }
+
+  .spacingEndSearch {
+    margin-left: -1.5em;
+  }
+
+  .vid-container {
+    width: 60%;
+    height: 1em;
+    margin-top: 2em;
+  }
+
+  .hamImg {
+    width: 3em;
+    height: 2em;
+    position: fixed;
+    margin-left: 0em;
+    margin-top: -18.2em;
+    visibility: visible;
+  }
+
+  .cancelButton {
+    margin-top: -16.45em;
+    width: 1.6em;
+    margin-left: 0em;
+    visibility: visible;
+    z-index: 20;
+  }
+
+  #sidebar {
+    width: 15em;
+  }
+  #sidebar:hover {
+    width: 15em;
+    cursor: pointer;
+  }
+  #links li button {
+    visibility: visible;
+  }
+
+  .displayDiv {
+    font-size: 0.9rem;
+    margin-top: 2em;
+    border-style: groove;
+    width: 70%;
+    margin: 0 auto;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .vid-container {
+    width: 70%;
+    height: 4em;
+    margin-top: -2em;
+  }
+  .hamImg {
+    width: 3em;
+    height: 2em;
+    position: fixed;
+    margin-left: 0em;
+    margin-top: -18.2em;
+    visibility: visible;
+  }
+
+  .vid-controller {
+    margin-top: 0em;
+  }
+
+  .displayDiv {
+    margin-top: 2em;
+    border-style: groove;
+    width: 70%;
+    margin: 0 auto;
+    font-size: 0.7rem;
+  }
+
+  #sidebar {
+    width: 12em;
+    visibility: hidden;
+  }
+  #sidebar:hover {
+    width: 12em;
+    cursor: pointer;
+  }
+
+  #links li button {
+    visibility: visible;
+  }
+  #links li button {
+    width: 9.25em;
+    font-size: 1.3rem;
+  }
+  .cancelButton {
+    margin-top: 0em;
+    width: 1.6em;
+    margin-left: -6em;
+    position: fixed;
+    z-index: 20;
+    visibility: hidden;
+  }
 }
