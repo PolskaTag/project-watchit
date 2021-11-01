@@ -30,7 +30,7 @@ function ProfilePage() {
       {allUserUdaList.map((userUda,index) => (
         userUda.map((uda, index) => (
           <li key={index} className="list-group-item">
-          {index+1} {uda.udaName} | {uda.script} | {uda.params}
+          {index+1} {uda.udaName} | {uda.script} | {uda.params} <br></br>
           <button onClick={function(){deleteUda(userId, uda._id)}} className="btn btn-sm btn-outline-danger">Delete</button>
           </li>
         ))
@@ -114,7 +114,7 @@ function ProfilePage() {
           <h1>Add a UDA</h1>
           <form onSubmit={addUda}>
             <div class="form-group">
-            <input required type="text" class="form-control" id="udaName" placeholder="UDA Name"/>
+            <input required type="text" class="form-control" id="udaName"  placeholder="UDA Name"/>
             <input required type="text" class="form-control" id="Script" placeholder="Script"/>
             <input required type="text" class="form-control" id="Params" placeholder="Params"/>
             <button type="submit" class="btn btn-primary">Submit</button>
