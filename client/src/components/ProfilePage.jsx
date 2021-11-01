@@ -122,7 +122,7 @@ function ProfilePage() {
           <h1>Add a UDA</h1>
           <form onSubmit={addUda}>
             <div class="form-group">
-            <input required type="text" class="form-control" id="udaName" placeholder="UDA Name"/>
+            <input required type="text" class="form-control" id="udaName"  placeholder="UDA Name"/>
             <input required type="text" class="form-control" id="Script" placeholder="Script"/>
             <input required type="text" class="form-control" id="Params" placeholder="Params"/>
             <button type="submit" class="btn btn-primary">Submit</button>
