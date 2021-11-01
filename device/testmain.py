@@ -1,6 +1,8 @@
 # import the necessary packages
 import numpy as np
 import cv2
+from threading import Thread
+from sendingtest import send_message
 
 with open(r'project-watchit\device\model\coco.txt', 'r') as f:
    LABELS = f.read().split('\n')
@@ -21,6 +23,7 @@ vs = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)v
                     payload=(int)96" ! rtpjpegdepay ! jpegdec ! videoconvert ! appsink' , cv2.CAP_GSTREAMER)
 
 writer = None
+record = False
 (W, H) = (None, None)
 
 # loop over frames from the video file stream
@@ -39,7 +42,7 @@ while True:
     # construct a blob from the input frame and then perform a forward
     # pass of the YOLO object detector, giving us our bounding boxes
     # and associated probabilities
-    blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (640, 640),
+    blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (320, 320),
         swapRB=True, crop=False)
     net.setInput(blob)
     layerOutputs = net.forward(ln)
@@ -89,13 +92,16 @@ while True:
             # draw a bounding box rectangle and label on the frame
             color = [int(c) for c in COLORS[classIDs[i]]]
             cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
-            text = "{}: {:.4f}".format(LABELS[classIDs[i]],
-                confidences[i])
+            text = f"{LABELS[classIDs[i]]}: {confidences[i]:.4f}"
             cv2.putText(frame, text, (x, y - 5),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+            if LABELS[classIDs[i]] == "banana":
+                Thread(target=send_message).start()
+
+
                 
     # check if the video writer is None
-    if writer is None:
+    if not writer:
         # initialize our video writer
         fourcc = cv2.VideoWriter_fourcc(*"MJPG")
         writer = cv2.VideoWriter("output.avi", fourcc, 10,
@@ -111,3 +117,16 @@ while True:
 print("[INFO] cleaning up...")
 writer.release()
 vs.release()
+
+    # if record:
+    #     start = time.time()
+    #     while time.time() - start < 10:
+    #     # initialize our video writer
+    #         fourcc = cv2.VideoWriter_fourcc(*"MJPG")
+    #         writer = cv2.VideoWriter("output.avi", fourcc, 10,
+    #             (frame.shape[1], frame.shape[0]), True)
+    #     # some information on processing single frame
+    #     # write the output frame to disk
+    #         cv2.imshow('frame',frame)
+    #         writer.write(frame)
+    #     record = False
