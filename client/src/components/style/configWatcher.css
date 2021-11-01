@@ -1,0 +1,22 @@
+.Watcher-Container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.WatcherInfo {
+    width: 50%
+}
+
+input {
+    display: inline-block;
+}
+
+label {
+    display: inline;
+}
+
+.tab1 {
+    visibility: visible;
+}

@@ -1,53 +1,45 @@
 import axios from 'axios';
-import { useLayoutEffect, useEffect, useState } from 'react'
-import { Link, Redirect, useHistory } from 'react-router-dom'
+import { useLayoutEffect,useState } from 'react'// useEffect, 
+import { Redirect, useHistory } from 'react-router-dom'//Link, 
 import "./style/login.css";
 import loginImg from "./images/login.png";
 import Navbar from './Navbar';
-import { render } from 'react-dom';
+//import { render } from 'react-dom';
 
 function Login() {
     const [errorMessage, setErrorMessage] = useState("");
     const history = useHistory()
+    const [checkAdmin, setCheckAdmin] = useState(false);
 
+    // onSubmit function that handles login.
     async function handleLogin(e) {
         e.preventDefault()
-        // console.log("submit clicked");
-        // console.log(e);
         const form = e.target;
+        // user information to pass into login api.
         const user = {
             username: form[0].value,
             password: form[1].value
         }
 
+        // Call our login API, returns token if verified.
         try {
             await axios
         .post("http://localhost:5000/login", user)
-        .then(data => {
-            localStorage.setItem("token", data.data.token);
-            localStorage.setItem("user", data.data.username);
-            setErrorMessage(data.data.message);
-            // console.log("handleLogin complete");
-            // console.log(data.data.token);
-            
+        .then(res => {
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("user", res.data.username);
+            setCheckAdmin(res.data.admin);
+            setErrorMessage(res.data.message); 
+            console.log("check admin");
+            console.log(res.data.admin);
+            console.log(res.data);
         })
     } catch(err) {
         setErrorMessage(err);
     }
-
-    
-    // if (localStorage.getItem("token") == "undefined" || localStorage.getItem("token") == null) {
-    //     // alert("Error, try again");
-    //     console.log("Error logging in");
-    // }
-    // else {
-    //     // alert("Success, welcome: " + localStorage.getItem("user"));
-    //     window.location.replace("/profilepage");
-    // }
 }
-
+    
     useLayoutEffect(() => {
-        console.log(":::::::::::::::useLayoutEffect::::::::::::::")
         fetch("http://localhost:5000/isUserAuth", {
             'method': "GET",
             'headers': {
@@ -55,15 +47,15 @@ function Login() {
             }
         })
         .then(res => {
-            // console.log(res);
              return res.json();
         })
         .then(data => {
-            // console.log("response from isUserAuth");
-            // console.log(data);
-            if(data.isLoggedIn){
+            
+            if(data.isLoggedIn && data.admin){
+                history.push('/admin/user'); 
+            }
+            else if(data.isLoggedIn){
                 history.push('/');
-                // console.log(history);
             }
         }).catch(err => setErrorMessage(err));
     }, [history])
@@ -80,7 +72,9 @@ function Login() {
                     <input required type="submit" value="Submit"/>
                 </form>
             </div>
-            {errorMessage === "Success" ? <Redirect to="/ProfilePage"/>: console.log("Validation Error")}
+            {errorMessage === "Success" && checkAdmin?<Redirect to="/admin/user"/>: console.log("Validation Error")}
+            {errorMessage === "Success" && !checkAdmin?<Redirect to="/ProfilePage"/>: console.log("Validation Error")}
+            
         </div>
     )
 }

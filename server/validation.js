@@ -5,6 +5,7 @@ const registerSchema = Joi.object({
   //username: Joi.string().min(4).max(30).alphanum().required(),
   username: Joi.string().min(4).max(30).required(),
   password: Joi.string().required().min(8).max(30),
+  admin: Joi.boolean(),
   confirmPassword: Joi.any()
     .equal(Joi.ref("password"))
     .required()
@@ -28,7 +29,20 @@ const loginValidation = (data) => {
   return loginSchema.validate(data);
 };
 
+// Schema for UDA
+const udaSchema = Joi.object({
+  userID: Joi.string().required(),
+  name: Joi.string().required(),
+  script: Joi.string().required(),
+});
+
+// validation function for a uda
+const udaValidation = (data) => {
+  return udaSchema.validate(data);
+};
+
 module.exports = {
   registrationValidation: registrationValidation,
   loginValidation: loginValidation,
+  udaValidation: udaValidation,
 };
