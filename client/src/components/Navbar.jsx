@@ -43,6 +43,7 @@ function Navbar() {
                     <li className="navItem"><Link to="/register">Register</Link></li>
                     <li className="navItem"><Link to="/ProfilePage">ProfilePage</Link></li>
                     <li className="navItem"><Link to="/VideoList">VideoList</Link></li>
+                    <li className="navItem"><Link to="/ConfigWatcher">ConfigureWatcher</Link></li>
                 </ul>
             </div>
     )

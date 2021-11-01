@@ -72,7 +72,7 @@ function VideoList() {
       if (data.isLoggedIn) {
         setUsername(data.username);
         // Make a request for the videos
-        axios.get('http://localhost:5000/videos')
+        axios.get('http://localhost:5000/videos', {headers: {"x-access-token": localStorage.getItem("token")}})
           .then((res) => {
             const newVideos = [...res.data[0]];
             console.log(newVideos);
