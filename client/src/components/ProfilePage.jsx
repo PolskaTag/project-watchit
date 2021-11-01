@@ -33,7 +33,7 @@ function ProfilePage() {
         userUda.map((uda, index) => (
           <li key={index} className="list-group-item">
           {index+1} {uda.udaName} | {uda.script} | {uda.params}{"  "}
-          <button onClick={function(){deleteUda(userId, uda._id)}} className="btn btn-outline-danger btn-sm">Delete</button>
+          <button onClick={function(){deleteUda(userId, uda._id)}} className="btn btn-outline-danger btn-sm float-right">Delete</button>
           </li>
         ))
       )
@@ -94,7 +94,7 @@ function ProfilePage() {
             axios.get("http://localhost:5000/uda/" + data.id,
               {headers: {'x-access-token': localStorage.getItem("token")}})
               .then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 setUserUdaList(res.data)
               })
             
@@ -118,6 +118,7 @@ function ProfilePage() {
         {udaList ? <div style={{color: "#502b3a"},{fontSize: "1em"}}><h1 style={{textAlign: "center"}}>{capitalize(username)} UDA List</h1><br/>{udaList}</div>: null}
          <br/>
          {allUserList ? <div><h1 style={{textAlign: "center"}}>All UDA List</h1><br/>{allUserList}</div>: null}
+         <hr/>
         <div>
           <h1>Add a UDA</h1>
           <form onSubmit={addUda}>

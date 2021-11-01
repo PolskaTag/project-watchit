@@ -30,9 +30,9 @@ function Login() {
             localStorage.setItem("user", res.data.username);
             setCheckAdmin(res.data.admin);
             setErrorMessage(res.data.message); 
-            console.log("check admin");
-            console.log(res.data.admin);
-            console.log(res.data);
+            // console.log("check admin");
+            // console.log(res.data.admin);
+            // console.log(res.data);
         })
     } catch(err) {
         setErrorMessage(err);

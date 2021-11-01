@@ -6,14 +6,17 @@
 }
 
 .list-group .list-group-item {
-  justify-content: space-around;
+  /* justify-content: space-around; */
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   background-color: rgb(126, 141, 141, 0.5);
 }
 
 .list-group .list-group-item .btn {
-  width: 11em;
+  width: auto;
+  margin: 0;
+  /* justify-content: end; */
 }
 
 .userwelcome {
