@@ -97,8 +97,6 @@ while True:
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
             if LABELS[classIDs[i]] == "banana":
                 Thread(target=send_message).start()
-
-
                 
     # check if the video writer is None
     if not writer:

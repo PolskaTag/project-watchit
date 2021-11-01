@@ -5,7 +5,7 @@ def send_message():
     port = 8080 
     s = socket.socket()
     s.connect((host,port))
-    message = b"PERSON"
+    message = b"banana"
     # while message != 'q':
     s.send(message)
     # data = s.recv(1024)
