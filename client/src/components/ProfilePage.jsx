@@ -1,9 +1,11 @@
 import axios from "axios";
+import { text } from "body-parser";
 import React, { useRef, useState, useLayoutEffect } from "react";
 import ReactDOM from 'react-dom';
 import { Redirect } from "react-router";
 import Navbar from './Navbar.jsx'
 import "./style/profilepage.css"
+
 
 function ProfilePage() {
 
@@ -30,8 +32,8 @@ function ProfilePage() {
       {allUserUdaList.map((userUda,index) => (
         userUda.map((uda, index) => (
           <li key={index} className="list-group-item">
-          {index+1} {uda.udaName} | {uda.script} | {uda.params}
-          <button onClick={function(){deleteUda(userId, uda._id)}} className="btn btn-sm btn-outline-danger">Delete</button>
+          {index+1} {uda.udaName} | {uda.script} | {uda.params}{"  "}
+          <button onClick={function(){deleteUda(userId, uda._id)}} className="btn btn-outline-danger btn-sm">Delete</button>
           </li>
         ))
       )
@@ -101,15 +103,21 @@ function ProfilePage() {
 
     }, [])
 
+   function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+   }
 
   return (
     <div className="profile-container">
         <Navbar/>
-        <h1>Welcome {username} {userId}</h1>
+        <div className="userwelcome">
+        <h1 >Welcome {capitalize(username)}</h1>
+        <h2>Id# {userId}</h2>
+        </div>
         <br/>
-        {udaList ? <div><h1>{username} UDA List</h1><br/>{udaList}</div>: null}
+        {udaList ? <div style={{color: "#502b3a"}}><h1 style={{textAlign: "center"}}>{capitalize(username)} UDA List</h1><br/>{udaList}</div>: null}
          <br/>
-         {allUserList ? <div><h1>All UDA List</h1><br/>{allUserList}</div>: null}
+         {allUserList ? <div><h1 style={{textAlign: "center"}}>All UDA List</h1><br/>{allUserList}</div>: null}
         <div>
           <h1>Add a UDA</h1>
           <form onSubmit={addUda}>
