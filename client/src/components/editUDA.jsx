@@ -5,44 +5,12 @@ import { Redirect } from "react-router";
 import Navbar from './Navbar.jsx'
 import "./style/profilepage.css"
 
-function ProfilePage() {
+function editUDA() {
 
   const [username, setUsername] = useState("")
   const [userId, setUserId] = useState("")
   const [userUdaList, setUserUdaList] = useState([])
   const [allUserUdaList, setAllUserUdaList] = useState([])
-
-  // Create Component for udaList
-  const udaList = (
-    <ul className="list-group">
-      {userUdaList.map((uda,index) => (
-        <li key={index} className="list-group-item">
-          {index+1} {uda.udaName} | {uda.script} | {uda.params}
-        </li>
-      )
-      )}
-    </ul>
-  );
-
-  // Create component for all udaList
-  const allUserList = (
-    <ul className="list-group">
-      {allUserUdaList.map((userUda,index) => (
-        userUda.map((uda, index) => (
-          <li key={index} className="list-group-item">
-          {index+1} {uda.udaName} | {uda.script} | {uda.params} <br></br>
-          <button onClick={function(){deleteUda(userId, uda._id)}} className="btn btn-sm btn-outline-danger">Delete</button>
-          </li>
-        ))
-      )
-      )}
-    </ul>
-  );
-
-  function deleteUda(userId, udaId){
-    axios.delete(`http://localhost:5000/uda/${userId}/${udaId}`,
-    {headers: {'x-access-token': localStorage.getItem("token")}})
-  }
 
   function addUda(e) {
     e.preventDefault()
@@ -52,6 +20,7 @@ function ProfilePage() {
       script: form[1].value,
       params: form[2].value
     }
+
 
     //using userID to add to users document
     try {
@@ -107,30 +76,21 @@ function ProfilePage() {
         <Navbar/>
         <h1>Welcome {username} {userId}</h1>
         <br/>
-        {udaList ? <div><h1>{username} UDA List</h1><br/>{udaList}</div>: null}
-         <br/>
-         {allUserList ? <div><h1>All UDA List</h1><br/>{allUserList}</div>: null}
         <div>
-          <h1>Add a UDA</h1>
+          <h1>Edit UDA</h1>
           <form onSubmit={addUda}>
             <div class="form-group">
-            <input required type="text" class="form-control" id="udaName"  placeholder="UDA Name"/>
-            <input required type="text" class="form-control" id="Script" placeholder="Script"/>
-            <input required type="text" class="form-control" id="Params" placeholder="Params"/>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <input required type="text" class="form-control" id="udaName" placeholder="UDA Name" value={uda.udaName}/>
+            <input required type="text" class="form-control" id="Script" placeholder="Script" value={uda.script} />
+            <input required type="text" class="form-control" id="Params" placeholder="Params" value={uda.params} />
+            <button type="submit" class="btn btn-primary">Save</button>
           </div>
           </form>
         </div>
-        {/* <form onSubmit={addUda}>
-          <input required type="text" placeholder="UDA Name"></input>
-          <input required type="text" placeholder="Script"/>
-          <input required type="text" placeholder="Params"/>
-          <input required type="submit" value="Add UDA"/>
-        </form> */}
         {!localStorage.getItem("token") ? <Redirect to="/login"></Redirect>: null}
     </div>
   )
 }
 
 
-export default ProfilePage
+export default editUDA
