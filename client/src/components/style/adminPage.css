@@ -1,0 +1,402 @@
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  background-size: cover;
+  position: relative;
+  background-color: white;
+  overflow: hidden;
+  height: 100vh;
+  width: 100%;
+  margin: -0.5em -1em -1em 0em;
+  padding: 0;
+}
+
+.admin-container div video {
+  text-align: center;
+}
+
+.vid-btn {
+  width: 10%;
+  height: 2em;
+  text-align: center;
+  justify-content: center;
+  margin-top: 1.3em;
+}
+
+.vid-container {
+  width: 48%;
+  height: 4em;
+  margin: 0 auto;
+}
+
+.innerVid video {
+  width: 10%;
+}
+
+.input-vid-search {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  margin-top: -20em;
+  margin-bottom: 2em;
+  padding: 0, 2em, 0em, 2em;
+}
+
+.input-vid-search label {
+  margin-top: 1.5em;
+}
+
+.input-vid-search label button {
+  margin-top: 1.2em;
+}
+
+.select {
+  width: 15em;
+  margin-left: 1em;
+  margin-top: 0.8em;
+}
+#sidebar {
+  /*background-color: rgba(97, 98, 71, .8);*/
+  background-color: rgba(0, 0, 0, 0.9);
+  width: 2em;
+  height: 37em;
+  z-index: 9;
+  position: fixed;
+  margin-top: 2.5em;
+  box-sizing: border-box;
+  margin-left: 0em;
+  transition: width 1s;
+  visibility: visible;
+}
+
+#arrow {
+  color: white;
+  font-size: 2em;
+  margin-top: 5em;
+  margin-left: 0.2em;
+  position: fixed;
+}
+
+#sidebar:hover {
+  width: 20em;
+  cursor: pointer;
+}
+
+#sidebar:hover #arrow {
+  visibility: hidden;
+}
+
+#sidebar:hover #links li button {
+  visibility: visible;
+}
+#overlay {
+  background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+  z-index: 2;
+}
+
+#sidebar:hover #overlay {
+  width: 31em;
+  cursor: pointer;
+}
+
+#links {
+  margin-left: 0em;
+  position: absolute;
+  margin-top: 2em;
+
+  width: 100%;
+  font-size: 1.2em;
+  z-index: 15;
+  margin-bottom: 0em;
+  text-align: center;
+}
+#links li {
+  width: 100%;
+}
+
+#links li button {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  font-size: 1.5rem;
+  text-decoration: none;
+  color: white;
+  text-align: center;
+  display: block;
+  padding: 0.45em 0.8em;
+  height: 4em;
+  cursor: pointer;
+  border: none;
+  visibility: hidden;
+}
+#links button:hover {
+  /* background-color: rgba(218, 160, 61, .8);
+   background-color: rgba(97, 98, 71, .8);*/
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+ul {
+  margin-right: 0.2em;
+  margin-left: 0em;
+  padding: 0em;
+}
+
+.optionalSearch {
+  display: flex;
+  flex-direction: row;
+}
+.searchDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.cancelButton {
+  width: 2em;
+  margin-top: -1.9em;
+  margin-left: -8.3em;
+  position: fixed;
+  visibility: hidden;
+  z-index: 20;
+}
+
+.hamImg {
+  width: 3em;
+  height: 2em;
+  position: fixed;
+  margin-left: 0em;
+  margin-top: -18.2em;
+  visibility: hidden;
+}
+
+.header {
+  background-color: #f2aa4c;
+  width: 100%;
+  height: 3em;
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  margin-top: -37.5em;
+  text-align: center;
+  justify-content: center;
+}
+.header h2 {
+  margin-top: 1em;
+}
+
+.header p {
+  margin-top: 2em;
+}
+
+h3 {
+  margin-top: 5em;
+  font-size: 100em;
+}
+
+.adminread {
+  margin-top: -1em;
+  position: relative;
+}
+
+.displayDiv {
+  margin-top: 2em;
+  border-style: groove;
+  width: 40%;
+  border-radius: 0.5em;
+  margin: 0 auto;
+  text-align: left;
+  padding-left: 1em;
+}
+
+.adminreadDiv {
+  margin-top: -15em;
+  position: relative;
+  box-sizing: border-box;
+  height: 20vh;
+}
+
+.adminreadlabel {
+  margin-top: 1.5em;
+}
+
+.readBtn {
+  width: 10em;
+  height: 2em;
+  background-color: #f2aa4c;
+  font-weight: bold;
+}
+
+.readBtn:hover {
+  cursor: pointer;
+  background-color: #80593c73;
+}
+
+@media only screen and (max-width: 1150px) {
+  .vid-controller {
+    margin-top: -4em;
+  }
+
+  .displayDiv {
+    font-size: 0.9rem;
+    margin-top: 2em;
+    border-style: groove;
+    width: 45%;
+    margin: 0 auto;
+  }
+}
+
+@media only screen and (max-width: 950px) {
+  #links li button {
+    width: 10em;
+    font-size: 1.5rem;
+  }
+  #sidebar {
+    width: 15em;
+  }
+  #sidebar:hover {
+    width: 15em;
+    cursor: pointer;
+  }
+  #links li button {
+    visibility: visible;
+  }
+  .hamImg {
+    visibility: visible;
+  }
+  .cancelButton {
+    margin-top: 0em;
+    width: 1.6em;
+    margin-left: -7.48em;
+    position: fixed;
+    visibility: visible;
+    z-index: 20;
+  }
+
+  .displayDiv {
+    font-size: 0.9rem;
+    margin-top: 2em;
+    border-style: groove;
+    width: 55%;
+    margin: 0 auto;
+  }
+  #arrow {
+    visibility: hidden;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .input-vid-search {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    margin-top: -18em;
+    width: 100%;
+  }
+
+  .spacingMiddleSearch {
+    margin-left: 2em;
+  }
+
+  .spacingEndSearch {
+    margin-left: -1.5em;
+  }
+
+  .vid-container {
+    width: 60%;
+    height: 1em;
+    margin-top: 2em;
+  }
+
+  .hamImg {
+    width: 3em;
+    height: 2em;
+    position: fixed;
+    margin-left: 0em;
+    margin-top: -18.2em;
+    visibility: visible;
+  }
+
+  .cancelButton {
+    margin-top: -16.45em;
+    width: 1.6em;
+    margin-left: 0em;
+    visibility: visible;
+    z-index: 20;
+  }
+
+  #sidebar {
+    width: 15em;
+  }
+  #sidebar:hover {
+    width: 15em;
+    cursor: pointer;
+  }
+  #links li button {
+    visibility: visible;
+  }
+
+  .displayDiv {
+    font-size: 0.9rem;
+    margin-top: 2em;
+    border-style: groove;
+    width: 70%;
+    margin: 0 auto;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .vid-container {
+    width: 70%;
+    height: 4em;
+    margin-top: -2em;
+  }
+  .hamImg {
+    width: 3em;
+    height: 2em;
+    position: fixed;
+    margin-left: 0em;
+    margin-top: -18.2em;
+    visibility: visible;
+  }
+
+  .vid-controller {
+    margin-top: 0em;
+  }
+
+  .displayDiv {
+    margin-top: 2em;
+    border-style: groove;
+    width: 70%;
+    margin: 0 auto;
+    font-size: 0.7rem;
+  }
+
+  #sidebar {
+    width: 12em;
+    visibility: hidden;
+  }
+  #sidebar:hover {
+    width: 12em;
+    cursor: pointer;
+  }
+
+  #links li button {
+    visibility: visible;
+  }
+  #links li button {
+    width: 9.25em;
+    font-size: 1.3rem;
+  }
+  .cancelButton {
+    margin-top: 0em;
+    width: 1.6em;
+    margin-left: -6em;
+    position: fixed;
+    z-index: 20;
+    visibility: hidden;
+  }
+}

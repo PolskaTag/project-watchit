@@ -59,7 +59,7 @@ function Register() {
                     <input required type="username" name="username" placeholder="Username"/><br/>
                     <input required type="password" name="password" placeholder="Password"/><br/>
                     <input required type="password" name="confirm-password" placeholder="Confirm Password"/><br/>
-                    <input required type="submit" value="Register" className="btn"/><br/>
+                    <input required type="submit" value="Register"/><br/>
                 </form>
             </div>
         </div>

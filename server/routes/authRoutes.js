@@ -10,16 +10,25 @@ const { registrationValidation, loginValidation } = require("../validation");
 const router = express.Router();
 
 router.get("/isUserAuth", verifyJWT, (req, res) => {
-  console.log(req.user);
-  results = res.json({ isLoggedIn: true, username: req.user.username });
-  // console.log(results.username);
-  return results;
+  res.json({
+    isLoggedIn: true,
+    username: req.user.username,
+    id: req.user.id,
+  });
 });
 
+/**
+ * Login route that returns a jwt token if authorized.
+ *
+ * req: expects @param username @param password
+ *
+ * @returns {message, token, username}
+ */
 router.route("/login").post((req, res) => {
-  console.log("::::::FUNCTION LOGIN::::::::");
-  console.log(req.body);
+  let timeStamp = new Date().toLocaleString();
+  console.log("Login Attempt @ " + timeStamp);
   const userLoggingIn = req.body;
+  console.log(userLoggingIn);
 
   if (!userLoggingIn) return res.json({ message: "Server Error" });
 
@@ -40,8 +49,8 @@ router.route("/login").post((req, res) => {
               const payload = {
                 id: dbUser._id,
                 username: dbUser.username,
+                admin: dbUser.admin,
               };
-              // console.log(process.env.JWT_SECRET);
               const token = jwt.sign(
                 payload,
                 process.env.JWT_SECRET,
@@ -50,7 +59,9 @@ router.route("/login").post((req, res) => {
                   return res.json({
                     message: "Success",
                     token: "Bearer " + token,
-                    username: userLoggingIn.username.toLowerCase()
+                    username: userLoggingIn.username.toLowerCase(),
+                    userId: dbUser._id,
+                    admin: dbUser.admin,
                   });
                 }
               );
@@ -63,8 +74,15 @@ router.route("/login").post((req, res) => {
   }
 });
 
+/**
+ * Register route that POSTS a user document to the db.
+ *
+ * req: expects @param username @param password @param confirmPassword
+ *
+ * @returns {message}
+ */
 router.post("/register", async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const user = req.body;
 
   const takenUsername = await User.findOne({
@@ -89,6 +107,69 @@ router.post("/register", async (req, res) => {
     dbUser.save();
     return res.json({ message: "Success" });
   }
+});
+
+router.post("/adminregister", async (req, res) => {
+  console.log(req.body);
+  const user = req.body;
+
+  const takenUsername = await User.findOne({
+    username: user.username.toLowerCase(),
+  });
+
+  const validationError = registrationValidation(user).error;
+
+  if (validationError) {
+    return res.json({ message: validationError.details[0].message });
+  } else if (takenUsername) {
+    return res.json({ message: "Username has already been taken" });
+  } else {
+    user.password = await bcrypt.hash(req.body.password, 10);
+
+    const dbUser = new User({
+      username: user.username.toLowerCase(),
+      password: user.password,
+      email: user.email,
+      admin: user.admin,
+    });
+
+    dbUser.save();
+    return res.json({ message: "Success" });
+  }
+});
+
+router.get("/adminread", async (req, res) => {
+  await User.find({}, (err, result) => {
+    if (err) {
+      console.log(err);
+      res.send(err);
+    }
+    console.log("admineRead*** " + result);
+    return res.json(result);
+  });
+});
+
+router.get("/adminupdate", async (req, res) => {
+  const newName = req.body.newName;
+  const id = req.body.id;
+
+  try {
+    await User.findById(id, (err, updateName) => {
+      updateName.name = newName;
+      updateName.save();
+      res.send("update");
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.delete("/admindelete/:id", async (req, res) => {
+  const id = req.params.id;
+
+  User.findByIdAndDelete(id).exec();
+  res.send("Deleted");
+  console.log("Deleted");
 });
 
 module.exports = router;
