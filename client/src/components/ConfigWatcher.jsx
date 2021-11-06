@@ -220,7 +220,7 @@ function ConfigWatcher() {
                         disabled="disabled"
                         checked
                     />
-                    <label htmlFor="checkbox">Notifcations</label>
+                    <label htmlFor="checkbox">Notifications</label>
                 </div>
                 <div className="item">
                     <input type="checkbox"
@@ -228,7 +228,7 @@ function ConfigWatcher() {
                         value={checkedTwo}
                         checked={checkedTwo}
                         onChange={handleChangeTwo}
-                        disabled="disabled"
+                        /*disabled="disabled"*/
                     />
                     <label htmlFor="checkbox">Snapshot</label>
                 </div>
@@ -259,7 +259,7 @@ function ConfigWatcher() {
 
             </div>
                 <Tabs defaultActiveKey="1" centered>
-                    <TabPane tab="Notifications" key="1" id="tab1">
+                    <TabPane tab="Notifications"  key="1" id="tab1">
                     <form onSubmit={event => handleFormNotification(event)}>
                         <label htmlFor="watchername">Watcher Name: </label>
                         <input type="text" id="watchername" name="watchername"></input><br /><br />
@@ -268,9 +268,10 @@ function ConfigWatcher() {
                         <input type="submit" value="Submit"></input><br/><br/>
                     </form>
                     </TabPane>
-                    <TabPane tab="Snapshots" disabled key="2">
+                    <TabPane tab="Snapshots"  key="2">
                     <form onSubmit={event => handleFormSnapshot(event)}>
                         <label htmlFor="watchername">Watcher Name: </label>
+                        <input type="text" id="watchername" name="watchername"></input><br /><br />
                         <label htmlFor="email">Email: </label>
                         <input type="text" id="email" name="email"></input><br /><br />
                         <input type="submit" value="Submit"></input>
