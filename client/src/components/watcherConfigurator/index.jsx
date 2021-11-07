@@ -3,6 +3,7 @@ import React, { Component, PropTypes, useLayoutEffect } from 'react'
 import ReactDOM, { render } from 'react-dom';
 import { Redirect } from 'react-router-dom';
 import { useState, useEffect } from 'react'
+import {Form, Button} from 'react-bootstrap';
 import { Tabs } from 'antd';
 import 'antd/lib/tabs/style/index.css';
 import axios from 'axios'
@@ -10,13 +11,25 @@ import DeviceConfigurator from './deviceConfigurator';
 import Select from 'react-select';
 import ObjectConfigurator from './objectConfigurator';
 import ActionConfigurator from './actionConfigurator';
+import UDA from "./UDA";
 
 function WatcherConfigurator() {
 
     const [username, setUsername] = useState(null)
     const [userId, setUserId] = useState(null)
     const [watchers, setWatchers] = useState([])
-    const [selectedWatcher, setSelectedWatcher] = useState({})
+    const [selectedWatcher, setSelectedWatcher] = useState({
+        watcherName: "",
+        ipAddress: "",
+        object: "",
+        udaList: [],
+        options: {}
+    })
+
+    const sampleUDAList = [
+        {udaName: "sample1", script:"notification",params: "sample params email", udaType:"email"},
+        {udaName: "sample2", script:"text",params: "sample params text", udaType:"text"},
+        {udaName: "sample3", script:"logging", params: "sample params logging", udaType:"logging"}]
 
     // Gets the array of user's watchers
     // Uses setState with the response from call.
@@ -51,6 +64,11 @@ function WatcherConfigurator() {
         )
     }
 
+    const handleSave = (e) => {
+        e.preventDefault();
+        console.log(e);
+    }
+
     useEffect(() => {
 
         // Check to see if the user is auth
@@ -68,12 +86,13 @@ function WatcherConfigurator() {
     }, [])
 
     return (
-        <div>
+        <Form onSubmit={handleSave}>
             {username !== "" ? selectWatcher(watchers) : null}
             <DeviceConfigurator config={selectedWatcher}/>
-            <ObjectConfigurator/>
-            <ActionConfigurator/>
-        </div>
+            <ObjectConfigurator config={selectedWatcher.object}/>
+            <ActionConfigurator config={selectedWatcher.udaList}/>
+            <Button type="submit">Save</Button>
+        </Form>
     )
 }
 export default WatcherConfigurator;

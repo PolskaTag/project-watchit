@@ -41,6 +41,7 @@ router.route("/uda/:userId/add").post(verifyJWT, (req, res) => {
     // console.log(dbUser);
     dbUser.uda.push({
       udaName: req.body.udaName,
+      udaType: req.body.udaType,
       script: req.body.script,
       params: req.body.params,
     });
