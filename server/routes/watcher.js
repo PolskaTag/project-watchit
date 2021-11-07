@@ -28,9 +28,14 @@ router.route("/watchers").get(verifyJWT, (req, res) => {
 // get all users watchers
 router.route("/watchers/:userId").get(verifyJWT, (req, res) => {
   // Find the user by _id
-  User.findById(req.params.userId).then((user) => {
-    res.json(user.watcher);
-  });
+  User.findById(req.params.userId).then(
+    (user) => {
+      res.json(user.watcher);
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
 });
 
 // get specified watcher from user
@@ -66,23 +71,17 @@ router.route("/watchers/:userId/:watcherId").get(verifyJWT, (req, res) => {
 // create a watcher
 router.route("/watchers/:userId").post(verifyJWT, (req, res) => {
   const watcher = req.body;
-  User.findById(req.params.userId).then((dbUser) => {
-    dbUser.watcher.push(...watcher);
-    dbUser.save((err, data) => {
-      res.json({ err, data });
-    });
-  });
-});
+  console.log(watcher);
+  User.findById(req.params.userId).then(
+    (dbUser) => {
+      try {
+        dbUser.watcher.push(watcher);
+      } catch (err) {
+        console.log(err);
+      }
 
-// update a watcher
-router.route("/watchers/:userId/:watcherId").post(verifyJWT, (req, res) => {
-  const updatedWatcher = req.body;
-  User.updateOne(
-    { _id: req.params.userId, "watcher.watcherId": req.params.watcherId },
-    { $set: { "watcher.$": updatedWatcher } }
-  ).then(
-    (result) => {
-      res.json(result);
+      dbUser.save();
+      res.json({ message: "success", watcher: dbUser.watcher });
     },
     (err) => {
       console.log(err);
@@ -90,7 +89,33 @@ router.route("/watchers/:userId/:watcherId").post(verifyJWT, (req, res) => {
   );
 });
 
+// update a watcher
+router.route("/watchers/:userId/:watcherId").post(verifyJWT, (req, res) => {
+  const updatedWatcher = req.body;
+  let myquery = { _id: ObjectId(req.params.userId) };
+  let newValues = {
+    $set: {
+      "watcher.$": updatedWatcher,
+    },
+  };
+  User.updateOne(myquery, newValues, function (err, data) {
+    if (err) throw err;
+    console.log("1 document updated User: " + req.params.userId);
+    res.json(data);
+  });
+});
+
 // delete a watcher
-router.route("/watchers/:userId/:watcherId").get(verifyJWT, (req, res) => {});
+router
+  .route("/watchers/:userId/:watcherId/delete")
+  .post(verifyJWT, (req, res) => {
+    User.findById(req.params.userId).then((dbUser) => {
+      dbUser.watcher.pull(req.params.watcherId);
+      dbUser.save((err, data) => {
+        if (err) console.log(err);
+        res.json(data);
+      });
+    });
+  });
 
 module.exports = router;
