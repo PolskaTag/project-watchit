@@ -12,7 +12,7 @@ def filesplit(filename):
         return None
     return LABELS
 
-def main():
+def gen_sock():
 
     host = '192.168.86.27'
     port = 8080
@@ -23,3 +23,12 @@ def main():
     s.connect((host,port))
 
     return s
+
+def lights():
+    return None
+
+def locks():
+    return None
+
+def alarms():
+    return None

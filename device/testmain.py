@@ -5,9 +5,11 @@ from threading import Thread
 from sendingtest import send_message
 import helperfuncs as hf
 import socket
+import errno
+import time
 
 #Setup sockets for communication with Pi
-s = hf.socket()
+s = hf.gen_sock()
 s.setblocking(False)
 if not s:
     print("Unable to establish connection.")
@@ -32,13 +34,19 @@ ln = net.getUnconnectedOutLayersNames()
 vs = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
                     payload=(int)96" ! rtpjpegdepay ! jpegdec ! videoconvert ! appsink' , cv2.CAP_GSTREAMER)
 
-writer = None
+fourcc = cv2.VideoWriter_fourcc(*"MJPG")
+writer = cv2.VideoWriter("output.avi", fourcc, 10, (1280, 1280))
+
+# writer = None
 record = False
 (W, H) = (None, None)
 frame_count = 0
 
+# start = time.time()
+end_time = time.time()
+
 # loop over frames from the video file stream
-while True:
+while True and time.time() - end_time < 30:
     # read the next frame from the file
     (grabbed, frame) = vs.read()
     
@@ -81,7 +89,6 @@ while True:
                 # probability is greater than the minimum probability
                 if confidence > min_confidence:
                     #send message to pi
-                    s.send(LABELS[classIDs[i]])
                     # scale the bounding box coordinates back relative to
                     # the size of the image, keeping in mind that YOLO
                     # actually returns the center (x, y)-coordinates of
@@ -114,15 +121,36 @@ while True:
                 text = f"{LABELS[classIDs[i]]}: {confidences[i]:.4f}"
                 cv2.putText(frame, text, (x, y - 5),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+                Thread(target=s.send, args=(LABELS[classIDs[i]].encode(), )).start()
                 # if LABELS[classIDs[i]] == "banana":
                 #     Thread(target=send_message).start()
+
+    if not record:
+        try:
+            msg = s.recv(1024).decode()
+        except socket.error as e:
+            err = e.args[0]
+            if err == errno.EAGAIN or err == errno.EWOULDBLOCK:
+                print('No data available')
+                continue
+            else:
+                # a "real" error occurred
+                print(e)
+                exit(1)
+        else:
+            # got a message, do something :)           q
+            if not writer and msg == 'Record':
+                record = True
                 
-    if not writer:
-        fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-        writer = cv2.VideoWriter("output.avi", fourcc, 10,
-            (frame.shape[1], frame.shape[0]), True)
- 
-    writer.write(frame)
+            
+    if record:
+        start = time.time()
+        while time.time() - start < 10:
+            ret, frame = vs.read()
+            writer.write(frame)
+            cv2.imshow('frame',frame)
+        record = False
+
     cv2.imshow('frame',frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
