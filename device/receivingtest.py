@@ -6,6 +6,8 @@ from time import sleep
 
 # song = AudioSegment.from_mp3("project-watchit/device/Testing/banana.mp3")
 
+
+
 host = '192.168.86.23'
 port = 8080
 s = socket.socket()
