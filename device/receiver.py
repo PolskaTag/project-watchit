@@ -2,6 +2,7 @@ import socket
 from time import sleep
 import helperfuncs
 from collections import defaultdict
+import pymongo
 
 def readFromMongo():
     """
