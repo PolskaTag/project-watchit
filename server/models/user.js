@@ -30,6 +30,14 @@ const userSchema = mongoose.Schema(
         time: Date,
       },
     ],
+    pictures: [
+      {
+        pictureID: String,
+        url: String,
+        name: String,
+        time: Date,
+      },
+    ],
     uda: [udaSchema],
   },
   { timestamps: true }

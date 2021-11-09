@@ -1,7 +1,6 @@
 #pygame is preinstalled on RaspberryPi
 from pygame import mixer
 
-
 def playSound(): 
     #Initialize pygame mixer
     mixer.init()

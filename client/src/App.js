@@ -15,6 +15,7 @@ import AdminUser from "./components/AdminUser";
 import ProfilePage from "./components/ProfilePage";
 import VideoList from "./components/VideoList";
 import ConfigWatcher from "./components/ConfigWatcher";
+import Pictures from "./components/picture";
 
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
           {/* <Route component={Home} exact path="/Home"></Route> */}
           <Route component={ProfilePage} exact path="/ProfilePage" />
           <Route component={VideoList} exact path="/VideoList" />
+          <Route component={Pictures} exact path="/Pictures" />
           <Route component={ConfigWatcher} exact path="/ConfigWatcher" />
         </Switch>
       </BrowserRouter>
