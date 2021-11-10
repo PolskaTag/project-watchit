@@ -19,8 +19,8 @@ router.route('/video').post((req, res) => {
     //get label from pi, if the label matches, record 10 seconds
     let udaLabel = req.body.label
     //send signal to pi to record if label matches object detection
+    //record python function on pi and then upload it for user
     if udaLabel == LABELS
-
 
 });
 
