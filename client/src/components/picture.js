@@ -6,7 +6,9 @@ import axios from "axios";
 //import cat from './images/cat1.jpg';
 import { Redirect } from 'react-router-dom';
 import getData from './GetData';
-
+import {Card, InputGroup, FormControl, Form} from 'react-bootstrap';
+import Select from 'react-select';
+import Item from 'antd/lib/list/Item';
 
 function Pictures() {
   
@@ -147,6 +149,31 @@ function Pictures() {
       <div style={{ textAlign: "center" }}>
         <h2>{username? capitalize(username): null}</h2>
         <p>A list of User pictures.</p>
+       
+       
+        <Form.Group>
+       
+                  <Form.Label>Video Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter Video Name"
+                    defaultValue={""} />
+                  <Form.Label >Video Duration</Form.Label>
+                  <div style={{display: "block"}}>
+                  <select style={{width: "22.5em", "border-radius":"3px", height: "2.4em", border: "none"}}>
+                    <option selected>10 Seconds</option>
+                    <option>15 Seconds</option>
+                    <option>20 Seconds</option>
+                    <option>25 Seconds</option>
+                    <option>30 Seconds</option>
+                  </select>
+                  </div>
+                  <Form.Control     
+                    type="number"
+                    placeholder="Enter Video Duration e.g. 15secs"
+                    defaultValue={""} />
+                   
+                </Form.Group>
 
         <form onSubmit={handleSubmit} encType='multipart/form-data'>
             <input 

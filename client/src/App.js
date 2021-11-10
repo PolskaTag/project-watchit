@@ -15,6 +15,8 @@ import ProfilePage from "./components/ProfilePage";
 import VideoList from "./components/VideoList";
 import ConfigWatcher from "./components/ConfigWatcher";
 import watcherConfigurator from "./components/watcherConfigurator/index";
+import Pictures from "./components/picture";
+
 
 const App = () => {
   return (
