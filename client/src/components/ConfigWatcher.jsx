@@ -21,6 +21,7 @@ function ConfigWatcher() {
     const [checkedTwo, setCheckedTwo] = React.useState(false);
     const [checkedThree, setCheckedThree] = React.useState(false);
     const [checkedFour, setCheckedFour] = React.useState(false);
+    const [checkedFive, setCheckedFive] = React.useState(false);
 
     const handleChangeOne = () => {
         setCheckedOne(!checkedOne);
@@ -36,6 +37,9 @@ function ConfigWatcher() {
 
     const handleChangeFour = () => {
         setCheckedFour(!checkedFour);
+    }
+    const handleChangeFive = () => {
+        setCheckedFive(!checkedFive);
     }
 
     function handleNotification(e) {
@@ -175,6 +179,26 @@ function ConfigWatcher() {
         }
     }
 
+    function handleFormVideo(e) {
+        e.preventDefault()
+        const form = e.target;
+        
+        const newUda = {
+            udaName: form[0].value,
+            script: "http://localhost:5000/video",
+            params: form[1].value
+        }
+
+        //using userID to add to users document
+        try {
+            axios.post("http://localhost:5000/uda/" + userId + "/add", newUda,
+                { headers: { 'x-access-token': localStorage.getItem("token") } })
+                .then(res => console.log(res));
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     useLayoutEffect(() => {
         // Checks if the user is authenticated
         fetch("http://localhost:5000/isUserAuth", {
@@ -252,6 +276,16 @@ function ConfigWatcher() {
                     />
                     <label htmlFor="checkbox">Lights</label>
                 </div>
+                <div className="item">
+                    <input type="checkbox"
+                        label="Value 5"
+                        value={checkedFive}
+                        checked={checkedFive}
+                        onChange={handleChangeFive}
+                        disabled="disabled"
+                    />
+                    <label htmlFor="checkbox">Video</label>
+                </div>
 
             </div><br />
 
@@ -294,6 +328,15 @@ function ConfigWatcher() {
                         <label htmlFor="watchername">Watcher Name: </label>
                         <label htmlFor="seconds">Seconds: </label>
                         <input type="text" id="seconds" name="seconds"></input><br /><br />
+                        <input type="submit" value="Submit"></input>
+                    </form>
+                    </TabPane>
+                    <TabPane tab="Video" key="5">
+                    <form onSubmit={event => handleFormLights(event)}>
+                        <label htmlFor="watchername">Watcher Name: </label>
+                        <input type="text" id="watchername" name="watchername"></input><br /><br />
+                        <label htmlFor="labels">Label: </label>
+                        <input type="text" id="labels" name="labels"></input><br /><br />
                         <input type="submit" value="Submit"></input>
                     </form>
                     </TabPane>
