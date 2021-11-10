@@ -19,13 +19,13 @@ router.route("/pictures").get(verifyJWT, (req, res) => {
     // for each user that in the list of users, push there pictures into results
     dbUser.forEach((user) => {
       results.push(user.pictures);
-      user.pictures.forEach((picture) => {
+     /* user.pictures.forEach((picture) => {
         try {
           picture.url = getPresignedUrl(picture.name);
         } catch (e) {
           console.log(e);
         }
-      });
+      });*/
     });
     res.json(results);
   });
