@@ -1,4 +1,3 @@
-
 import React from "react";
 
 // We use Route in order to define the different routes of our application
@@ -15,15 +14,14 @@ import AdminUser from "./components/AdminUser";
 import ProfilePage from "./components/ProfilePage";
 import VideoList from "./components/VideoList";
 import ConfigWatcher from "./components/ConfigWatcher";
-import Pictures from "./components/picture";
-
+import watcherConfigurator from "./components/watcherConfigurator/index";
 
 const App = () => {
   return (
     <div>
       <BrowserRouter>
         <Switch>
-          <Route component={AdminUser} exact path="/admin/user"/>
+          <Route component={AdminUser} exact path="/admin/user" />
           <Route component={Register} exact path="/register" />
           <Route component={Login} exact path="/login" />
           <Route component={LandingPage} exact path="/" />
@@ -32,6 +30,11 @@ const App = () => {
           <Route component={VideoList} exact path="/VideoList" />
           <Route component={Pictures} exact path="/Pictures" />
           <Route component={ConfigWatcher} exact path="/ConfigWatcher" />
+          <Route
+            component={watcherConfigurator}
+            exact
+            path="/watcherConfigurator"
+          />
         </Switch>
       </BrowserRouter>
     </div>
