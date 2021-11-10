@@ -2,13 +2,25 @@
  * UDA.js is responsible for creating the UI for a specified udaType.
  */
 
+import { useEffect } from 'react';
 import {React, useState} from 'react';
 import {Card, InputGroup, FormControl, Form} from 'react-bootstrap';
 import Select from 'react-select';
 
 function UDA(props) {
+  const [uda, setUda] = useState({
+    udaName: "",
+    udaType: "",
+    script: "",
+    params: {
+      "recipient": "",
+      "body": ""
+    }
+  })
 
   const udaBaseUI = (uda) => {
+
+    console.log(uda);
 
   // This is the udaType specific UI payload
   let toRender = <></>;
@@ -35,6 +47,7 @@ function UDA(props) {
       toRender = videoUi(uda);
       break;
     default:
+      console.log("Unable to parse udaType");
       break;
   }
 
@@ -57,6 +70,7 @@ function UDA(props) {
 
     // Returns a emailUDA UI specific for emails
     const emailUi = (uda) => {
+      console.log(uda);
        if(uda.udaType === "email"){
           return (
             <>
@@ -65,7 +79,14 @@ function UDA(props) {
                   <Form.Control
                     type="text"
                     placeholder="sample@extension.com"
-                    defaultValue={uda.params.email} />
+                    defaultValue={uda.params.recipient} />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>Message Body</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder=""
+                    defaultValue={uda.params.body} />
                 </Form.Group>
             </>
           )
@@ -132,9 +153,14 @@ function UDA(props) {
        }
     }
 
+    useEffect(() => {
+      console.log("rerender");
+      setUda(props.config);
+    })
+
     return (
       <>
-        {udaBaseUI(props.config)}
+        {udaBaseUI(uda)}
       </>
     )
 

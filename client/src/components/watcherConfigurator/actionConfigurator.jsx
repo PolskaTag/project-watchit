@@ -31,6 +31,7 @@ function ActionConfigurator(props) {
     });
 
     const options = props.config.map((option) => {
+        console.log(option);
             return (
                 {value: option, label: option.udaName}
             )

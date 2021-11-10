@@ -12,6 +12,7 @@ import Select from 'react-select';
 import ObjectConfigurator from './objectConfigurator';
 import ActionConfigurator from './actionConfigurator';
 import UDA from "./UDA";
+import './index.css';
 
 function WatcherConfigurator() {
 
@@ -37,6 +38,7 @@ function WatcherConfigurator() {
         axios.get("http://localhost:5000/watchers/" + userId,
         {"headers": {"x-access-token": localStorage.getItem("token")}})
         .then((res) => {
+            console.log(res.data);
             setWatchers(res.data);
         })
     }
@@ -67,6 +69,7 @@ function WatcherConfigurator() {
     const handleSave = (e) => {
         e.preventDefault();
         console.log(e);
+        console.log(e.target[0]);
     }
 
     useEffect(() => {
@@ -86,13 +89,15 @@ function WatcherConfigurator() {
     }, [])
 
     return (
-        <Form onSubmit={handleSave}>
+        <div className="watcherConfig-content">
+            <Form onSubmit={handleSave}>
             {username !== "" ? selectWatcher(watchers) : null}
             <DeviceConfigurator config={selectedWatcher}/>
             <ObjectConfigurator config={selectedWatcher.object}/>
             <ActionConfigurator config={selectedWatcher.udaList}/>
             <Button type="submit">Save</Button>
-        </Form>
+            </Form>
+        </div>
     )
 }
 export default WatcherConfigurator;
