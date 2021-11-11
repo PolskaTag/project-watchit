@@ -28,10 +28,17 @@ min_threshold = 0.6
 net = cv2.dnn.readNetFromDarknet(r'C:\Users\ventu\Python\project-watchit\device\model\yolov4-p6.cfg', 
                                 r'C:\Users\ventu\Python\project-watchit\device\model\yolov4-p6.weights')
 
+net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
+net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+
 ln = net.getUnconnectedOutLayersNames()
 
+# vs = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
+#                     payload=(int)96" ! rtpjpegdepay ! jpegdec ! videoconvert ! appsink' , cv2.CAP_GSTREAMER)
+
 vs = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
-                    payload=(int)96" ! rtpjpegdepay ! jpegdec ! videoconvert ! appsink' , cv2.CAP_GSTREAMER)
+                    encoding-name=(string)H264, payload=(int)96" ! rtph264depay ! h264parse ! nvh264dec ! \
+                        videoconvert ! appsink', cv2.CAP_GSTREAMER)
 
 fourcc = cv2.VideoWriter_fourcc(*"MJPG")
 writer = cv2.VideoWriter("output.avi", fourcc, 10, (1280, 1280))
@@ -45,9 +52,9 @@ frame_count = 0
 end_time = time.time()
 
 # loop over frames from the video file stream
-while True and time.time() - end_time < 30:
+while True:
     # read the next frame from the file
-    (grabbed, frame) = vs.read()
+    grabbed, frame = vs.read()
     
     # if the frame was not grabbed, then we have reached the end
     # of the stream
@@ -88,7 +95,7 @@ while True and time.time() - end_time < 30:
                 # probability is greater than the minimum probability
                 if confidence > min_confidence:
                     #send message to Pi
-                    s.send(LABELS[classIDs[i]].encode())
+                    # s.send(LABELS[classIDs[i]].encode())
                     # scale the bounding box coordinates back relative to
                     # the size of the image, keeping in mind that YOLO
                     # actually returns the center (x, y)-coordinates of
@@ -121,7 +128,7 @@ while True and time.time() - end_time < 30:
                 text = f"{LABELS[classIDs[i]]}: {confidences[i]:.4f}"
                 cv2.putText(frame, text, (x, y - 5),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
-                Thread(target=s.send, args=(LABELS[classIDs[i]].encode(), )).start()
+                # Thread(target=s.send, args=(LABELS[classIDs[i]].encode(), )).start()
                 # if LABELS[classIDs[i]] == "banana":
                 #     Thread(target=send_message).start()
 
@@ -143,21 +150,23 @@ while True and time.time() - end_time < 30:
             if msg == 'Record':
                 record = True
                 
-    if record:
-        start = time.time()
-        while time.time() - start < 10:
-            ret, frame = vs.read()
-            writer.write(frame)
-            cv2.imshow('frame',frame)
-            cv2.waitKey(1)
-        record = False
+    # if record:
+    #     start = time.time()
+    #     #Stay within this loop and read frames this way.
+    #     #If statemen within main function to check instead
+    #     while time.time() - start < 10:
+    #         ret, frame = vs.read()
+    #         writer.write(frame)
+    #         cv2.imshow('frame',frame)
+    #         cv2.waitKey(1)
+    #     record = False
 
     cv2.imshow('frame',frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-s.close()
+# s.close()
 writer.release()
 vs.release()
 

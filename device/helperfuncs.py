@@ -1,6 +1,7 @@
 import socket
 import errno
 import time
+import cv2
 
 def filesplit(filename):
     """
@@ -68,3 +69,12 @@ def send_message():
         # data = s.recv(1024)
         # message = b"PERSON"
     s.close()
+
+def framegrab():
+    vs = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
+                    encoding-name=(string)H264, payload=(int)96" ! rtph264depay ! h264parse ! nvh264dec ! \
+                        videoconvert ! appsink', cv2.CAP_GSTREAMER)
+
+    grabbed, frame = vs.read()
+
+    
