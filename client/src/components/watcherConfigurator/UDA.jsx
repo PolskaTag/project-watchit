@@ -148,20 +148,27 @@ function UDA(props) {
        if(uda.udaType === "video"){
           return (
             <>
-                <Form.Group>
-                  <Form.Label>Email Address</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="sample@extension.com"
-                    defaultValue={uda.params.email} />
-                </Form.Group>
-                <Form.Group>
-                  <Form.Label>Label</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="banana"
-                    defaultValue={uda.params.label} />
-                </Form.Group>
+            <Form.Group>
+       
+              <Form.Label>Video Title</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Video Title"
+                defaultValue={uda.params.video} style={{marginBottom: ".6em"}}/>
+                
+              <Form.Label>Video Duration</Form.Label>
+              <div style={{display: "block"}}>
+                <select style={{width: "22.5em", "border-radius":"3px", height: "2.4em", border: "none"}}>
+                  <option>10 Seconds</option>
+                  <option>15 Seconds</option>
+                  <option>20 Seconds</option>
+                  <option>25 Seconds</option>
+                  <option>30 Seconds</option>
+                </select>
+              </div>
+              
+        
+            </Form.Group>
             </>
           )
        }
@@ -181,3 +188,8 @@ function UDA(props) {
 }
 
 export default UDA;
+
+/*<Form.Control     
+                type="number"
+                placeholder="Enter Video Duration e.g. 15secs"
+                defaultValue={uda.params.vieo} />*/

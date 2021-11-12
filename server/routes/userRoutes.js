@@ -55,4 +55,6 @@ router.route("/adminread").get(verifyJWT, (req, res) => {
   })
 })
 
+
+
 module.exports = router;
