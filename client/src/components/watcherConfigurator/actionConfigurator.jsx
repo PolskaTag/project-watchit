@@ -23,22 +23,36 @@ import axios from 'axios'
 import UDA from './UDA';
 
 function ActionConfigurator(props) {
-    const [selectedUDA, setSelectedUDA] = useState({
-        udaName: "",
-        udaType: "",
-        script: "",
-        params: {}
+    const [selectedUDA, setSelectedUDA] = useState(() => {
+        return(
+            {
+            udaName: "",
+            udaType: "",
+            script: "",
+            params: {}
+            }
+        )
     });
 
     const options = props.config.map((option) => {
-        console.log(option);
             return (
                 {value: option, label: option.udaName}
             )
         })
 
+    const getSelectOptions = (udaList) => {
+        let results = udaList.map((uda) => {
+            return(
+                {value: uda, label: uda.udaName}
+            )
+        })
+        return results;
+    }
+
     const _onChange = (e) => {
-            setSelectedUDA(e.value);
+            setSelectedUDA((prevState) => {
+                return({...e.value});
+            });
         }
 
     return (
@@ -46,7 +60,7 @@ function ActionConfigurator(props) {
             <Card>
                 <Card.Body>Action Configuration</Card.Body>
             </Card>
-            <Select options={options} onChange={_onChange}></Select>
+            <Select options={getSelectOptions(props.config)} onChange={_onChange}></Select>
             <UDA config={selectedUDA}/>
         </div>
     )
