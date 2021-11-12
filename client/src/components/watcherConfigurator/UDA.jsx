@@ -148,6 +148,20 @@ function UDA(props) {
        if(uda.udaType === "video"){
           return (
             <>
+                <Form.Group>
+                  <Form.Label>Email Address</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="sample@extension.com"
+                    defaultValue={uda.params.email} />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>Label</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="banana"
+                    defaultValue={uda.params.label} />
+                </Form.Group>
             </>
           )
        }
