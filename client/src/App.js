@@ -15,6 +15,8 @@ import ProfilePage from "./components/ProfilePage";
 import VideoList from "./components/VideoList";
 import ConfigWatcher from "./components/ConfigWatcher";
 import watcherConfigurator from "./components/watcherConfigurator/index";
+import Pictures from "./components/picture";
+
 
 const App = () => {
   return (
@@ -28,6 +30,7 @@ const App = () => {
           {/* <Route component={Home} exact path="/Home"></Route> */}
           <Route component={ProfilePage} exact path="/ProfilePage" />
           <Route component={VideoList} exact path="/VideoList" />
+          <Route component={Pictures} exact path="/Pictures" />
           <Route component={ConfigWatcher} exact path="/ConfigWatcher" />
           <Route
             component={watcherConfigurator}

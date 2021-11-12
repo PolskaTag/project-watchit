@@ -4,6 +4,10 @@ import os
 from threading import Thread
 from video_upload import upload_video
 import wcamera as wc
+from loggedInUser import LoggedInUser
+
+#instantiate current logged in user
+currentUser = LoggedInUser({"username": "capstone", "password": "apple123"})
 
 # Create a VideoCapture object
 cap = wc.standard_camera()
@@ -17,7 +21,8 @@ if not cap:
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 
-start_count = count = 1
+start_count = 1
+count = int(currentUser.getMaxVideoIDNumber())
 record = False
 start = time.time()
 
@@ -43,7 +48,7 @@ while(True):
       q
     # Record for ten seconds then upload to S3 and update databases
     if time.time() - start > 10 and record:
-      Thread(target=upload_video, args=(count, )).start()
+      Thread(target=upload_video, args=(count, currentUser.name, )).start()
       count += 1
       out = cv2.VideoWriter(f'output{count}.mp4',cv2.VideoWriter_fourcc(*'mp4v'), 10, (frame_width,frame_height))
       record = False
