@@ -148,10 +148,7 @@ function Pictures() {
         
       <div style={{ textAlign: "center" }}>
         <h2>{username? capitalize(username): null}</h2>
-        <p>A list of User pictures.</p>
-       
-       
-       
+        <p>A list of User pictures.</p>  
 
         <form onSubmit={handleSubmit} encType='multipart/form-data'>
             <input 

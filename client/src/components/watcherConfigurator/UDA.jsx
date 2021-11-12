@@ -129,7 +129,7 @@ function UDA(props) {
             <>
             <Form.Group>
        
-              <Form.Label>Video Name</Form.Label>
+              <Form.Label>Video Title</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter Video Title"
