@@ -1,6 +1,7 @@
 import cv2
 import threading
 import numpy as np
+import time
 
 class VideoGet():
 
@@ -41,7 +42,8 @@ class VideoGet():
     def stop(self):
         self.started = False
         self.cap.release()
-        self.thread.join()
+        self.thread.should_abort_immediately = True
+        # self.thread.join()
 
     def __exit__(self, exec_type, exc_value, traceback):
         self.cap.release()
@@ -74,45 +76,46 @@ class VideoGet():
 #     def stop(self):
 #         self.stopped = True
 
-class VideoPut():
+# class VideoPut():
 
-    def __init__(self, filepath, width=640, height=480):
-        fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-        self.writer = cv2.VideoWriter(filepath, fourcc, 30, (width, height))
-        self.write_lock = threading.Lock()
-        self.started = False
+#     def __init__(self, filepath, width=640, height=480):
+#         fourcc = cv2.VideoWriter_fourcc(*"MJPG")
+#         self.writer = cv2.VideoWriter(filepath, fourcc, 30, (width, height))
+#         self.write_lock = threading.Lock()
+#         self.stopped = False
+#         self.end_time = None
 
-    def set(self, property, value):
-        self.cap.set(property, value)
+#     def start(self):
+#         self.end_time = time.time()
+#         self.thread = threading.Thread(target=self.write, args=())
+#         self.thread.start()
+#         return self
 
-    def start(self):
-        if self.started:
-            print('[!] Threaded video capturing has already been started.')
-            return None
-        self.started = True
-        self.thread = threading.Thread(target=self.update, args=())
-        self.thread.start()
-        return self
+#     def update(self):
+#         while self.started:
+#             grabbed, frame = self.cap.read()
+#             if not np.any(frame):
+#                 self.stop()
+#             with self.write_lock:
+#                 self.grabbed = grabbed
+#                 self.frame = frame
 
-    def update(self):
-        while self.started:
-            grabbed, frame = self.cap.read()
-            if not np.any(frame):
-                self.stop()
-            with self.write_lock:
-                self.grabbed = grabbed
-                self.frame = frame
+#     def write(self, frame):
+#         while time.time() - self.end_time < 10:
+#             cv2.imshow('Frame', frame)
+#             self.writer.write(frame)
+#         self.stop()
 
-    def read(self):
-        with self.write_lock:
-            frame = self.frame.copy()
-            grabbed = self.grabbed
-        return grabbed, frame
+#     def read(self):
+#         with self.write_lock:
+#             frame = self.frame.copy()
+#             grabbed = self.grabbed
+#         return grabbed, frame
 
-    def stop(self):
-        self.started = False
-        self.cap.release()
-        self.thread.join()
+#     def stop(self):
+#         self.stopped = True
+#         self.writer.release()
+#         self.thread.join()
 
-    def __exit__(self, exec_type, exc_value, traceback):
-        self.cap.release()
+#     def __exit__(self, exec_type, exc_value, traceback):
+#         self.cap.release()

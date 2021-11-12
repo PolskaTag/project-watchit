@@ -2,6 +2,7 @@ import socket
 import errno
 import time
 import cv2
+import threading
 
 def filesplit(filename):
     """
@@ -77,4 +78,18 @@ def framegrab():
 
     grabbed, frame = vs.read()
 
-    
+def receivemsg():
+    host = "127.0.0.1"
+    port = 8080
+
+    s = socket.socket(socket.AF_INET,
+                  socket.SOCK_STREAM)
+
+    s.bind(host, port)
+
+    data = s.recv
+
+    if data == 'Record':
+        return True
+    return False
+
