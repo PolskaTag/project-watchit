@@ -21,12 +21,9 @@ class Listener():
                 if err == errno.EAGAIN or err == errno.EWOULDBLOCK:
                     continue
                 else:
-                    # a "real" error occurred
                     print(e)
                     exit(1)
             else:
-                # got a message, do something :)   
-                # if not writer and msg == 'Record':
                 if msg == 'Record':
                     self.record = True
                 elif msg == "Close":
@@ -35,4 +32,4 @@ class Listener():
 
     def stop(self):
         self.socket.close()
-        self.thread.should_abort_immediately = True
+        self.thread.join()

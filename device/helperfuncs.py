@@ -3,6 +3,7 @@ import errno
 import time
 import cv2
 import threading
+import requests
 
 def filesplit(filename):
     """
@@ -93,3 +94,7 @@ def receivemsg():
         return True
     return False
 
+def userdata():
+    r = requests.post("http://34.201.36.147:5000/login",
+                  json={"username": "capstone", "password": "apple123"})
+    return r.json()

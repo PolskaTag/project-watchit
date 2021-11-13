@@ -1,10 +1,18 @@
 import socket
 from time import sleep
-import helperfuncs
+import helperfuncs as hf
 from collections import defaultdict
+import json
+import requests
 
-#Change host to your Pi using ipcofig 
-#Can make script to automate this process
+# temp = hf.userdata()
+# userId = temp['userId']
+
+# r = requests.get(`{domain}/watchers/{userId}/{watcherId}`, heades={"x-access-token": {token}})
+
+# print(temp)
+# exit(1)
+
 host = '192.168.86.23'
 port = 8080
 s = socket.socket()

@@ -2,11 +2,20 @@ import cv2
 import numpy as np
 import helperfuncs as hf
 import socket
-import errno
 from listener import Listener
 import time
 
-cap = cv2.VideoCapture(r'project-watchit\device\model\car_Trim.mp4')
+# cap = cv2.VideoCapture(r'project-watchit\device\model\car_Trim.mp4')
+
+# cap = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
+#                     encoding-name=(string)H264, payload=(int)96" ! rtph264depay ! h264parse ! nvh264dec ! \
+#                         videoconvert ! appsink', cv2.CAP_GSTREAMER)
+
+cap = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
+    payload=(int)96" ! rtpjpegdepay ! jpegdec ! videoconvert ! appsink' , cv2.CAP_GSTREAMER)
+
+frame_width = int(cap.get(3))
+frame_height = int(cap.get(4))
 
 host = "192.168.86.23"
 port = 8080
@@ -19,7 +28,6 @@ s.setblocking(False)
 
 temp = Listener(s)
 
-#Read in labels for model and assign them a color for bounding boxes. 
 LABELS = hf.filesplit(r'project-watchit\device\model\coco.txt')
 if not LABELS:
     exit(1)
@@ -27,7 +35,7 @@ if not LABELS:
 min_confidence = 0.6
 
 fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-writer = cv2.VideoWriter("output.avi", fourcc, 30, (1280, 720))
+writer = cv2.VideoWriter("output.avi", fourcc, 30, (frame_width, frame_height))
 
 net = cv2.dnn.readNetFromDarknet(r'C:\Users\ventu\Python\project-watchit\device\model\yolov4-p6.cfg', 
                                 r'C:\Users\ventu\Python\project-watchit\device\model\yolov4-p6.weights')
@@ -37,9 +45,9 @@ net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
 ln = net.getUnconnectedOutLayersNames()
 
-(W, H) = (None, None)
-
 start = time.time()
+
+# record = False
 
 i = 0
 
@@ -49,56 +57,45 @@ while True:
     if not ret:
         break
 
-    if i >= 10:   
-        i = 0
-        # if the frame dimensions are empty, grab them
-        if W is None or H is None:
-            (H, W) = frame.shape[:2]
+    cv2.imshow('frame', frame)
 
-        # construct a blob from the input frame and then perform a forward
-        # pass of the YOLO object detector
+    if i >= 10:
+        i = 0
         blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (320, 320),
             swapRB=True, crop=False)
         net.setInput(blob)
         layerOutputs = net.forward(ln)
-        # loop over each of the layer outputs
         for output in layerOutputs:
             one_class = set()
-            # loop over each of the detections
             for detection in output:
-                # extract the class ID and confidence (i.e., probability)
-                # of the current object detection
                 scores = detection[5:]
                 classID = np.argmax(scores)
                 confidence = scores[classID]
-                # filter out weak predictions by ensuring the detected
-                # probability is greater than the minimum probability
                 if confidence > min_confidence and classID not in one_class:
                     one_class.add(classID)
-                    #send message to Pi
                     s.send(LABELS[classID].encode())
 
     temp.start()
 
     if temp.record:
-        start = time.time()
-        while time.time() - start < 5:
+        frames = 0
+        print("Recording")
+        while frames < 60:
+            print(frames)
             ret, frame = cap.read()
             writer.write(frame)
             cv2.imshow('frame', frame)
             cv2.waitKey(1)
+            frames += 1
         temp.record = False
-        break
-
-    cv2.imshow('frame', frame)
-
+        
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
     i += 1
 
+writer.release()
 temp.stop()
 s.close()
-writer.release()
 cap.release()
 cv2.destroyAllWindows()
