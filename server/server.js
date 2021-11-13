@@ -19,6 +19,7 @@ app.use(require("./routes/video"));
 app.use(require("./routes/uda"));
 app.use(require("./routes/notification"));
 app.use(require("./routes/watcher"));
+app.use(require("./routes/logging"));
 
 // Connecting to MongoDB
 mongoose
