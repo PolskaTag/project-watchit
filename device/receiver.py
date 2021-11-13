@@ -27,7 +27,7 @@ while data != 'q':
     print('Received:' + data)
     if not data:
         break
-    elif data == 'car':
+    elif data == 'person':
         c.send(b"Record")
     data = c.recv(1024).decode()
 
