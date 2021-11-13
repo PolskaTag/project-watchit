@@ -3,6 +3,7 @@ import React, { useRef, useState, useLayoutEffect } from "react";
 import { Redirect } from 'react-router-dom';
 import Navbar from './Navbar.jsx'
 import "./style/videolist.css"
+import VideoController from "./video";
 
 //predefined array with URLs for testing purposes
 // const recording = [
@@ -43,17 +44,51 @@ function VideoList() {
 
   const [username, setUsername] = useState(null);
   const [videos, setVideos] = useState([]);
+  const [newUrl, setNewUrl] = useState(null);
+
+
+  //function to play user video
+  const play = (url) =>{
+    setNewUrl(url);
+  }
+
+  //function to delete user video
+  const deleteItem = (vidID, userID) =>{
+    console.log(userID)
+    axios.delete("http://localhost:5000/deletevideo", {
+        userid: "616cc860059e1d07729fa0fe",
+        videoid : vidID,
+        
+    }).then((response) =>{
+        console.log(response);
+    }).catch(e => {
+        console.log(e);
+    });
+  };
+  
   
   //uses map to change the array so that it displays into a unordered table for viewing
 	const recordingList = (
         <ul className="video-list">
             {videos.map((recording, index) => (
-                <li key={index+recording.name}>
-                    Video <a href={recording.url}>{recording.name}</a>  {recording.time}
+              
+              <div className="newDiv" >
+                
+                <li key={index+recording.name}> 
+                
+                   <a style={{listStyleType: "none"}} onClick={()=>play(recording.url)} href="#">
+                     <div className="list" style={{marginBottom: ".2em"}} >
+                        Video {recording.name}  {recording.time} 
+                      </div>
+                    </a>
+                    <button className="listButton" onClick={()=>{deleteItem(recording.videoID, recording._id)}}>Delete</button>     
                 </li>
+                </div>
             ))}
         </ul>
-    )
+    )//recording.url
+
+   
 
   useLayoutEffect(() => {
     // Check if the user is authenticated
@@ -82,14 +117,20 @@ function VideoList() {
     })
     .catch(err => alert(err))
 }, [])
-
+    
     return (
       <div className="video-page">
-        <Navbar/> <br></br>
-        <h1>All Video Recordings</h1>
+        < Navbar/> <br></br>
+        <h1 style={{textAlign:"center"}}>All Video Recordings</h1>
+        
+      <div className="urlList" >
         {videos ? <div>{recordingList}</div>: null}
+      </div> 
+      <div className="vidDiv">
+        {newUrl? <VideoController url={newUrl} className="vid" /> : null}
+      </div> 
         {!localStorage.getItem("token") ? <Redirect to="/login"></Redirect>: null}
-      </div>
+       </div>
     )
 }
 

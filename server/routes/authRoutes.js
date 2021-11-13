@@ -164,6 +164,20 @@ router.get("/adminupdate", async (req, res) => {
   }
 });
 
+router.delete("/deletevideo", async (req, res) => {
+  const userID = req.body.userid;
+  const videoID = req.body.videoid;
+  try {
+    await User.findById(userID, (err, deleteItem) => {
+      deleteItem.videos.findByIdAndDelete(videoID).exec();   
+      deleteItem.save();
+      res.send("video deleted");
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 router.delete("/admindelete/:id", async (req, res) => {
   const id = req.params.id;
 

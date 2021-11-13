@@ -31,6 +31,60 @@ router.route("/videos").get(verifyJWT, (req, res) => {
   });
 });
 
+// An api that gets all the videos from users
+router.route("/videoIDs/:username").get( (req, res) => {
+  const username = req.params.username;
 
+  // First find all the user's videos
+  User.findOne({ username: username }).then((dbUser) => {
+    console.log("CAME 2")
+    // variable where we'll put our videos
+    let results = [];
+    console.log(dbUser.user)
+    // for each user that in the list of users, push there videos into results
+    if(dbUser.videos.length() === 0){
+      results.push(dbUser.videos);
+      console.log("CAME 3")
 
+      dbUser.videos.forEach((video) => {  
+        console.log("CAME 4")
+        try {
+          video.url = getPresignedUrl(video.name);
+          console.log("CAME 5")
+        } catch (e) {
+          console.log(e);
+        }
+      });
+    
+    res.json(results);
+    }
+    else{
+      console.log("There is no video in database")
+      return res.json(null)
+    }
+  }) .catch(err => res.status(400).json('Error: '+ err + ' : value: ' + 0));
+});
+router.route("/vide/").get(verifyJWT, (req, res) => {
+  const userId = req.params.userId;
+
+  User.findOne({ userId: userId })
+    .then((dbUser) =>
+      res.json({
+        username: dbUser.username,
+        email: dbUser.email,
+        videos: dbUser.videos,
+        uda: dbUser.uda,
+        message: "Success",
+      })
+    )
+    .catch((err) =>
+      res.json({
+        username: "User not found",
+        email: "",
+        videos: [],
+        uda: [],
+        message: err,
+      })
+    );
+});
 module.exports = router;
