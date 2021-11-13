@@ -164,27 +164,3 @@ cv2.destroyAllWindows()
 
 # Remove extra file created by function
 os.remove(f'output{count}.avi')
-
-    # Run over each of the detections
-    # for output in layeredoutputs:
-
-    #     for detection in output:
-
-    #         confidence = detection[2]
-
-    #         if confidence > min_confidence_score:
-
-    #             class_id = detection[1]
-
-    #             class_name = class_names[int(class_id)-1]
-    #             color = colors[int(class_id)]
-
-    #             bboxX = detection[3] * imgWidth
-    #             bboxY = detection[4] * imgHeight
-
-    #             bboxWidth = detection[5] * imgWidth
-    #             bboxHeight = detection[6] * imgHeight
-
-    #             cv2.rectangle(frame, (int(bboxX), int(bboxY)), (int(bboxWidth), int(bboxHeight)),color, thickness=2)
-
-    #             cv2.putText(frame, class_name, (int(bboxX), int(bboxY - 5)), cv2.FONT_HERSHEY_SIMPLEX, 1, color, 2)

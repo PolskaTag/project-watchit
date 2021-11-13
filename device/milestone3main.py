@@ -1,5 +1,5 @@
 import cv2
-from videoget import VideoGet
+# from videoget import VideoGet
 import numpy as np
 import helperfuncs as hf
 import socket
