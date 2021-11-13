@@ -3,9 +3,8 @@ import numpy as np
 import helperfuncs as hf
 import socket
 from listener import Listener
-import time
-
-# cap = cv2.VideoCapture(r'project-watchit\device\model\car_Trim.mp4')
+import threading
+import video_upload as vu
 
 # cap = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
 #                     encoding-name=(string)H264, payload=(int)96" ! rtph264depay ! h264parse ! nvh264dec ! \
@@ -17,15 +16,7 @@ cap = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 
-host = "192.168.86.23"
-port = 8080
-
-s = socket.socket(socket.AF_INET,
-            socket.SOCK_STREAM)
-
-s.connect((host,port))
-s.setblocking(False)
-
+s = hf.startup_socket()
 temp = Listener(s)
 
 LABELS = hf.filesplit(r'project-watchit\device\model\coco.txt')
@@ -33,23 +24,16 @@ if not LABELS:
     exit(1)
 
 min_confidence = 0.6
+count = hf.video_count() + 1
 
 fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-writer = cv2.VideoWriter("output.avi", fourcc, 30, (frame_width, frame_height))
+writer = cv2.VideoWriter(f"output{count}.avi", fourcc, 30, (frame_width, frame_height))
 
-net = cv2.dnn.readNetFromDarknet(r'C:\Users\ventu\Python\project-watchit\device\model\yolov4-p6.cfg', 
-                                r'C:\Users\ventu\Python\project-watchit\device\model\yolov4-p6.weights')
-
-net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
-net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+net = hf.setupmodel()
 
 ln = net.getUnconnectedOutLayersNames()
 
-start = time.time()
-
-# record = False
-
-i = 0
+frame_cnt = 0
 
 while True:
     ret, frame = cap.read()
@@ -59,8 +43,8 @@ while True:
 
     cv2.imshow('frame', frame)
 
-    if i >= 10:
-        i = 0
+    if frame_cnt >= 10:
+        frame_cnt = 0
         blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (320, 320),
             swapRB=True, crop=False)
         net.setInput(blob)
@@ -78,21 +62,16 @@ while True:
     temp.start()
 
     if temp.record:
-        frames = 0
-        print("Recording")
-        while frames < 60:
-            print(frames)
-            ret, frame = cap.read()
-            writer.write(frame)
-            cv2.imshow('frame', frame)
-            cv2.waitKey(1)
-            frames += 1
+        hf.recordvideo(cap, writer)
+        threading.Thread(target=vu.upload_video, args=(count,)).start()
+        count += 1
+        writer = cv2.VideoWriter(f"output{count}.avi", fourcc, 30, (frame_width, frame_height))
         temp.record = False
         
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-    i += 1
+    frame_cnt += 1
 
 writer.release()
 temp.stop()

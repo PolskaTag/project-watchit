@@ -1,8 +1,5 @@
 import socket
-import errno
-import time
 import cv2
-import threading
 import requests
 
 def filesplit(filename):
@@ -17,16 +14,50 @@ def filesplit(filename):
         return None
     return LABELS
 
-def gen_sock():
+def userdata(url="http://34.201.36.147:5000", username="capstone", password="apple123"):
+    r = requests.post(f"{url}/login",
+                  json={"username": username, "password": password})
+    return r.json()
 
-    host = '192.168.86.27'
-    port = 8080
+def video_count(url="http://34.201.36.147:5000"):
+    """
+    Find max video count so we do not overwrite existing videos.
+    """
+    header_params = {"x-access-token": userdata()['token']}
+    video_lst = requests.get(f"{url}/videos", headers=header_params).json()
+    max = 0
+    for video in video_lst[0]:
+        videoID = int(video['videoID'])
+        if videoID > max:
+            max = videoID
+    return max
 
+def recordvideo(stream, writer):
+    frames = 0
+    while frames < 300:
+        ret, frame = stream.read()
+        writer.write(frame)
+        cv2.imshow('frame', frame)
+        cv2.waitKey(1)
+        frames += 1
+    writer.relase()
+
+def setupmodel(cfg=r'C:\Users\ventu\Python\project-watchit\device\model\yolov4-p6.cfg'
+                , weights=r'C:\Users\ventu\Python\project-watchit\device\model\yolov4-p6.weights'):
+
+    model = cv2.dnn.readNetFromDarknet(cfg, weights)
+
+    model.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
+    model.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+
+    return model
+
+def startup_socket(host="192.168.86.23", port=8080):
     s = socket.socket(socket.AF_INET,
-                  socket.SOCK_STREAM)
+            socket.SOCK_STREAM)
 
     s.connect((host,port))
-
+    s.setblocking(False)
     return s
 
 def lights():
@@ -38,40 +69,6 @@ def locks():
 def alarms():
     return None
 
-
-def send_message():
-    host = '192.168.86.27' #The host on your client needs to be the external-facing IP address of your router. Obtain it from here https://www.whatismyip.com/
-    port = 8080 
-    s = socket.socket()
-    s.connect((host,port))
-    s.setblocking(False)
-    # s.settimeout(10)
-
-    start = time.time()
-    while time.time() - start < 30:
-        # while message != 'q':
-        s.send(b"MESSAGE SENT")
-        time.sleep(1)
-        if time.time()- start > 25:
-            try:
-                msg = s.recv(4096)
-            except socket.error as e:
-                err = e.args[0]
-                if err == errno.EAGAIN or err == errno.EWOULDBLOCK:
-                    time.sleep(1)
-                    print('No data available')
-                    continue
-                else:
-                    # a "real" error occurred
-                    print(e)
-                    exit(1)
-            else:
-                # got a message, do something :)
-                print(msg)
-        # data = s.recv(1024)
-        # message = b"PERSON"
-    s.close()
-
 def framegrab():
     vs = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
                     encoding-name=(string)H264, payload=(int)96" ! rtph264depay ! h264parse ! nvh264dec ! \
@@ -79,22 +76,9 @@ def framegrab():
 
     grabbed, frame = vs.read()
 
-def receivemsg():
-    host = "127.0.0.1"
-    port = 8080
+def main():
 
-    s = socket.socket(socket.AF_INET,
-                  socket.SOCK_STREAM)
+    print(video_count())
 
-    s.bind(host, port)
-
-    data = s.recv
-
-    if data == 'Record':
-        return True
-    return False
-
-def userdata():
-    r = requests.post("http://34.201.36.147:5000/login",
-                  json={"username": "capstone", "password": "apple123"})
-    return r.json()
+if __name__ == "__main__":
+    main()

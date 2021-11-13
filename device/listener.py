@@ -10,9 +10,9 @@ class Listener():
         self.record = False
 
     def start(self):
-        self.thread = threading.Thread(target=self.listening).start()
+        self.thread = threading.Thread(target=self.__listening).start()
 
-    def listening(self):
+    def __listening(self):
         while True:
             try:
                 msg = self.socket.recv(1024).decode()
