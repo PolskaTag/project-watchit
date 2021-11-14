@@ -15,20 +15,24 @@ class LoggedInUser:
         return userToken
 
     #this function returns videoID number found in the users db
-    def __maxVideoID(self, videoArry):
+    def __maxVideoID(self, videoArray):
         maxVideoIDCheck = 0
-        for video in videoArry:  
-            if video["videoID"] > maxVideoIDCheck:
-                maxVideoIDCheck = video["videoID"]
-
+        if videoArray == 0:
+            return 0
+        for videos in videoArray:  
+            for videoDetails in videos:
+                if int(videoDetails["videoID"]) > maxVideoIDCheck:
+                   maxVideoIDCheck = int(videoDetails["videoID"])
+              
         return maxVideoIDCheck   
 
     #this function makes an api call to get user videos
     def __getUserVideos(self):
         header = {"x-access-token": self.__getToken()}
-        response = requests.get("http://localhost:5000/videos", headers=header)
+        response = requests.get(f'http://localhost:5000/videoIDs/{"test123"}',headers=header)
         videos = response.json()
-        return videos[0]  
+        #print(videos)
+        return videos  
 
     #function to call, to get max number for user videos
     def getMaxVideoIDNumber(self):
@@ -36,7 +40,7 @@ class LoggedInUser:
 
 p = LoggedInUser({"username": "capstone", "password": "apple123"})
 
-#print(p.name)
+print(p.getMaxVideoIDNumber())
 #print(p.getToken())
 
    

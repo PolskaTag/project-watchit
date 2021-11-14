@@ -45,6 +45,8 @@ function VideoList() {
   const [username, setUsername] = useState(null);
   const [videos, setVideos] = useState([]);
   const [newUrl, setNewUrl] = useState(null);
+  const [anyVideo, setAnyVideo] = useState(true);
+  const [userID, setUserID] = useState(null);
 
 
   //function to play user video
@@ -54,9 +56,10 @@ function VideoList() {
 
   //function to delete user video
   const deleteItem = (vidID, userID) =>{
-    console.log(userID)
-    axios.delete("http://localhost:5000/deletevideo", {
-        userid: "616cc860059e1d07729fa0fe",
+    console.log(vidID)
+  if(window.confirm("Are you sure you want to delete this video?")){
+    axios.post("http://localhost:5000/deletevideo", {
+        userid: userID,
         videoid : vidID,
         
     }).then((response) =>{
@@ -64,6 +67,9 @@ function VideoList() {
     }).catch(e => {
         console.log(e);
     });
+     // console.log(vidID);
+    }
+    
   };
   
   
@@ -75,13 +81,13 @@ function VideoList() {
               <div className="newDiv" >
                 
                 <li key={index+recording.name}> 
-                
+             
                    <a style={{listStyleType: "none"}} onClick={()=>play(recording.url)} href="#">
                      <div className="list" style={{marginBottom: ".2em"}} >
                         Video {recording.name}  {recording.time} 
                       </div>
                     </a>
-                    <button className="listButton" onClick={()=>{deleteItem(recording.videoID, recording._id)}}>Delete</button>     
+                    <button className="listButton" onClick={()=>{deleteItem(recording.videoID, userID)}}>Delete</button>     
                 </li>
                 </div>
             ))}
@@ -106,12 +112,21 @@ function VideoList() {
       // If the users token was authenticated, load the goodies.
       if (data.isLoggedIn) {
         setUsername(data.username);
+        
+           setUserID(data.id)
         // Make a request for the videos
-        axios.get('http://localhost:5000/videos', {headers: {"x-access-token": localStorage.getItem("token")}})
+        axios.get(`http://localhost:5000/videoIDs/${data.username}`, {headers: {"x-access-token": localStorage.getItem("token")}})
           .then((res) => {
-            const newVideos = [...res.data[0]];
-            console.log(newVideos);
-            setVideos(newVideos);
+            
+            //console.log(res.data)
+            if(res.data!==0){
+              const newVideos = [...res.data[0]];
+              console.log(newVideos);
+              setVideos(newVideos);
+            }
+            else{
+              setAnyVideo(false)
+            }
         })
       }
     })
@@ -120,13 +135,14 @@ function VideoList() {
     
     return (
       <div className="video-page">
-        < Navbar/> <br></br>
+       <h5>< Navbar/> </h5><br></br>
         <h1 style={{textAlign:"center"}}>All Video Recordings</h1>
         
       <div className="urlList" >
         {videos ? <div>{recordingList}</div>: null}
       </div> 
       <div className="vidDiv">
+        {!anyVideo? <h4>This user has no video</h4>: null}
         {newUrl? <VideoController url={newUrl} className="vid" /> : null}
       </div> 
         {!localStorage.getItem("token") ? <Redirect to="/login"></Redirect>: null}

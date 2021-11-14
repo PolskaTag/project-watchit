@@ -164,13 +164,23 @@ router.get("/adminupdate", async (req, res) => {
   }
 });
 
-router.delete("/deletevideo", async (req, res) => {
+router.post("/deletevideo", async (req, res) => {
   const userID = req.body.userid;
   const videoID = req.body.videoid;
   try {
     await User.findById(userID, (err, deleteItem) => {
-      deleteItem.videos.findByIdAndDelete(videoID).exec();   
-      deleteItem.save();
+      console.log("inside delete")
+    //  const u = deleteItem.videos.findById(videoID)
+      deleteItem.videos.forEach(video => {
+         if(videoID == video.videoID){
+          console.log(deleteItem.videos)
+           console.log(video._id)
+            console.log(video.videoID)
+            //deleteItem.videos.updateOne({$pull:{videoID:[video.videoID]}})
+         }
+      });
+     // console.log(u) 
+      //deleteItem.save();
       res.send("video deleted");
     });
   } catch (err) {

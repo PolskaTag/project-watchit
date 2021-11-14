@@ -42,7 +42,7 @@ function AdminUser() {
         .catch(err => alert(err))
 
         // Make a request for the videos
-        axios.get('http://localhost:5000/videos', { headers: {
+        axios.get(`http://localhost:5000/videoIDs/${"test123"}`, { headers: {
           "x-access-token": localStorage.getItem("token")
       }})
         .then((res) => {

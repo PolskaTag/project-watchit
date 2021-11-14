@@ -163,10 +163,10 @@ function Pictures() {
         </form>
         <div style={{
           padding: "0 20px"
-        }}>{()=>getData(pictures)?
+        }}>{
          
           <Carousel
-            data={()=>getData(pictures)}
+            data={data}
             time={2000}
             slide={true}
             width="850px"
@@ -191,7 +191,7 @@ function Pictures() {
               margin: "40px auto",
               
             }}
-          />: null}
+          />}
           {!localStorage.getItem("token") ? <Redirect to="/login"></Redirect>: null}
         </div>
       </div>
