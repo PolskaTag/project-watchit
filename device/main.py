@@ -1,72 +1,89 @@
 import cv2
-import time
+import numpy as np
+import helperfuncs as hf
+from listener import Listener
+import threading
+import video_upload as vu
 import os
-from threading import Thread
-from video_upload import upload_video
-import wcamera as wc
-from loggedInUser import LoggedInUser
 
-#instantiate current logged in user
-currentUser = LoggedInUser({"username": "capstone", "password": "apple123"})
+# cap = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
+#                     encoding-name=(string)H264, payload=(int)96" ! rtph264depay ! h264parse ! nvh264dec ! \
+#                         videoconvert ! appsink', cv2.CAP_GSTREAMER)
 
-# Create a VideoCapture object
-cap = wc.standard_camera()
+cap = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
+    payload=(int)96" ! rtpjpegdepay ! jpegdec ! videoconvert ! appsink' , cv2.CAP_GSTREAMER)
 
-# Check if camera opened successfully
-if not cap:
-  exit(1)
-
-# Default resolutions of the frame are obtained.The default resolutions are system dependent.
-# We convert the resolutions from float to integer.
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 
-start_count = 1
-count = int(currentUser.getMaxVideoIDNumber()) + 1 
-record = False
-start = time.time()
+#Startup sockets to communicate to and from Pi
+s = hf.startup_socket()
+temp = Listener(s)
 
-# Define the codec and create VideoWriter object.The output is stored in 'output{count}.avi' file.
-out = cv2.VideoWriter(f'output{count}.mp4',cv2.VideoWriter_fourcc(*'mp4v'), 10, (frame_width,frame_height))
+#Generate the labels associated with object
+LABELS = hf.filesplit(r'project-watchit\device\model\coco.txt')
+if not LABELS:
+    exit(1)
 
-while(True):
-  ret, frame = cap.read()
+#Set confidence required to send message and count obtains the highest current videoID
+min_confidence = 0.6
+count = hf.video_count() + 1
 
-  if ret == True: 
-    
-    # Display the resulting frame    
-    cv2.imshow('frame',frame)
+fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 30, (frame_width, frame_height))
 
-    key = cv2.waitKey(1)
+net = hf.setupmodel()
+ln = net.getUnconnectedOutLayersNames()
 
-    # Press spacebar to start recording and q to quit
-    if key & 0xFF == 32:
-      start = time.time()
-      record = True
-    elif key & 0xFF == ord('q'):
-      break
-      q
-    # Record for ten seconds then upload to S3 and update databases
-    if time.time() - start > 10 and record:
-      Thread(target=upload_video, args=(count, currentUser.name, )).start()
-      count += 1
-      out = cv2.VideoWriter(f'output{count}.mp4',cv2.VideoWriter_fourcc(*'mp4v'), 10, (frame_width,frame_height))
-      record = False
+frame_cnt = 0
 
-    # Write the frame into the file 'output.avi'
-    if record:
-      out.write(frame)
+while True:
+    ret, frame = cap.read()
 
-  # Break the loop
-  else:
-    break 
+    if not ret:
+        break
 
-# When everything done, release the video capture and video write objects
-cap.release()
-out.release()
+    cv2.imshow('frame', frame)
 
-# Closes all the frames
-cv2.destroyAllWindows()
+    #Object detection on every 10th frame
+    if frame_cnt >= 10:
+        frame_cnt = 0
+        blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (320, 320),
+            swapRB=True, crop=False)
+        net.setInput(blob)
+        layerOutputs = net.forward(ln)
+        for output in layerOutputs:
+            one_class = set()
+            for detection in output:
+                scores = detection[5:]
+                classID = np.argmax(scores)
+                confidence = scores[classID]
+                if confidence > min_confidence and classID not in one_class:
+                    one_class.add(classID)
+                    s.send(LABELS[classID].encode())
+
+    #Listens for messages from the Pi, if record command is received then the commands will execute
+    temp.start()
+    if temp.record:
+        hf.recordvideo(cap, writer)
+        #Can pass in user name after count
+        threading.Thread(target=vu.upload_video, args=(count,)).start()
+        count += 1
+        writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 30, (frame_width, frame_height))
+        temp.record = False
+        
+    #Push q to exit program
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+    frame_cnt += 1
+
+writer.release()
 
 # Remove extra file created by function
 os.remove(f'output{count}.mp4')
+
+temp.stop()
+s.close()
+cap.release()
+cv2.destroyAllWindows()
