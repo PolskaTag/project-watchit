@@ -12,8 +12,8 @@ domain = 'http://34.201.36.147:5000'
 
 watchers = requests.get(f'{domain}/watchers/{userId}', headers={"x-access-token": token})
 
-functions = {"email" : hf.notifications}
-actions = defaultdict(list)
+# functions = {"email" : hf.notifications}
+# actions = defaultdict(list)
 
 # watcherId = watchers.json()
 # print(watcherId[0]['udaList'])
