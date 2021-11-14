@@ -80,10 +80,8 @@ while True:
     frame_cnt += 1
 
 writer.release()
-
 # Remove extra file created by function
 os.remove(f'output{count}.mp4')
-
 temp.stop()
 s.close()
 cap.release()
