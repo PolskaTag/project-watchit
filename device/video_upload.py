@@ -27,5 +27,5 @@ def upload_video(count, user="capstone"):
     pr.upload_video(url, name)
 
     pv.new_video(collection_name, user,
-                {"videoID" : count, "url" : f"https://{os.environ.get('AWS_BUCKET_NAME')}.s3.amazonaws.com/{name}",
+                {"videoID" : count, "url" : f"https://{os.environ.get('AWS_BUCKET_NAME')}.s3.amazonaws.com/{user}/{name}",
                  "name": name, "time": datetime.now()})
