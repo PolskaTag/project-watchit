@@ -40,7 +40,8 @@ while data != 'q':
     print('Received:' + data)
     if not data:
         break
-    elif data == 'person':
+    #Cooldown period, video will not record until program has been up for twenty seconds and twenty seconds since last recording.
+    elif data == 'person' and time.time() - start > 20:
         start = time.time()
         c.send(b"Record")
     data = c.recv(1024).decode()
