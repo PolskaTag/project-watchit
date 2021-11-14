@@ -1,6 +1,7 @@
 import { useHistory, Link } from 'react-router-dom'
 import React, { Component, PropTypes, useLayoutEffect } from 'react'
 import ReactDOM from 'react-dom';
+import { Redirect } from 'react-router-dom';
 import { useState, useEffect } from 'react'
 import "./style/configWatcher.css"
 import { Tabs } from 'antd';
@@ -66,10 +67,100 @@ function ConfigWatcher() {
             params: form[1].value
         }
 
+        const email = {
+            watcherName: form[0].value,
+            email: form[1].value
+        }
+
+        console.log(email);
+
         //using userID to add to users document
         try {
             axios.post("http://localhost:5000/uda/" + userId + "/add", newUda,
                 { headers: { 'x-access-token': localStorage.getItem("token") } })
+                .then(res => console.log(res));
+        } catch (err) {
+            console.log(err);
+        }
+
+        //using userID to add to users document
+        try {
+            axios.post("http://localhost:5000/notification", email)
+                .then(res => console.log(res));
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    function handleFormLog(e) {
+        e.preventDefault()
+        const form = e.target;
+        
+        const newUda = {
+            udaName: form[0].value,
+            script: "http://localhost:5000/logging",
+            params: form[1].value
+        }
+
+        const entry = {
+            watcherName: form[0].value,
+            statement: form[1].value
+        }
+
+        const file = 
+
+        console.log(entry);
+
+
+        //using userID to add to users document
+        try {
+            axios.post("http://localhost:5000/logging", entry)
+                .then(res => console.log(res));
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    function handleTestNotification(e) {
+        e.preventDefault()
+
+        console.log(e);
+        const form = e.target;
+        
+
+        const email = {
+            watcherName: form[0].value,
+            email: form[1].value
+        }
+
+        console.log(email);
+        
+        //using userID to add to users document
+        try {
+            axios.post("http://localhost:5000/notification", email)
+                .then(res => console.log(res));
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    function handleTestLog(e) {
+        e.preventDefault()
+
+        console.log(e);
+        const form = e.target;
+        
+
+        const entry = {
+            watcherName: form[0].value,
+            statement: form[1].value
+        }
+
+        console.log(entry);
+        
+        //using userID to add to users document
+        try {
+            axios.post("http://localhost:5000/logging", entry)
                 .then(res => console.log(res));
         } catch (err) {
             console.log(err);
@@ -154,6 +245,8 @@ function ConfigWatcher() {
     
         }, [])
 
+        
+
     return (
         <div className="Watcher-Container">
             <Navbar/>
@@ -162,11 +255,9 @@ function ConfigWatcher() {
             <h2>Select Watcher Target</h2><br />
 
             <div className="WatcherInfo">
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p><br />
+                        <select name="watcherTarget" id="watcherTarget" disabled>
+                            <option value="Select">Select...</option>
+                        </select><br /><br />
             </div>
             <div className="UDAInfo">
                 <h2>Select User Defined Actions</h2>
@@ -178,6 +269,8 @@ function ConfigWatcher() {
                         value={checkedOne}
                         checked={checkedOne}
                         onChange={handleChangeOne}
+                        disabled="disabled"
+                        checked
                     />
                     <label htmlFor="checkbox">Notifcations</label>
                 </div>
@@ -187,6 +280,7 @@ function ConfigWatcher() {
                         value={checkedTwo}
                         checked={checkedTwo}
                         onChange={handleChangeTwo}
+                        disabled="disabled"
                     />
                     <label htmlFor="checkbox">Snapshot</label>
                 </div>
@@ -196,6 +290,7 @@ function ConfigWatcher() {
                         value="{checkedThree}"
                         checked={checkedThree}
                         onChange={handleChangeThree}
+                        disabled="disabled"
                     />
                     <label htmlFor="checkbox">Sound</label>
                 </div>
@@ -205,6 +300,7 @@ function ConfigWatcher() {
                         value={checkedFour}
                         checked={checkedFour}
                         onChange={handleChangeFour}
+                        disabled="disabled"
                     />
                     <label htmlFor="checkbox">Lights</label>
                 </div>
@@ -221,10 +317,10 @@ function ConfigWatcher() {
                         <input type="text" id="watchername" name="watchername"></input><br /><br />
                         <label htmlFor="email">Email: </label>
                         <input type="text" id="email" name="email"></input><br /><br />
-                        <input type="submit" value="Submit"></input>
+                        <input type="submit" value="Submit"></input><br/><br/>
                     </form>
                     </TabPane>
-                    <TabPane tab="Snapshots" key="2">
+                    <TabPane tab="Snapshots" disabled key="2">
                     <form onSubmit={event => handleFormSnapshot(event)}>
                         <label htmlFor="watchername">Watcher Name: </label>
                         <label htmlFor="email">Email: </label>
@@ -232,7 +328,7 @@ function ConfigWatcher() {
                         <input type="submit" value="Submit"></input>
                     </form>
                     </TabPane>
-                    <TabPane tab="Sound" key="3">
+                    <TabPane tab="Sound" disabled key="3">
                     <form onSubmit={event => handleFormSound(event)}>
                         <label htmlFor="watchername">Watcher Name: </label>
                         <label htmlFor="sounds">Choose a sound: </label>
@@ -245,7 +341,7 @@ function ConfigWatcher() {
                         <input type="submit" value="Submit"></input>
                     </form>
                     </TabPane>
-                    <TabPane tab="Lights" key="4">
+                    <TabPane tab="Lights" disabled key="4">
                     <form onSubmit={event => handleFormLights(event)}>
                         <label htmlFor="watchername">Watcher Name: </label>
                         <label htmlFor="seconds">Seconds: </label>
@@ -253,7 +349,18 @@ function ConfigWatcher() {
                         <input type="submit" value="Submit"></input>
                     </form>
                     </TabPane>
+                    <TabPane tab="Log" key="5">
+                    <form onSubmit={event => handleFormLog(event)}>
+                        <label htmlFor="watchername">Watcher Name: </label>
+                        <input type="text" id="watchername" name="watchername"></input><br /><br />
+                        <label htmlFor="statement">Custom Statement: </label>
+                        <input type="text" id="statement" name="statement"></input><br /><br />
+                        <p>*Note: if statement is left blank, a default statement will be used</p>
+                        <input type="submit" value="Submit"></input>
+                    </form>
+                    </TabPane>
                 </Tabs><br /><br />
+                {!localStorage.getItem("token") ? <Redirect to="/login"></Redirect>: null}
         </div>
     )
 }
