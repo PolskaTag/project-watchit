@@ -7,42 +7,52 @@ import { useState, useEffect } from 'react'
 import { Tabs } from 'antd';
 import 'antd/lib/tabs/style/index.css';
 import axios from 'axios'
-import Select from 'react-select';
+// import Select from 'react-select';
+import { TextField, Select, MenuItem, Button} from '@material-ui/core';
+import * as Formik from "formik";
 
 function ObjectConfigurator(props) {
 
-    const availableLabels = ["person", "bicycle", "car", "motorbike"];
-
-    function createObjectUI(config){
-
-        const options = availableLabels.map((option) => {
+    const availableLabels = ["person", "bicycle", "car", "motorbike", "banana", "book", "bottle", "cell phone"];
+    const options = availableLabels.map((option) => {
             return (
                 {value: option, label: option}
             )
         })
 
-        return (
-            <>
-                <InputGroup className="">
-                    <InputGroup.Text id="objectLabel">Object Name</InputGroup.Text>
-                    {/* <FormControl
-                    placeholder="Object Label"
-                    aria-label="objectLabel"
-                    aria-describedby="objectLabel"
-                    defaultValue={config.object}
-                    /> */}
-                    <Select options={options} defaultInputValue={config}></Select>
-                </InputGroup>
-            </>
-        )
-    }
-
     return (
         <div className="my-3">
-            <Card>
+            <Card border="dark">
                 <Card.Body>Object Configuration</Card.Body>
             </Card>
-            {createObjectUI(props.config)}
+            <Formik.Formik
+            enableReinitialize
+            initialValues={{
+                object: props.object
+            }}>
+                {({values}) => (
+                    <Formik.Form>
+                        <Formik.Field
+                            name="object"
+                            type="select"
+                            variant="filled"
+                            style={{width: "100%"}}
+                            as={Select}>
+                            <MenuItem value="car">car</MenuItem>
+                            <MenuItem value="person">person</MenuItem>
+                            <MenuItem value="bike">bike</MenuItem>
+                        </Formik.Field>
+                        <Button 
+                            // disabled={isSubmitting}
+                            type="submit"
+                            variant="contained"
+                            style={{width: "100%"}}>
+                            Update Object
+                        </Button>
+                        {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
+                    </Formik.Form>
+                )}
+            </Formik.Formik>
         </div>
     )
 }

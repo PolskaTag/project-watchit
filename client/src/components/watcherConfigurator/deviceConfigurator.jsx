@@ -7,6 +7,8 @@ import { useState, useEffect } from 'react'
 import { Tabs } from 'antd';
 import 'antd/lib/tabs/style/index.css';
 import axios from 'axios'
+import * as Formik from "formik";
+import { TextField, Button } from '@material-ui/core';
 
 /**
  * deviceConfiguration is a child component of parent index.js
@@ -15,37 +17,54 @@ import axios from 'axios'
  */
 function DeviceConfigurator(props) {
     
-    function createDeviceUI(config){
+    const CreateDeviceUI = () => {
         return (
             <>
-                <InputGroup className="">
-                    <InputGroup.Text id="watcherName">Watcher Name</InputGroup.Text>
-                    <FormControl
+                <Formik.Field 
                     placeholder="Watcher Name"
-                    aria-label="watcherName"
-                    aria-describedby="watcherName"
-                    defaultValue={config.watcherName}
-                    />
-                </InputGroup>
-                <InputGroup className="">
-                    <InputGroup.Text id="ipaddress">IP Address</InputGroup.Text>
-                    <FormControl
-                    placeholder="0.0.0.0"
-                    aria-label="ipaddress"
-                    aria-describedby="ipaddress"
-                    defaultValue={config.ipAddress}
-                    />
-                </InputGroup>
+                    name="watcherName"
+                    type="input"
+                    variant="filled"
+                    label="Watcher Name"
+                    style={{width: "50%"}}
+                    as={TextField}/>
+                <Formik.Field 
+                    placeholder="IP Address"
+                    name="ipAddress"
+                    type="input"
+                    variant="filled"
+                    label="Ip Address"
+                    style={{width: "50%"}}
+                    as={TextField}/>
             </>
         )
     }
 
     return (
         <div className="my-3">
-            <Card>
-                <Card.Body>Device Configuration</Card.Body>
-            </Card>
-            {createDeviceUI(props.config)}
+            <Formik.Formik
+            enableReinitialize
+            initialValues={{...props.config}}
+            onSubmit={(data) => {
+                console.log(data);
+            }}>
+                {({values, isSubmitting}) => (
+                    <Formik.Form>
+                        <Card border="dark">
+                            <Card.Body>Device Configuration</Card.Body>
+                        </Card>
+                        <CreateDeviceUI config={props.config}></CreateDeviceUI>
+                        <Button 
+                            // disabled={isSubmitting}
+                            type="submit"
+                            variant="contained"
+                            style={{width: "100%"}}>
+                            Update Device
+                        </Button>
+                        {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
+                    </Formik.Form>
+                )}
+            </Formik.Formik>
         </div>
     )
 }

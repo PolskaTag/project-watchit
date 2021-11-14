@@ -5,28 +5,31 @@
 import { useEffect } from 'react';
 import {React, useState} from 'react';
 import {Card, InputGroup, FormControl, Form} from 'react-bootstrap';
-import Select from 'react-select';
+// import Select from 'react-select';
+import * as Formik from "formik";
+import {
+  TextField,
+  Button,
+  Checkbox,
+  Radio,
+  FormControlLabel,
+  Select,
+  MenuItem
+} from "@material-ui/core";
+import * as yup from "yup";
 
 function UDA(props) {
-  const [uda, setUda] = useState({
-    udaName: "",
-    udaType: "",
-    script: "",
-    params: {
-      "recipient": "",
-      "body": ""
-    }
-  })
 
-  const udaBaseUI = (uda) => {
+  // Makes our UI for the Form
+  const UdaBaseUI = ({uda}) => {
 
-    console.log(uda);
+    // console.log(uda);
 
   // This is the udaType specific UI payload
   let toRender = <></>;
   switch (uda.udaType) {
     case 'email':
-      toRender = emailUi(uda);
+      toRender = emailUi();
       break;
     case 'logging':
       toRender = loggingUi(uda);
@@ -53,44 +56,68 @@ function UDA(props) {
 
     return (
       <>
-        <Card>
-          <Card.Header>{uda.udaType ? uda.udaType : "UDA Type"}</Card.Header>
-        </Card>
-          <Form.Group>
-            <Form.Label>UDA Name</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Name of UDA"
-              defaultValue={uda.udaName} />
-          </Form.Group>
-          {toRender}
+      <Formik.Field
+              placeholder="UDA Name"
+              name="udaName"
+              type="input"
+              variant="filled"
+              label="UDA Name"
+              style={{width: "100%"}}
+              as={TextField}
+            />
+      {toRender}
       </>
     )
   }
 
     // Returns a emailUDA UI specific for emails
-    const emailUi = (uda) => {
-      console.log(uda);
-       if(uda.udaType === "email"){
-          return (
-            <>
-                <Form.Group>
-                  <Form.Label>Email Address</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="sample@extension.com"
-                    defaultValue={uda.params.recipient} />
-                </Form.Group>
-                <Form.Group>
-                  <Form.Label>Message Body</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder=""
-                    defaultValue={uda.params.body} />
-                </Form.Group>
-            </>
-          )
-       }
+    const emailUi = () => {
+      // console.log(uda);
+       
+        return(
+          <>
+          <div>
+            <Formik.Field
+              placeholder="Recipient Email Address"
+              name="params.recipient"
+              type="input"
+              variant="filled"
+              label="Email Address"
+              style={{width: "100%"}}
+              as={TextField}
+            />
+          </div>
+          <div>
+            <Formik.Field
+              placeholder="Message Body"
+              name="params.body"
+              type="input"
+              variant="filled"
+              label="Message Body"
+              style={{width: "100%"}}
+              as={TextField}
+            />
+          </div>
+          </>
+        )
+          // return (
+          //   <>
+          //       <Form.Group>
+          //         <Form.Label>Email Address</Form.Label>
+          //         <Form.Control
+          //           type="text"
+          //           placeholder="sample@extension.com"
+          //           defaultValue={uda.params.recipient} />
+          //       </Form.Group>
+          //       <Form.Group>
+          //         <Form.Label>Message Body</Form.Label>
+          //         <Form.Control
+          //           type="text"
+          //           placeholder=""
+          //           defaultValue={uda.params.body} />
+          //       </Form.Group>
+          //   </>
+          // )
     }
 
     // Returns a loggingUDA UI specific for emails
@@ -176,20 +203,44 @@ function UDA(props) {
 
     useEffect(() => {
       console.log("rerender");
-      setUda(props.config);
+      // setUda(props.config);
     })
 
     return (
-      <>
-        {udaBaseUI(uda)}
-      </>
+      <Formik.Formik
+      enableReinitialize
+      initialValues={{
+          udaName: props.config.udaName,
+          udaType: props.config.udaType,
+          script: props.config.script,
+          params: props.config.params
+        }}
+        onSubmit={(data, { setSubmitting }) => {
+          // setSubmitting(true);
+          console.log("submit ", data);
+          // setSubmitting(false);
+        }}>
+        {({ values, isSubmitting}) => (
+          <Formik.Form>
+            <Card border="dark">
+              <Card.Header>UDA Type: {values.udaType}</Card.Header>
+            </Card>
+            <UdaBaseUI uda={values}/>
+            <div>
+              <Button 
+                disabled={isSubmitting}
+                type="submit"
+                variant="contained"
+                style={{width: "100%"}}>
+                Update UDA
+              </Button>
+            </div>
+            {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
+          </Formik.Form>
+        )}
+      </Formik.Formik>
     )
 
 }
 
 export default UDA;
-
-/*<Form.Control     
-                type="number"
-                placeholder="Enter Video Duration e.g. 15secs"
-                defaultValue={uda.params.vieo} />*/
