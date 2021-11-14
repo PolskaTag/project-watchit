@@ -4,7 +4,7 @@ import boto3
 import os
 from datetime import datetime
 
-def upload_video(count):
+def upload_video(count, user="capstone"):
     """
     This function is called after video is finished recording. 
 
@@ -26,4 +26,6 @@ def upload_video(count):
 
     pr.upload_video(url, name)
 
-    pv.new_video(collection_name, "test123", {"videoID" : count, "url" : f"https://{os.environ.get('AWS_BUCKET_NAME')}.s3.amazonaws.com/{name}", "name": name, "time": datetime.now()})
+    pv.new_video(collection_name, user,
+                {"videoID" : count, "url" : f"https://{os.environ.get('AWS_BUCKET_NAME')}.s3.amazonaws.com/{name}",
+                 "name": name, "time": datetime.now()})
