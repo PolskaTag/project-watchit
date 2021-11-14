@@ -111,14 +111,6 @@ function ConfigWatcher() {
 
         console.log(entry);
 
-        //using userID to add to users document
-        try {
-            axios.post("http://localhost:5000/uda/" + userId + "/add", newUda,
-                { headers: { 'x-access-token': localStorage.getItem("token") } })
-                .then(res => console.log(res));
-        } catch (err) {
-            console.log(err);
-        }
 
         //using userID to add to users document
         try {
@@ -127,16 +119,6 @@ function ConfigWatcher() {
         } catch (err) {
             console.log(err);
         }
-
-        /*
-        try {
-            axios.post("http://localhost:5000/files", file)
-                .then(res => console.log(res));
-                console.log(file);
-        } catch (err) {
-            console.log(err);
-        }
-        */
     }
 
     function handleTestNotification(e) {

@@ -27,67 +27,13 @@ const s3 = new S3({
   secretAccessKey,
 });
 
-
-const initiatedTime = new Date().toLocaleString();
-const initiatedStatement = 'Log initiated @ ' + initiatedTime + "\r\n";
-let lineNum = 1;
-
-try {
-  const data = fs.appendFileSync('../server/uploads/watcher.log', initiatedStatement)
-  //file written successfully
-} catch (err) {
-  console.error(err)
-}
-
-router.route('/logging').post((req, res) => {
-
-  let output = lineNum + "" + "\r\n";
-
-  if (req.body.statement == "") {
-    output = "Watcher: " + req.body.watcherName + " triggered at " + Date().toLocaleString();
-  }
-  else {
-    output = req.body.statement + " at " + Date().toLocaleString();
-  }
-
-  
-  
-  try {
-    const data = fs.appendFileSync('../server/uploads/watcher.log', output)
-    //file written successfully
-  } catch (err) {
-    console.error(err)
-  }
-
-  output = "";
-  lineNum += 1;
-
-  const uploadParams = {
-    Bucket: bucketName,
-    Key: '',
-    Body: ''
-  };
+router.route('/retrieveLog').post((req, res) => {
 
   const file = "../server/uploads/watcher.log";
-  const fileStream = fs.createReadStream(file);
-  fileStream.on('error', function(err) {
-    console.log('File Error', err);
-  });
 
-  uploadParams.Body = fileStream;
   const path = require('path');
-  uploadParams.Key = path.basename(file);
 
-  s3.upload(uploadParams, (err, data) => {
-    if (err) {
-      console.log("Error uploading", err);
-    }
-    if (data) {
-      console.log("Upload Success", data.Location);
-    }
-  })
-
-  /*const downloadParams = {
+  const downloadParams = {
     Bucket: bucketName,
     Key: ''
   };
@@ -109,7 +55,7 @@ router.route('/logging').post((req, res) => {
     }
 
     
-  })*/
+  })
 });
 
 

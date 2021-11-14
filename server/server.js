@@ -22,6 +22,7 @@ app.use(require("./routes/uda"));
 app.use(require("./routes/notification"));
 app.use(require("./routes/watcher"));
 app.use(require("./routes/logging"));
+app.use(require("./routes/retrieveLog"));
 
 // Connecting to MongoDB
 mongoose
