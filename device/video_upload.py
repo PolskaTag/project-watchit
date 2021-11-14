@@ -30,5 +30,6 @@ def upload_video(count, currentUser):
 
     pr.upload_video(url, name)
 
-    pv.new_video(collection_name, currentUser, {"videoID": (count + int(currentUser.getMaxVideoIDNumber(
-    ))), "url": f"https://{os.environ.get('AWS_BUCKET_NAME')}.s3.amazonaws.com/{name}", "name": name, "time": datetime.now()})
+    pv.new_video(collection_name, user,
+                {"videoID" : count, "url" : f"https://{os.environ.get('AWS_BUCKET_NAME')}.s3.amazonaws.com/{user}/{name}",
+                 "name": name, "time": datetime.now()})

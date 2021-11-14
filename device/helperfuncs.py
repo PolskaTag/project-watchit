@@ -1,6 +1,7 @@
 import socket
 import cv2
 import requests
+import numpy as np
 
 def filesplit(filename):
     """
@@ -67,6 +68,20 @@ def framegrab():
 
     grabbed, frame = vs.read()
 
+def objectdetection(frame, model, socket, layers, LABELS, min_confidence=0.6):
+        blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (320, 320),
+        swapRB=True, crop=False)
+        model.setInput(blob)
+        layerOutputs = model.forward(layers)
+        for output in layerOutputs:
+            one_class = set()
+            for detection in output:
+                scores = detection[5:]
+                classID = np.argmax(scores)
+                confidence = scores[classID]
+                if confidence > min_confidence and classID not in one_class:
+                    one_class.add(classID)
+                    socket.send(LABELS[classID].encode())
 
 def main():
 
