@@ -1,5 +1,5 @@
 
-
+/*take user info and store them as label and value, so that we can easily use it with Select - only takes label and value arguments*/
 function MakeUserSelection(props){
     let newUsers = []
       let i;

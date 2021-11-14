@@ -30,14 +30,15 @@ const udaSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  udaType: {
+    type: String,
+    required: true,
+  },
   script: {
     type: String,
     required: true,
   },
-  params: {
-    type: Array,
-    required: true,
-  },
+  params: {},
 });
 
 const Uda = mongoose.model("uda", udaSchema);
