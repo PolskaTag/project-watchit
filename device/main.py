@@ -4,8 +4,9 @@ import helperfuncs as hf
 from listener import Listener
 import threading
 import video_upload as vu
+import os
 
-cap = cv2.VideoCapture(r'project-watchit\device\model\car_Trim.mp4')
+# cap = cv2.VideoCapture(r'project-watchit\device\model\car_Trim.mp4')
 
 # cap = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
 #                     encoding-name=(string)H264, payload=(int)96" ! rtph264depay ! h264parse ! nvh264dec ! \
@@ -29,8 +30,8 @@ if not LABELS:
 min_confidence = 0.6
 count = hf.video_count() + 1
 
-fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-writer = cv2.VideoWriter(f"output{count}.avi", fourcc, 30, (frame_width, frame_height))
+fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 30, (frame_width, frame_height))
 
 net = hf.setupmodel()
 ln = net.getUnconnectedOutLayersNames()
@@ -69,15 +70,20 @@ while True:
         #Can pass in user name after count
         threading.Thread(target=vu.upload_video, args=(count,)).start()
         count += 1
-        writer = cv2.VideoWriter(f"output{count}.avi", fourcc, 30, (frame_width, frame_height))
+        writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 30, (frame_width, frame_height))
         temp.record = False
         
+    #Push q to exit program
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
     frame_cnt += 1
 
 writer.release()
+
+# Remove extra file created by function
+os.remove(f'output{count}.mp4')
+
 temp.stop()
 s.close()
 cap.release()

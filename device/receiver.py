@@ -15,26 +15,14 @@ watchers = requests.get(f'{domain}/watchers/{userId}', headers={"x-access-token"
 functions = {"email" : hf.notifications}
 actions = defaultdict(list)
 
-# print()
-# print(f"userId: {userId}")
-# print(f"token: {token}")
-# print(f"domain: {domain}")
-# print(f'url: {domain}/watchers/{userId}')
-# print()
-# print(watchers.json())
-watcherId = watchers.json()
+# watcherId = watchers.json()
 # print(watcherId[0]['udaList'])
-counter = 0
-for udas in watcherId[0]['udaList']:
-    actions[f'banana{counter}'] = ((functions[udas['udaType']],(udas['params'])))
-    counter += 1
-# print(f"Parsed functions: {funcs}")
+# counter = 0
+# for udas in watcherId[0]['udaList']:
+#     actions[f'banana{counter}'] = ((functions[udas['udaType']],(udas['params'])))
+#     counter += 1
 
-# print(funcs[0][0](*funcs[0][1:]))
-
-print(actions)
-
-exit(1)
+# print(actions)
 
 host = '192.168.86.23'
 port = 8080

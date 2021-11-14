@@ -40,7 +40,7 @@ def recordvideo(stream, writer):
         cv2.imshow('frame', frame)
         cv2.waitKey(1)
         frames += 1
-    writer.relase()
+    writer.release()
 
 def setupmodel(cfg=r'C:\Users\ventu\Python\project-watchit\device\model\yolov4-p6.cfg'
                 , weights=r'C:\Users\ventu\Python\project-watchit\device\model\yolov4-p6.weights'):
