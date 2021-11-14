@@ -34,6 +34,7 @@ function DeviceConfigurator(props) {
                     type="input"
                     variant="filled"
                     label="Ip Address"
+                    InputProps={{readOnly: true}}
                     style={{width: "50%"}}
                     as={TextField}/>
             </>

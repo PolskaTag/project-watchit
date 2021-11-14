@@ -12,6 +12,8 @@ import UDA from "./UDA";
 import * as Formik from "formik";
 import './index.css';
 import Navbar from "../Navbar";
+import CreatableSelect from 'react-select/creatable';
+import { ActionMeta, OnChangeValue } from 'react-select';
 
 function WatcherConfigurator() {
 
@@ -25,11 +27,6 @@ function WatcherConfigurator() {
         udaList: [],
         options: {}
     })
-
-    const sampleUDAList = [
-        {udaName: "sample1", script:"notification",params: "sample params email", udaType:"email"},
-        {udaName: "sample2", script:"text",params: "sample params text", udaType:"text"},
-        {udaName: "sample3", script:"logging", params: "sample params logging", udaType:"logging"}]
 
     // Gets the array of user's watchers
     // Uses setState with the response from call.
@@ -51,17 +48,36 @@ function WatcherConfigurator() {
 
     // Creates a select component - Lets the user select their available watchers
     const selectWatcher = (watchers) => {
-        // onChange function for when something gets selected
-        const _onChange = (e) => {
-            setSelectedWatcher(e.value);
-        }
 
         // options for our select component
         const options = watchers.map((watcher) => {
             return {value: watcher, label: watcher.watcherName}
         })
+
+        // onChange function for when something gets selected
+        const _onChange = (
+            newValue,
+            actionMeta
+        ) => {
+            console.group("Input Changed");
+            console.log(newValue);
+            console.log(actionMeta);
+            console.groupEnd();
+            // setSelectedWatcher(e.value);
+        }
+
+        const handleInputChange = (inputValue, actionMeta) => {
+            console.group("Input Changed");
+            console.log(inputValue);
+            console.log(actionMeta);
+            console.groupEnd();
+        }
         return (
-            <Select options={options} onChange={_onChange}></Select>
+            <CreatableSelect
+                isClearable
+                options={options}
+                onChange={_onChange}
+                onInputChange={handleInputChange}/>
         )
     }
 

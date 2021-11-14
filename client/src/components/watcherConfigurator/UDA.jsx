@@ -91,7 +91,7 @@ function UDA(props) {
             <Formik.Field
               placeholder="Message Body"
               name="params.body"
-              type="input"
+              type="textArea"
               variant="filled"
               label="Message Body"
               style={{width: "100%"}}
