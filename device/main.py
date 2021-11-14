@@ -6,8 +6,6 @@ import threading
 import video_upload as vu
 import os
 
-# cap = cv2.VideoCapture(r'project-watchit\device\model\car_Trim.mp4')
-
 # cap = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
 #                     encoding-name=(string)H264, payload=(int)96" ! rtph264depay ! h264parse ! nvh264dec ! \
 #                         videoconvert ! appsink', cv2.CAP_GSTREAMER)
@@ -26,6 +24,7 @@ temp = Listener(s)
 LABELS = hf.filesplit(r'project-watchit\device\model\coco.txt')
 if not LABELS:
     exit(1)
+
 #Set confidence required to send message and count obtains the highest current videoID
 min_confidence = 0.6
 count = hf.video_count() + 1
@@ -80,8 +79,10 @@ while True:
     frame_cnt += 1
 
 writer.release()
+
 # Remove extra file created by function
 os.remove(f'output{count}.mp4')
+
 temp.stop()
 s.close()
 cap.release()
