@@ -19,8 +19,10 @@ router.get("/api/images/:key", (req, res) => {
 
 router.post("/api/images", upload.single("image"), async (req, res) => {
   const file = req.file;
+  console.log("req file: " + req.file);
+  //console.log('Current directory: ' + process.cwd());
   console.log("File uploaded from the frontend");
-  console.log(file);
+  console.log("File is: " + file);
   let result;
 
   // Try uploading the file to s3

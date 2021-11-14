@@ -7,31 +7,38 @@ import socket
 import errno
 import time
 
-# Setup sockets for communication with Pi
+#Setup sockets for communication with Pi
 s = hf.gen_sock()
 s.setblocking(False)
 if not s:
     print("Unable to establish connection.")
     exit(1)
 
-# Read in labels for model and assign them a color for bounding boxes.
+#Read in labels for model and assign them a color for bounding boxes. 
 LABELS = hf.filesplit(r'project-watchit\device\model\coco.txt')
 if not LABELS:
     exit(1)
 
 COLORS = np.random.randint(0, 255, size=(len(LABELS), 3),
-                           dtype="uint8")
+	dtype="uint8")
 
 min_confidence = 0.6
 min_threshold = 0.6
 
-net = cv2.dnn.readNetFromDarknet(r'C:\Users\ventu\Python\project-watchit\device\model\yolov4-p6.cfg',
-                                 r'C:\Users\ventu\Python\project-watchit\device\model\yolov4-p6.weights')
+net = cv2.dnn.readNetFromDarknet(r'C:\Users\ventu\Python\project-watchit\device\model\yolov4-p6.cfg', 
+                                r'C:\Users\ventu\Python\project-watchit\device\model\yolov4-p6.weights')
+
+net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
+net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
 ln = net.getUnconnectedOutLayersNames()
 
+# vs = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
+#                     payload=(int)96" ! rtpjpegdepay ! jpegdec ! videoconvert ! appsink' , cv2.CAP_GSTREAMER)
+
 vs = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
-                    payload=(int)96" ! rtpjpegdepay ! jpegdec ! videoconvert ! appsink', cv2.CAP_GSTREAMER)
+                    encoding-name=(string)H264, payload=(int)96" ! rtph264depay ! h264parse ! nvh264dec ! \
+                        videoconvert ! appsink', cv2.CAP_GSTREAMER)
 
 fourcc = cv2.VideoWriter_fourcc(*"MJPG")
 writer = cv2.VideoWriter("output.avi", fourcc, 10, (1280, 1280))
@@ -45,10 +52,10 @@ frame_count = 0
 end_time = time.time()
 
 # loop over frames from the video file stream
-while True and time.time() - end_time < 30:
+while True:
     # read the next frame from the file
-    (grabbed, frame) = vs.read()
-
+    grabbed, frame = vs.read()
+    
     # if the frame was not grabbed, then we have reached the end
     # of the stream
     if not grabbed:
@@ -67,7 +74,7 @@ while True and time.time() - end_time < 30:
         # pass of the YOLO object detector, giving us our bounding boxes
         # and associated probabilities
         blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (320, 320),
-                                     swapRB=True, crop=False)
+            swapRB=True, crop=False)
         net.setInput(blob)
         layerOutputs = net.forward(ln)
         # initialize our lists of detected bounding boxes, confidences,
@@ -87,8 +94,8 @@ while True and time.time() - end_time < 30:
                 # filter out weak predictions by ensuring the detected
                 # probability is greater than the minimum probability
                 if confidence > min_confidence:
-                    # send message to Pi
-                    s.send(LABELS[classIDs[i]].encode())
+                    #send message to Pi
+                    # s.send(LABELS[classIDs[i]].encode())
                     # scale the bounding box coordinates back relative to
                     # the size of the image, keeping in mind that YOLO
                     # actually returns the center (x, y)-coordinates of
@@ -107,8 +114,7 @@ while True and time.time() - end_time < 30:
                     classIDs.append(classID)
         # apply non-maxima suppression to suppress weak, overlapping
         # bounding boxes
-        idxs = cv2.dnn.NMSBoxes(
-            boxes, confidences, min_confidence, min_threshold)
+        idxs = cv2.dnn.NMSBoxes(boxes, confidences, min_confidence, min_threshold)
         # ensure at least one detection exists
         if len(idxs) > 0:
             # loop over the indexes we are keeping
@@ -121,9 +127,8 @@ while True and time.time() - end_time < 30:
                 cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
                 text = f"{LABELS[classIDs[i]]}: {confidences[i]:.4f}"
                 cv2.putText(frame, text, (x, y - 5),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
-                Thread(target=s.send, args=(
-                    LABELS[classIDs[i]].encode(), )).start()
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+                # Thread(target=s.send, args=(LABELS[classIDs[i]].encode(), )).start()
                 # if LABELS[classIDs[i]] == "banana":
                 #     Thread(target=send_message).start()
 
@@ -140,38 +145,40 @@ while True and time.time() - end_time < 30:
                 print(e)
                 exit(1)
         else:
-            # got a message, do something :)
+            # got a message, do something :)   
             # if not writer and msg == 'Record':
             if msg == 'Record':
                 record = True
+                
+    # if record:
+    #     start = time.time()
+    #     #Stay within this loop and read frames this way.
+    #     #If statemen within main function to check instead
+    #     while time.time() - start < 10:
+    #         ret, frame = vs.read()
+    #         writer.write(frame)
+    #         cv2.imshow('frame',frame)
+    #         cv2.waitKey(1)
+    #     record = False
 
-    if record:
-        start = time.time()
-        while time.time() - start < 10:
-            ret, frame = vs.read()
-            writer.write(frame)
-            cv2.imshow('frame', frame)
-            cv2.waitKey(1)
-        record = False
-
-    cv2.imshow('frame', frame)
+    cv2.imshow('frame',frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-s.close()
+# s.close()
 writer.release()
 vs.release()
 
-# if record:
-#     start = time.time()
-#     while time.time() - start < 10:
-#     # initialize our video writer
-#         fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-#         writer = cv2.VideoWriter("output.avi", fourcc, 10,
-#             (frame.shape[1], frame.shape[0]), True)
-#     # some information on processing single frame
-#     # write the output frame to disk
-#         cv2.imshow('frame',frame)
-#         writer.write(frame)
-#     record = False
+    # if record:
+    #     start = time.time()
+    #     while time.time() - start < 10:
+    #     # initialize our video writer
+    #         fourcc = cv2.VideoWriter_fourcc(*"MJPG")
+    #         writer = cv2.VideoWriter("output.avi", fourcc, 10,
+    #             (frame.shape[1], frame.shape[0]), True)
+    #     # some information on processing single frame
+    #     # write the output frame to disk
+    #         cv2.imshow('frame',frame)
+    #         writer.write(frame)
+    #     record = False
