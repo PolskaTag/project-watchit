@@ -14,20 +14,26 @@ import { useHistory, Link } from 'react-router-dom'
 import React, { Component, PropTypes, useLayoutEffect } from 'react'
 import ReactDOM from 'react-dom';
 import {Card, InputGroup} from 'react-bootstrap';
-import Select from 'react-select';
+// import Select from 'react-select';
 import { Redirect } from 'react-router-dom';
 import { useState, useEffect } from 'react'
 import { Tabs } from 'antd';
 import 'antd/lib/tabs/style/index.css';
 import axios from 'axios'
 import UDA from './UDA';
+import * as Formik from "formik";
+import { TextField, Select, MenuItem, Button } from '@material-ui/core';
 
 function ActionConfigurator(props) {
-    const [selectedUDA, setSelectedUDA] = useState({
-        udaName: "",
-        udaType: "",
-        script: "",
-        params: {}
+    const [selectedUDA, setSelectedUDA] = useState(() => {
+        return(
+            {
+            udaName: "",
+            udaType: "",
+            script: "",
+            params: {}
+            }
+        )
     });
 
     const options = props.config.map((option) => {
@@ -36,17 +42,71 @@ function ActionConfigurator(props) {
             )
         })
 
+    const getSelectOptions = (udaList) => {
+        let results = udaList.map((uda) => {
+            return(
+                {value: uda, label: uda.udaName}
+            )
+        })
+        return results;
+    }
+
     const _onChange = (e) => {
-            setSelectedUDA(e.value);
+        console.log(e);
+            setSelectedUDA((prevState) => {
+                return({...e.target.value});
+            });
         }
+
+    const buildMenuItems = (udaList) => (
+        udaList.map((uda) => {
+            return (
+                <MenuItem value={uda}>{uda.udaName}</MenuItem>
+            )
+        })
+    )
 
     return (
         <div className="my-3">
-            <Card>
+            <Card border="dark">
                 <Card.Body>Action Configuration</Card.Body>
             </Card>
-            <Select options={options} onChange={_onChange}></Select>
-            <UDA config={selectedUDA}/>
+            <Formik.Formik
+            enableReinitialize
+            initialValues={{
+                uda: "",
+                udaList: props.config ? props.config : []
+            }}>
+                {({values}) => (
+                    <Formik.Form>
+                        <Formik.Field
+                            name="uda"
+                            type="select"
+                            variant="filled"
+                            style={{width: "100%"}}
+                            as={Select}>
+                            {buildMenuItems(values.udaList)}
+                        </Formik.Field>
+                        <Button 
+                            // disabled={isSubmitting}
+                            // type="submit"
+                            variant="contained"
+                            style={{width: "50%"}}>
+                            Create
+                        </Button>
+                        <Button 
+                            // disabled={isSubmitting}
+                            // type="submit"
+                            variant="contained"
+                            style={{width: "50%"}}>
+                            Delete
+                        </Button>
+                        {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
+                        <UDA config={values.uda}/>
+                    </Formik.Form>
+                    
+                )}
+            </Formik.Formik>
         </div>
     )
 }
