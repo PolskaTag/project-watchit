@@ -6,7 +6,7 @@ import os
 from datetime import datetime
 
 def upload_video(count, currentUser):
-    #currentUser = LoggedInUser({"username": "capstone", "password": "apple123"})
+    
     """
     This function is called after video is finished recording. 
 
@@ -28,4 +28,4 @@ def upload_video(count, currentUser):
 
     pr.upload_video(url, name)
 
-    pv.new_video(collection_name, currentUser, {"videoID" : (count + int(currentUser.getMaxVideoIDNumber())), "url" : f"https://{os.environ.get('AWS_BUCKET_NAME')}.s3.amazonaws.com/{name}", "name": name, "time": datetime.now()})
+    pv.new_video(collection_name, currentUser, {"videoID" : count, "url" : f"https://{os.environ.get('AWS_BUCKET_NAME')}.s3.amazonaws.com/{name}", "name": name, "time": datetime.now()})

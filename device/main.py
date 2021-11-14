@@ -22,7 +22,7 @@ frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 
 start_count = 1
-count = int(currentUser.getMaxVideoIDNumber())
+count = int(currentUser.getMaxVideoIDNumber()) + 1 
 record = False
 start = time.time()
 

@@ -36,7 +36,7 @@ header = {"x-access-token": t}
 
 payload = {"username" : "test123"}
 username = "capstone"
-u = requests.get(f'http://localhost:5000/videoIDs/{username}',headers=header)
+u = requests.get(f'http://localhost:5000/videoIDs/{"test"}',headers=header)
 print(u.json())
 #this function returns videoID number found in the users db
 def maxVideoID(videoArry):

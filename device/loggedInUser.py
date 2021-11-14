@@ -6,9 +6,10 @@ class LoggedInUser:
     def __init__(self, user):
         self.name = user['username']
         self.user = user
+        self.token = self.getToken()
 
     #get user token, so we can access their db information
-    def __getToken(self):
+    def getToken(self):
         login = requests.post("http://localhost:5000/login", json=self.user)
         loginDetails = login.json()
         userToken = loginDetails["token"]
@@ -28,7 +29,7 @@ class LoggedInUser:
 
     #this function makes an api call to get user videos
     def __getUserVideos(self):
-        header = {"x-access-token": self.__getToken()}
+        header = {"x-access-token": self.token}
         response = requests.get(f'http://localhost:5000/videoIDs/{self.name}',headers=header)
         videos = response.json()
         return videos  
