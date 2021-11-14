@@ -1,7 +1,7 @@
 import socket
 
 # take the server name and port name
-host = '192.168.86.27'
+host = '192.168.86.23'
 port = 8080
 
 # create a socket at server side

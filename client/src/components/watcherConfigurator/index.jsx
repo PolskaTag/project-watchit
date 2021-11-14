@@ -1,9 +1,6 @@
-import { useHistory, Link } from 'react-router-dom'
 import React, { Component, PropTypes, useLayoutEffect } from 'react'
-import ReactDOM, { render } from 'react-dom';
-import { Redirect } from 'react-router-dom';
 import { useState, useEffect } from 'react'
-import {Form, Button} from 'react-bootstrap';
+import {Form, Button, Card} from 'react-bootstrap';
 import { Tabs } from 'antd';
 import 'antd/lib/tabs/style/index.css';
 import axios from 'axios'
@@ -12,6 +9,9 @@ import Select from 'react-select';
 import ObjectConfigurator from './objectConfigurator';
 import ActionConfigurator from './actionConfigurator';
 import UDA from "./UDA";
+import * as Formik from "formik";
+import './index.css';
+import Navbar from "../Navbar";
 
 function WatcherConfigurator() {
 
@@ -37,6 +37,7 @@ function WatcherConfigurator() {
         axios.get("http://localhost:5000/watchers/" + userId,
         {"headers": {"x-access-token": localStorage.getItem("token")}})
         .then((res) => {
+            console.log(res.data);
             setWatchers(res.data);
         })
     }
@@ -67,6 +68,7 @@ function WatcherConfigurator() {
     const handleSave = (e) => {
         e.preventDefault();
         console.log(e);
+        console.log(e.target[0]);
     }
 
     useEffect(() => {
@@ -86,13 +88,27 @@ function WatcherConfigurator() {
     }, [])
 
     return (
-        <Form onSubmit={handleSave}>
-            {username !== "" ? selectWatcher(watchers) : null}
-            <DeviceConfigurator config={selectedWatcher}/>
-            <ObjectConfigurator config={selectedWatcher.object}/>
-            <ActionConfigurator config={selectedWatcher.udaList}/>
-            <Button type="submit">Save</Button>
-        </Form>
+        <div className="container">
+            <div className="watcherConfig-content">
+                <Form onSubmit={handleSave}>
+                <Card className="text-center" border="dark">
+                    <Card.Body>
+                        <Card.Title>Watcher Configuration</Card.Title>
+                        <Card.Text>
+                            Configure your watcher profile, or create a new one!
+                        </Card.Text>
+                    </Card.Body>
+                </Card>
+                {username !== "" ? selectWatcher(watchers) : null}
+                <Button variant="primary">Create</Button>
+                <Button variant="danger">Delete</Button>
+                <DeviceConfigurator config={selectedWatcher}/>
+                <ObjectConfigurator object={selectedWatcher.object}/>
+                <ActionConfigurator config={selectedWatcher.udaList}/>
+                <Button type="submit">Save</Button>
+                </Form>
+            </div>
+        </div>
     )
 }
 export default WatcherConfigurator;
