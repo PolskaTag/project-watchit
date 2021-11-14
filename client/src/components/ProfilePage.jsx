@@ -107,6 +107,27 @@ function ProfilePage() {
       return str.charAt(0).toUpperCase() + str.slice(1);
    }
 
+   function handleRetrieve(e) {
+    e.preventDefault()
+    const form = e.target;
+
+    const entry = {
+
+    }
+
+    const file = 
+
+    console.log(entry);
+
+    //using userID to add to users document
+    try {
+        axios.post("http://localhost:5000/retrieveLog", entry)
+            .then(res => console.log(res));
+    } catch (err) {
+        console.log(err);
+    }
+}
+
   return (
     <div className="profile-container">
         <Navbar/>
@@ -126,6 +147,12 @@ function ProfilePage() {
             <input required type="text" class="form-control" id="udaName" placeholder="UDA Name"/>
             <input required type="text" class="form-control" id="Script" placeholder="Script"/>
             <input required type="text" class="form-control" id="Params" placeholder="Params"/>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+          </form><br/><br/>
+          <h1>Retrieve Logs</h1>
+          <form onSubmit={event => handleRetrieve(event)}>
+            <div class="form-group">
             <button type="submit" class="btn btn-primary">Submit</button>
           </div>
           </form>
