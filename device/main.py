@@ -6,6 +6,8 @@ from listener import Listener
 import threading
 import video_upload as vu
 
+cap = cv2.VideoCapture(r'project-watchit\device\model\car_Trim.mp4')
+
 # cap = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
 #                     encoding-name=(string)H264, payload=(int)96" ! rtph264depay ! h264parse ! nvh264dec ! \
 #                         videoconvert ! appsink', cv2.CAP_GSTREAMER)
@@ -63,7 +65,7 @@ while True:
 
     if temp.record:
         hf.recordvideo(cap, writer)
-        threading.Thread(target=vu.upload_video, args=(count,)).start()
+        # threading.Thread(target=vu.upload_video, args=(count,)).start()
         count += 1
         writer = cv2.VideoWriter(f"output{count}.avi", fourcc, 30, (frame_width, frame_height))
         temp.record = False

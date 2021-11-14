@@ -1,5 +1,5 @@
 import socket
-from time import sleep
+import time
 import helperfuncs as hf
 from collections import defaultdict
 import json
@@ -12,6 +12,9 @@ domain = 'http://34.201.36.147:5000'
 
 watchers = requests.get(f'{domain}/watchers/{userId}', headers={"x-access-token": token})
 
+functions = {"email" : hf.notifications}
+actions = defaultdict(list)
+
 # print()
 # print(f"userId: {userId}")
 # print(f"token: {token}")
@@ -19,12 +22,19 @@ watchers = requests.get(f'{domain}/watchers/{userId}', headers={"x-access-token"
 # print(f'url: {domain}/watchers/{userId}')
 # print()
 # print(watchers.json())
-# watcherId = watchers.json()
+watcherId = watchers.json()
 # print(watcherId[0]['udaList'])
-# funcs = []
-# for udas in watcherId[0]['udaList']:
-#     funcs.append(udas['udaType'])
+counter = 0
+for udas in watcherId[0]['udaList']:
+    actions[f'banana{counter}'] = ((functions[udas['udaType']],(udas['params'])))
+    counter += 1
 # print(f"Parsed functions: {funcs}")
+
+# print(funcs[0][0](*funcs[0][1:]))
+
+print(actions)
+
+exit(1)
 
 host = '192.168.86.23'
 port = 8080
@@ -36,11 +46,14 @@ c, addr = s.accept()
 
 data = c.recv(1024).decode()
 
+start = time.time()
+
 while data != 'q':
     print('Received:' + data)
     if not data:
         break
     elif data == 'person':
+        start = time.time()
         c.send(b"Record")
     data = c.recv(1024).decode()
 
