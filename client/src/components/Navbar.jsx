@@ -44,7 +44,7 @@ function Navbar() {
                     <li className="navItem"><Link to="/ProfilePage">ProfilePage</Link></li>
                     <li className="navItem"><Link to="/VideoList">VideoList</Link></li>
                     <li className="navItem"><Link to="/Pictures">Pictures</Link></li>
-                    <li className="navItem"><Link to="/ConfigWatcher">ConfigureWatcher</Link></li>
+                    <li className="navItem"><Link to="/watcherConfigurator">Configure Watcher</Link></li>
                 </ul>
             </div>
     )

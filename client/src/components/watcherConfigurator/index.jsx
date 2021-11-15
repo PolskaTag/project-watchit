@@ -132,6 +132,7 @@ function WatcherConfigurator() {
 
     return (
         <div className="container">
+            <Navbar/>
             <div className="watcherConfig-content">
                 <Form onSubmit={handleSave}>
                 <Card className="text-center" border="dark">
