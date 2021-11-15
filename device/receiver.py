@@ -14,10 +14,16 @@ domain = 'http://34.201.36.147:5000'
 
 watchers = requests.get(f'{domain}/watchers/{userId}', headers={"x-access-token": token})
 
-# functions = {"email" : hf.notifications}
+watcherId = watchers.json()
+
+
+functions = {"email" : pf.runEmailUda}
 actions = defaultdict(list)
-actions['person'].append(pf.intruder)
-# watcherId = watchers.json()
+actions['person'].append((pf.intruder,))
+
+actions[watcherId[0]['object']].append((functions[watcherId[0]['udaList'][0]['udaType']],watcherId[0]['udaList'][0]['params']))
+
+
 # print(watcherId[0]['udaList'])
 # counter = 0
 # for udas in watcherId[0]['udaList']:
@@ -25,6 +31,7 @@ actions['person'].append(pf.intruder)
 #     counter += 1
 
 # print(actions)
+
 
 host = '192.168.86.23'
 port = 8080
@@ -41,7 +48,8 @@ data = c.recv(1024).decode()
 while data != 'q':
     if data == 'person':
         c.send('Record')
-        actions['persion'][0]()
+        for func in actions['person']:
+            func[0](*func[1:])
         time.sleep(10)
     elif not data:
         break
