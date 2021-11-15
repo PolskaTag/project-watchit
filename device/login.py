@@ -31,20 +31,20 @@ while connected is False:
 watchers = requests.get(f'{domain}/watchers/{userId}', headers={"x-access-token": token})
 #print(watchers.status_code)
 
+watcherId = watchers.json()
+
 functions = {"log" : pf.runLogsUda}
 actions = defaultdict(list)
 
+actions[watcherId[2]['object']].append((functions[watcherId[2]['udaList'][0]['udaType']],watcherId[2]['udaList']))
 
 
-watcherId = watchers.json()
 #print(watcherId)
 
 for entry in range(len(watcherId)):
     print ("(",entry,")", watcherId[entry]["watcherName"])
     
 watcherSelected = int(input("Select the Watcher Configuration to use: "))
-
-actions[watcherId[watcherSelected]['object']].append((functions[watcherId[watcherSelected]['udaList'][0]['udaType']],watcherId[watcherSelected]['udaList']]))
 
 print(watcherId[watcherSelected]["watcherName"], "has been selected.")
 
@@ -58,7 +58,7 @@ print (label)
 # print(funcs[0][0](*funcs[0][1:]))
 
 
-host = '192.168.1.28'
+host = '192.168.1.36'
 port = 8080
 s = socket.socket()
 s.bind((host, port))
@@ -70,18 +70,20 @@ data = c.recv(1024).decode()
 
 start = time.time()
 
-while data != 'q' and time.time() - start > 20:
-    #print('Received:' + data)
+while data != 'q':
     if data == label:
-        c.send(b"Record")
+        c.send(b'Record')
         for func in actions[label]:
             func[0](*func[1:])
+        time.sleep(10)
     elif not data:
         break
+    #Cooldown period, video will not record until program has been up for twenty seconds and twenty seconds since last recording.
+    # elif data == 'person' and time.time() - start > 20:
         start = time.time()
         c.send(b"Record")
-        for func in actions[label]:
-            func[0](*func[1:])
+        actions['person'][0]()
     data = c.recv(1024).decode()
 
 c.close()
+
