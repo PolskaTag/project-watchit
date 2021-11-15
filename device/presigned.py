@@ -44,25 +44,3 @@ def upload_video(url, filename):
     print(response.text)
     return None
 
-# import boto3
-# import requests
-# import ntpath
-# from presigned import generate_presigned_url
-
-# s3_client = boto3.client('s3') 
-
-# filename = 'project-watchit/device/tempobject.txt'
-
-# url = generate_presigned_url(s3_client, 'put_object', {'Bucket': 'cis4398-watchit', 'Key': ntpath.basename(filename)}, 600)
-
-# print("Using the Requests package to send a request to the URL.")
-# response = None
-
-# print("Putting data to the URL.")
-# with open(filename, 'r') as object_file:
-#     object_text = object_file.read()
-# response = requests.put(url, data=object_text)
-
-# print("Got response:")
-# print(f"Status: {response.status_code}")
-# print(response.text)

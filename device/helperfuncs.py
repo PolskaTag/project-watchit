@@ -1,12 +1,13 @@
 import socket
 import cv2
 import requests
+import numpy as np
 
 def filesplit(filename):
     """
     Read in a text file and return a list of objects that model can identify.
     """
-    with open(r'project-watchit\device\model\coco.txt', 'r') as f:
+    with open(filename, 'r') as f:
         LABELS = f.read().split('\n')
 
     if not f:
@@ -19,18 +20,25 @@ def userdata(url="http://34.201.36.147:5000", username="capstone", password="app
                   json={"username": username, "password": password})
     return r.json()
 
-def video_count(url="http://34.201.36.147:5000"):
+def video_count(url="http://34.201.36.147:5000", username="capstone"):
     """
     Find max video count so we do not overwrite existing videos.
     """
     header_params = {"x-access-token": userdata()['token']}
-    video_lst = requests.get(f"{url}/videos", headers=header_params).json()
+    video_lst = requests.get(f"{url}/videoIDs/{username}", headers=header_params).json()
+    # video_lst = requests.get(f"{url}/videos", headers=header_params).json()
+
+    # video_lst = requests.get(f"{url}/videoIDs/{username}", headers=header_params).json()
     max = 0
     for video in video_lst[0]:
         videoID = int(video['videoID'])
         if videoID > max:
             max = videoID
     return max
+
+def mongovideocount():
+
+    return None
 
 def recordvideo(stream, writer):
     frames = 0
@@ -67,6 +75,20 @@ def framegrab():
 
     grabbed, frame = vs.read()
 
+def objectdetection(frame, model, socket, layers, LABELS, min_confidence=0.6):
+        blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (320, 320),
+        swapRB=True, crop=False)
+        model.setInput(blob)
+        layerOutputs = model.forward(layers)
+        for output in layerOutputs:
+            one_class = set()
+            for detection in output:
+                scores = detection[5:]
+                classID = np.argmax(scores)
+                confidence = scores[classID]
+                if confidence > min_confidence and classID not in one_class:
+                    one_class.add(classID)
+                    socket.send(LABELS[classID].encode())
 
 def main():
 

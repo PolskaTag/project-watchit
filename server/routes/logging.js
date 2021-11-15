@@ -47,7 +47,7 @@ router.route('/logging').post((req, res) => {
     output = "Watcher: " + req.body.watcherName + " triggered at " + Date().toLocaleString();
   }
   else {
-    output = req.body.statement + " at " + Date().toLocaleString();
+    output = "Watcher: " + req.body.watcherName + " triggered at " + Date().toLocaleString();
   }
 
   
