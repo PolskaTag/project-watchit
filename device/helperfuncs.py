@@ -7,7 +7,7 @@ def filesplit(filename):
     """
     Read in a text file and return a list of objects that model can identify.
     """
-    with open(r'project-watchit\device\model\coco.txt', 'r') as f:
+    with open(filename, 'r') as f:
         LABELS = f.read().split('\n')
 
     if not f:
@@ -25,7 +25,9 @@ def video_count(url="http://34.201.36.147:5000", username="capstone"):
     Find max video count so we do not overwrite existing videos.
     """
     header_params = {"x-access-token": userdata()['token']}
-    video_lst = requests.get(f"{url}/videoIDs/{username}", headers=header_params).json()
+    video_lst = requests.get(f"{url}/videos", headers=header_params).json()
+
+    # video_lst = requests.get(f"{url}/videoIDs/{username}", headers=header_params).json()
     max = 0
     for video in video_lst[0]:
         videoID = int(video['videoID'])

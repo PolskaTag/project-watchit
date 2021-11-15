@@ -22,7 +22,7 @@ s = hf.startup_socket()
 temp = Listener(s)
 
 # Generate the labels associated with object
-LABELS = hf.filesplit(r'project-watchit\device\model\coco.txt')
+LABELS = hf.filesplit(r'C:\Users\ventu\Python\project-watchit\device\model\coco.txt')
 if not LABELS:
     exit(1)
 
