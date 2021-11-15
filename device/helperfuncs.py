@@ -20,18 +20,22 @@ def userdata(url="http://34.201.36.147:5000", username="capstone", password="app
                   json={"username": username, "password": password})
     return r.json()
 
-def video_count(url="http://34.201.36.147:5000"):
+def video_count(url="http://34.201.36.147:5000", username="capstone"):
     """
     Find max video count so we do not overwrite existing videos.
     """
     header_params = {"x-access-token": userdata()['token']}
-    video_lst = requests.get(f"{url}/videos", headers=header_params).json()
+    video_lst = requests.get(f"{url}/videoIDs/{username}", headers=header_params).json()
     max = 0
     for video in video_lst[0]:
         videoID = int(video['videoID'])
         if videoID > max:
             max = videoID
     return max
+
+def mongovideocount():
+
+    return None
 
 def recordvideo(stream, writer):
     frames = 0

@@ -5,6 +5,7 @@ from listener import Listener
 import threading
 import video_upload as vu
 import os
+import time
 
 # cap = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
 #                     encoding-name=(string)H264, payload=(int)96" ! rtph264depay ! h264parse ! nvh264dec ! \
@@ -52,8 +53,8 @@ while True:
             swapRB=True, crop=False)
         net.setInput(blob)
         layerOutputs = net.forward(ln)
+        one_class = set()
         for output in layerOutputs:
-            one_class = set()
             for detection in output:
                 scores = detection[5:]
                 classID = np.argmax(scores)
@@ -78,6 +79,7 @@ while True:
 
     frame_cnt += 1
 
+s.send(('q').encode())
 writer.release()
 
 # Remove extra file created by function
