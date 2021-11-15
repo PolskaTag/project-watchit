@@ -28,4 +28,4 @@ WatchIT connects camera footage with object detection/recognition to give you th
 
 3. CMAKE
 * Create build folder, this will be the location where Visual Studio will build OpenCV
-[CMAKE Location](readME/CMake Folder.png)
+[CMAKE Location](readME/CMakeFolder.png)
