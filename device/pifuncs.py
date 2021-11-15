@@ -14,7 +14,7 @@ def lights():
 
 def runLogsUda(dictionary):
     domain = 'http://34.201.36.147:5000'
-    requests.post(f'{domain}/logging', json={"statement": dictionary['statement'], "watcherName": dictionary['body']})
+    requests.post(f'{domain}/logging')
     
 def runVideoUDA():
     return None

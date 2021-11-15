@@ -31,8 +31,10 @@ while connected is False:
 watchers = requests.get(f'{domain}/watchers/{userId}', headers={"x-access-token": token})
 #print(watchers.status_code)
 
-functions = {"log" : pf.runLogsUda,"video" : pf.runVideoUDA}
+functions = {"log" : pf.runLogsUda}
 actions = defaultdict(list)
+
+
 
 watcherId = watchers.json()
 #print(watcherId)
@@ -41,6 +43,8 @@ for entry in range(len(watcherId)):
     print ("(",entry,")", watcherId[entry]["watcherName"])
     
 watcherSelected = int(input("Select the Watcher Configuration to use: "))
+
+actions[watcherId[watcherSelected]['object']].append((functions[watcherId[watcherSelected]['udaList'][0]['udaType']],watcherId[watcherSelected]['udaList']]))
 
 print(watcherId[watcherSelected]["watcherName"], "has been selected.")
 
@@ -67,10 +71,13 @@ data = c.recv(1024).decode()
 start = time.time()
 
 while data != 'q' and time.time() - start > 20:
-    print('Received:' + data)
-    if not data:
+    #print('Received:' + data)
+    if data == label:
+        c.send(b"Record")
+        for func in actions[label]:
+            func[0](*func[1:])
+    elif not data:
         break
-    elif data == label:
         start = time.time()
         c.send(b"Record")
         for func in actions[label]:
