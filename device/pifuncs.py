@@ -11,3 +11,7 @@ def intruder(filepath='device/resources/sounds/intruder.mp3'):
 
 def lights():
     return None
+
+def dofuncts(function_list):
+    for func in function_list:
+        func[0](*func[1:])
