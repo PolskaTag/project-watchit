@@ -6,7 +6,7 @@ from collections import defaultdict
 import json
 import requests
 import getpass
-
+import threading
 
 domain = 'http://34.201.36.147:5000'
 
@@ -25,7 +25,7 @@ while connected is False:
     userId = login.json()['userId']
     
     if(token is not None):
-        connected = True
+         connected = True
     
 
 watchers = requests.get(f'{domain}/watchers/{userId}', headers={"x-access-token": token})
@@ -73,16 +73,9 @@ start = time.time()
 while data != 'q':
     if data == label:
         c.send(b'Record')
-        for func in actions[label]:
-            func[0](*func[1:])
-        time.sleep(10)
+        threading.Thread(target=pf.dofuncts, args=(actions[label],)).start()
     elif not data:
         break
-    #Cooldown period, video will not record until program has been up for twenty seconds and twenty seconds since last recording.
-    # elif data == 'person' and time.time() - start > 20:
-        start = time.time()
-        c.send(b"Record")
-        actions['person'][0]()
     data = c.recv(1024).decode()
 
 c.close()
