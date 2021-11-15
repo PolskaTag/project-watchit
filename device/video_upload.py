@@ -7,7 +7,7 @@ from datetime import datetime
 
 
 def upload_video(count, currentUser):
-    #currentUser = LoggedInUser({"username": "capstone", "password": "apple123"})
+    
     """
     This function is called after video is finished recording. 
 
