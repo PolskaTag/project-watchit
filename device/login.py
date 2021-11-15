@@ -1,7 +1,7 @@
 import socket
 import time
 import helperfuncs as hf
-import pifuncs as pif
+import pifuncs as pf
 from collections import defaultdict
 import json
 import requests
@@ -31,13 +31,11 @@ while connected is False:
 watchers = requests.get(f'{domain}/watchers/{userId}', headers={"x-access-token": token})
 #print(watchers.status_code)
 
-#functions = {"email" : hf.notifications}
-functions = {}
-#actions = defaultdict(list)
-
+functions = {"log" : pf.runLogsUda,"video" : pf.runVideoUDA}
+actions = defaultdict(list)
 
 watcherId = watchers.json()
-# print(watcherId)
+#print(watcherId)
 
 for entry in range(len(watcherId)):
     print ("(",entry,")", watcherId[entry]["watcherName"])
@@ -49,15 +47,12 @@ print(watcherId[watcherSelected]["watcherName"], "has been selected.")
 label = watcherId[watcherSelected]["object"]
 print (label)
 
-counter = 0
-for udas in watcherId[watcherSelected]['udaList']:
-    actions[f'banana{counter}'] = ((functions[udas['udaType']],(udas['params'])))
-    counter += 1
-print(f"Parsed functions: {funcs}")
-
+#for udas in watcherId[watcherSelected]['udaList']:
+#    actions[label].append((functions[udas['udaType']],(udas['params'])))
+    
+    
 # print(funcs[0][0](*funcs[0][1:]))
 
-exit(1)
 
 host = '192.168.1.28'
 port = 8080
@@ -78,6 +73,8 @@ while data != 'q' and time.time() - start > 20:
     elif data == label:
         start = time.time()
         c.send(b"Record")
+        for func in actions[label]:
+            func[0](*func[1:])
     data = c.recv(1024).decode()
 
 c.close()

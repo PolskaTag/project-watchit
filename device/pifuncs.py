@@ -11,3 +11,10 @@ def intruder(filepath='device/resources/sounds/intruder.mp3'):
 
 def lights():
     return None
+
+def runLogsUda(dictionary):
+    domain = 'http://34.201.36.147:5000'
+    requests.post(f'{domain}/logging', json={"statement": dictionary['statement'], "watcherName": dictionary['body']})
+    
+def runVideoUDA():
+    return None
