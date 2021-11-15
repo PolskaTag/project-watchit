@@ -4,6 +4,7 @@ import helperfuncs as hf
 from collections import defaultdict
 import json
 import requests
+import threading
 
 temp = hf.userdata()
 userId = temp['userId']
@@ -44,6 +45,7 @@ while data != 'q':
     elif data == 'person' and time.time() - start > 20:
         start = time.time()
         c.send(b"Record")
+
     data = c.recv(1024).decode()
 
 c.close()
