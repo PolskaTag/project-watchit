@@ -84,7 +84,8 @@ function ActionConfigurator(props) {
             enableReinitialize
             initialValues={{
                 uda: "",
-                udaList: props.config ? props.config : []
+                udaList: props.config ? props.config : [],
+                watcher: props.config
             }}>
                 {({values}) => (
                     // <Formik.Form>
@@ -102,7 +103,9 @@ function ActionConfigurator(props) {
                             // type="submit"
                             variant="contained"
                             style={{width: "50%"}}
-                            onClick={() => {values.udaList.push({udaName: "NewUDA"})}}
+                            onClick={() => {
+                                values.udaList.push({udaName: "NewUDA"})
+                            }}
                             >
                             Create
                         </Button>
@@ -115,7 +118,7 @@ function ActionConfigurator(props) {
                             style={{width: "50%"}}>
                             Delete
                         </Button>
-                        <pre>{JSON.stringify(values, null, 2)}</pre>
+                        {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
                         <UDA config={values.uda}/>
                     </>
                     // </Formik.Form>

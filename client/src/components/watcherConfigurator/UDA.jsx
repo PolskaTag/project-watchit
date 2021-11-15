@@ -206,9 +206,9 @@ function UDA(props) {
           params: props.config.params
         }}
         onSubmit={(data, { setSubmitting }) => {
-          // setSubmitting(true);
+          setSubmitting(true);
           console.log("submit ", data);
-          // setSubmitting(false);
+          setSubmitting(false);
         }}>
         {({ values, isSubmitting}) => (
           // <Formik.Form>
@@ -219,13 +219,13 @@ function UDA(props) {
             <UdaBaseUI uda={values}/>
             <div>
               <Button 
+                disabled={isSubmitting}
                 variant="contained"
-
                 style={{width: "100%"}}>
                 Update UDA
               </Button>
             </div>
-            <pre>{JSON.stringify(values, null, 2)}</pre>
+            {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
           </>
           // </Formik.Form>
         )}

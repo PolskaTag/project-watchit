@@ -111,7 +111,7 @@ function WatcherConfigurator() {
     const handleSave = (e) => {
         e.preventDefault();
         console.log(e);
-        console.log(e.target[0]);
+        // console.log(e.target[0]);
     }
 
     useEffect(() => {
@@ -143,10 +143,11 @@ function WatcherConfigurator() {
                     </Card.Body>
                 </Card>
                 {username !== "" ? selectWatcher(watchers) : null}
-                <Button variant="primary">Create</Button>
-                <Button variant="danger">Delete</Button>
+                {/* <Button variant="primary">Create</Button> */}
+                {/* <Button variant="danger">Delete</Button> */}
+                {/* <pre>{JSON.stringify(selectedWatcher, null, 2)}</pre> */}
                 <DeviceConfigurator config={selectedWatcher}/>
-                <ObjectConfigurator object={selectedWatcher.object}/>
+                <ObjectConfigurator config={selectedWatcher}/>
                 <ActionConfigurator config={selectedWatcher.udaList}/>
                 <Button type="submit">Save</Button>
                 </Form>
