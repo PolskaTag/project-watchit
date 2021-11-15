@@ -39,7 +39,7 @@ data = c.recv(1024).decode()
 # start = time.time()
 
 while data != 'q':
-    if data == 'persion':
+    if data == 'person':
         c.send('Record')
         actions['persion'][0]()
         time.sleep(10)
