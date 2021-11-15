@@ -36,14 +36,17 @@ c, addr = s.accept()
 
 data = c.recv(1024).decode()
 
-start = time.time()
+# start = time.time()
 
 while data != 'q':
-    print('Received:' + data)
-    if not data:
+    if data == 'person':
+        c.send('Record')
+        actions['persion'][0]()
+        time.sleep(10)
+    elif not data:
         break
     #Cooldown period, video will not record until program has been up for twenty seconds and twenty seconds since last recording.
-    elif data == 'person' and time.time() - start > 20:
+    # elif data == 'person' and time.time() - start > 20:
         start = time.time()
         c.send(b"Record")
         actions['person'][0]()
