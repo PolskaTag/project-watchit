@@ -107,8 +107,6 @@ function ConfigWatcher() {
             statement: form[1].value
         }
 
-        const file = 
-
         console.log(entry);
 
 
