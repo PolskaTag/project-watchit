@@ -43,7 +43,12 @@ WatchIT connects camera footage with object detection/recognition to give you th
 
 **4.Visual Studio**
 * Find **OpenCV.sln** located in the build folder and open it with Visual Studio
-* Change debug mode to release mode ![release](readME/Gstreamer.png)
+* Change debug mode to release mode ![release](readME/vsrelease.png)
 * Expand the CMakeTarget folder along the right side
 * Right click **ALL_BUILD** and build
 * After completion right click **INSTALL** and build
+
+**5.Verify**
+* import CV2
+* cv2.__version__
+* cv2.cuda.getCudaEnabledDeviceCount()
