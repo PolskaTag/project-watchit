@@ -115,7 +115,7 @@ function VideoList() {
         
            setUserID(data.id)
         // Make a request for the videos
-        axios.get(`http://localhost:5000/videoIDs/${data.username}`, {headers: {"x-access-token": localStorage.getItem("token")}})
+        axios.get("http://localhost:5000/videos", {headers: {"x-access-token": localStorage.getItem("token")}})
           .then((res) => {
             
             //console.log(res.data)
