@@ -3,6 +3,7 @@ import time
 import helperfuncs as hf
 from collections import defaultdict
 import json
+import pifuncs as pf
 import requests
 
 temp = hf.userdata()
@@ -13,8 +14,8 @@ domain = 'http://34.201.36.147:5000'
 watchers = requests.get(f'{domain}/watchers/{userId}', headers={"x-access-token": token})
 
 # functions = {"email" : hf.notifications}
-# actions = defaultdict(list)
-
+actions = defaultdict(list)
+actions['person'].append(pf.intruder)
 # watcherId = watchers.json()
 # print(watcherId[0]['udaList'])
 # counter = 0
@@ -44,6 +45,7 @@ while data != 'q':
     elif data == 'person' and time.time() - start > 20:
         start = time.time()
         c.send(b"Record")
+        actions['person'][0]()
     data = c.recv(1024).decode()
 
 c.close()
