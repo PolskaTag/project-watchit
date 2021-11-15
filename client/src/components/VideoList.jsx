@@ -141,6 +141,7 @@ function VideoList() {
       <div className="urlList" >
         {videos ? <div>{recordingList}</div>: null}
       </div> 
+      <div className="tv" style={{width: "50em"}}></div>
       <div className="vidDiv">
         {!anyVideo? <h4>This user has no video</h4>: null}
         {newUrl? <VideoController url={newUrl} className="vid" /> : null}

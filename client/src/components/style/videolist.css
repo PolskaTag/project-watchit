@@ -66,4 +66,16 @@
   position: fixed;
   margin-top: 10em;
   margin-left: 37em;
+  background-color: black;
+}
+
+.tv {
+  background-image: url("../images/tv.png");
+  width: 100%;
+  justify-items: center;
+  position: fixed;
+  margin-top: 10em;
+  margin-left: 37em;
+  height: 22.5em;
+  background-repeat: no-repeat;
 }
