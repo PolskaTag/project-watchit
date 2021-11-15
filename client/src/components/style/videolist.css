@@ -79,3 +79,14 @@
   height: 22.5em;
   background-repeat: no-repeat;
 }
+
+@media only screen and (max-width: 1150px) {
+  .vidDiv {
+    width: 50%;
+    justify-items: center;
+    position: fixed;
+    margin-top: 14em;
+    margin-left: 37em;
+    background-color: black;
+  }
+}
