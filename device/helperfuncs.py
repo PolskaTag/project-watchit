@@ -15,30 +15,24 @@ def filesplit(filename):
         return None
     return LABELS
 
-def userdata(url="http://34.201.36.147:5000", username="capstone", password="apple123"):
+def __userdata(username, password, url):
     r = requests.post(f"{url}/login",
                   json={"username": username, "password": password})
     return r.json()
 
-def video_count(url="http://34.201.36.147:5000", username="capstone"):
+def video_count(url="http://34.201.36.147:5000", username="capstone", password="apple123"):
     """
     Find max video count so we do not overwrite existing videos.
     """
-    header_params = {"x-access-token": userdata()['token']}
+    header_params = {"x-access-token": __userdata(username, password, url)['token']}
     video_lst = requests.get(f"{url}/videoIDs/{username}", headers=header_params).json()
-    # video_lst = requests.get(f"{url}/videos", headers=header_params).json()
 
-    # video_lst = requests.get(f"{url}/videoIDs/{username}", headers=header_params).json()
     max = 0
     for video in video_lst[0]:
         videoID = int(video['videoID'])
         if videoID > max:
             max = videoID
     return max
-
-def mongovideocount():
-
-    return None
 
 def recordvideo(stream, writer):
     frames = 0
@@ -91,8 +85,7 @@ def objectdetection(frame, model, socket, layers, LABELS, min_confidence=0.6):
                     socket.send(LABELS[classID].encode())
 
 def main():
-
-    print(userdata())
+    return None
 
 if __name__ == "__main__":
     main()
