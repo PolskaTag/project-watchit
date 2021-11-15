@@ -23,9 +23,6 @@ actions['person'].append((pf.intruder,))
 
 actions[watcherId[0]['object']].append((functions[watcherId[0]['udaList'][0]['udaType']],watcherId[0]['udaList'][0]['params']))
 
-print(actions)
-
-exit(1)
 
 # print(watcherId[0]['udaList'])
 # counter = 0
@@ -51,7 +48,8 @@ data = c.recv(1024).decode()
 while data != 'q':
     if data == 'person':
         c.send('Record')
-        actions['persion'][0]()
+        for func in actions['person']:
+            func[0](*func[1:])
         time.sleep(10)
     elif not data:
         break
