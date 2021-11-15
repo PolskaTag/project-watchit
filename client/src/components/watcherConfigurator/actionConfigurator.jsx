@@ -22,7 +22,12 @@ import 'antd/lib/tabs/style/index.css';
 import axios from 'axios'
 import UDA from './UDA';
 import * as Formik from "formik";
-import { TextField, Select, MenuItem, Button } from '@material-ui/core';
+import { TextField,
+            Select,
+            MenuItem,
+            Button
+        } from '@material-ui/core';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function ActionConfigurator(props) {
     const [selectedUDA, setSelectedUDA] = useState(() => {
@@ -66,6 +71,10 @@ function ActionConfigurator(props) {
         })
     )
 
+    const createUdaConfig = () => {
+
+    }
+
     return (
         <div className="my-3">
             <Card border="dark">
@@ -78,7 +87,8 @@ function ActionConfigurator(props) {
                 udaList: props.config ? props.config : []
             }}>
                 {({values}) => (
-                    <Formik.Form>
+                    // <Formik.Form>
+                    <>
                         <Formik.Field
                             name="uda"
                             type="select"
@@ -91,19 +101,24 @@ function ActionConfigurator(props) {
                             // disabled={isSubmitting}
                             // type="submit"
                             variant="contained"
-                            style={{width: "50%"}}>
+                            style={{width: "50%"}}
+                            onClick={() => {values.udaList.push({udaName: "NewUDA"})}}
+                            >
                             Create
                         </Button>
                         <Button 
                             // disabled={isSubmitting}
                             // type="submit"
-                            variant="contained"
+                            variant="outlined"
+                            startIcon={<DeleteIcon/>}
+                            color="error"
                             style={{width: "50%"}}>
                             Delete
                         </Button>
-                        {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
+                        <pre>{JSON.stringify(values, null, 2)}</pre>
                         <UDA config={values.uda}/>
-                    </Formik.Form>
+                    </>
+                    // </Formik.Form>
                     
                 )}
             </Formik.Formik>

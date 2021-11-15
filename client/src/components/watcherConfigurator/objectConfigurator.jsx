@@ -31,7 +31,8 @@ function ObjectConfigurator(props) {
                 object: props.object
             }}>
                 {({values}) => (
-                    <Formik.Form>
+                    // <Formik.Form>
+                    <>
                         <Formik.Field
                             name="object"
                             type="select"
@@ -49,8 +50,9 @@ function ObjectConfigurator(props) {
                             style={{width: "100%"}}>
                             Update Object
                         </Button>
-                        {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
-                    </Formik.Form>
+                        <pre>{JSON.stringify(values, null, 2)}</pre>
+                    </>
+                    // </Formik.Form>
                 )}
             </Formik.Formik>
         </div>

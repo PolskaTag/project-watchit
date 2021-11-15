@@ -50,7 +50,8 @@ function DeviceConfigurator(props) {
                 console.log(data);
             }}>
                 {({values, isSubmitting}) => (
-                    <Formik.Form>
+                    // <Formik.Form>
+                    <>
                         <Card border="dark">
                             <Card.Body>Device Configuration</Card.Body>
                         </Card>
@@ -62,8 +63,9 @@ function DeviceConfigurator(props) {
                             style={{width: "100%"}}>
                             Update Device
                         </Button>
-                        {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
-                    </Formik.Form>
+                        <pre>{JSON.stringify(values, null, 2)}</pre>
+                        </>
+                    // </Formik.Form>
                 )}
             </Formik.Formik>
         </div>

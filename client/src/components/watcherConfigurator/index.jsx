@@ -15,6 +15,7 @@ import Navbar from "../Navbar";
 import CreatableSelect from 'react-select/creatable';
 import { ActionMeta, OnChangeValue } from 'react-select';
 
+
 function WatcherConfigurator() {
 
     const [username, setUsername] = useState(null)
@@ -54,7 +55,7 @@ function WatcherConfigurator() {
             return {value: watcher, label: watcher.watcherName}
         })
 
-        // onChange function for when something gets selected
+        // onChange function for when something gets selected, or created
         const _onChange = (
             newValue,
             actionMeta
@@ -63,6 +64,32 @@ function WatcherConfigurator() {
             console.log(newValue);
             console.log(actionMeta);
             console.groupEnd();
+
+            let watcher = newValue.value;
+
+            // If a new option is made, create a watcher config
+            // and add the value of the create as the watcherName
+            if(actionMeta.action === "create-option"){
+
+                // Add the new watcher to the list of watchers
+                setWatchers((prevState) => {
+                    watcher = {
+                        watcherName: newValue.label,
+                        ipAddress: "",
+                        object: "",
+                        udaList: [],
+                        options: {}
+                    }
+                    return([...prevState, watcher])
+                })
+
+                // Finally make that new watcher the selected watcher
+                setSelectedWatcher(watcher);
+            } else {
+                // Make the watcher the selected watcher
+                setSelectedWatcher(watcher);
+            }
+            
             // setSelectedWatcher(e.value);
         }
 
