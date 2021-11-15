@@ -3,6 +3,12 @@ from pydub import AudioSegment
 from pydub.playback import play
 
 def runEmailUda(dictionary):
+    """
+    Triggers the email notification action
+
+    :params dictionary: provides target email and message to be sent.
+    """
+    
     domain = 'http://34.201.36.147:5000'
     requests.post(f'{domain}/notification', json={"email": dictionary['recipient'], "watcherName": dictionary['body']})
 

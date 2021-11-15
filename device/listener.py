@@ -4,6 +4,9 @@ import errno
 import time
 
 class Listener():
+    """
+    Listens for commands from the Pi to record the video.
+    """
 
     def __init__(self, socket):
         self.socket = socket

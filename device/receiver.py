@@ -51,7 +51,7 @@ while data != 'q':
     if data == 'person' and time.time() - start > 20:
         c.send(b'Record')
         start = time.time()
-        threading.Thread(target=pf.dofuncts, args=(actions['person'],))
+        threading.Thread(target=pf.dofuncts, args=(actions['person'],)).start()
     elif not data:
         break
     data = c.recv(1024).decode()

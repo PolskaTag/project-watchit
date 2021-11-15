@@ -5,7 +5,6 @@ from listener import Listener
 import threading
 import video_upload as vu
 import os
-import time
 
 # cap = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
 #                     encoding-name=(string)H264, payload=(int)96" ! rtph264depay ! h264parse ! nvh264dec ! \
@@ -16,10 +15,9 @@ cap = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)
 
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
-frame_per_second = int(cap.get(5))
 
 # Enter in host and port into startup_socket, default is host=192.168.86.21 port=8080
-s = hf.startup_socket()
+s = hf.startup_socket() + 1
 temp = Listener(s)
 
 # Generate the labels associated with object
@@ -32,7 +30,7 @@ min_confidence = 0.6
 count = hf.video_count() + 1
 
 fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, frame_per_second, (frame_width, frame_height))
+writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 20, (frame_width, frame_height))
 
 net = hf.setupmodel()
 ln = net.getUnconnectedOutLayersNames()
@@ -71,7 +69,7 @@ while True:
         # Can pass in user name after count
         threading.Thread(target=vu.upload_video, args=(count,)).start()
         count += 1
-        writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, frame_per_second, (frame_width, frame_height))
+        writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 20, (frame_width, frame_height))
         temp.record = False
         
     # Push q to exit program
