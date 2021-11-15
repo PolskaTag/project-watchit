@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 
+const SERVER = process.env.REACT_APP_SERVER || "http://localhost:5000";
+
 // sends image and description to server
 async function postImage({ image, description }) {
   const formData = new FormData();
@@ -8,11 +10,9 @@ async function postImage({ image, description }) {
   formData.append("description", description);
 
   // result of when we make the call to our server.
-  const result = await axios.post(
-    "http://localhost:5000/api/images",
-    formData,
-    { headers: { "Content-Type": "multipart/form-data" } }
-  );
+  const result = await axios.post(`${SERVER}/api/images`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
   return result.data;
 }
 

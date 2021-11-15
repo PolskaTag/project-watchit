@@ -2,6 +2,8 @@ import { useHistory, Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import "./style/navbar.css"
 
+const SERVER = process.env.REACT_APP_SERVER || "http://localhost:5000";
+
 function Navbar() {
 
     const history = useHistory()
@@ -21,7 +23,7 @@ function Navbar() {
 
     useEffect(() => {
         // Check if user is authenticated
-        fetch("http://localhost:5000/isUserAuth", {
+        fetch(`${SERVER}/isUserAuth`, {
             'headers': {
                 'method': "GET",
                 "x-access-token": localStorage.getItem("token")

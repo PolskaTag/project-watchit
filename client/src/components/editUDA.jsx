@@ -5,6 +5,8 @@ import { Redirect } from "react-router";
 import Navbar from './Navbar.jsx'
 import "./style/profilepage.css"
 
+const SERVER = process.env.REACT_APP_SERVER || "http://localhost:5000";
+
 function editUDA() {
 
   const [username, setUsername] = useState("")
@@ -24,7 +26,7 @@ function editUDA() {
 
     //using userID to add to users document
     try {
-      axios.post("http://localhost:5000/uda/" + userId + "/add", newUda,
+      axios.post(`${SERVER}/uda/` + userId + "/add", newUda,
        {headers: {'x-access-token': localStorage.getItem("token")}})
        .then(res => console.log(res));
     } catch (err) {
@@ -34,7 +36,7 @@ function editUDA() {
  
   useLayoutEffect(() => {
     // Checks if the user is authenticated
-    fetch("http://localhost:5000/isUserAuth", {
+    fetch(`${SERVER}/isUserAuth`, {
       'method': "GET",
       'headers': {
       "x-access-token": localStorage.getItem("token")
@@ -48,7 +50,7 @@ function editUDA() {
             
             // get all users udas
             try {
-              axios.get("http://localhost:5000/uda", {headers: {"x-access-token": localStorage.getItem("token")}})
+              axios.get(`${SERVER}/uda`, {headers: {"x-access-token": localStorage.getItem("token")}})
               .then(res => {
                 // console.log(res);
                 setAllUserUdaList(res.data);
@@ -58,7 +60,7 @@ function editUDA() {
             }
 
             // Get the users UDAs
-            axios.get("http://localhost:5000/uda/" + data.id,
+            axios.get(`${SERVER}/uda/` + data.id,
               {headers: {'x-access-token': localStorage.getItem("token")}})
               .then(res => {
                 console.log(res.data);

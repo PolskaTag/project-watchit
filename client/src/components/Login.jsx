@@ -7,6 +7,8 @@ import Navbar from './Navbar';
  
 //import { render } from 'react-dom';
 
+const SERVER = process.env.REACT_APP_SERVER || "http://localhost:5000";
+
 function Login() {
     const [errorMessage, setErrorMessage] = useState("");
     const history = useHistory()
@@ -25,7 +27,7 @@ function Login() {
         // Call our login API, returns token if verified.
         try {
             await axios
-        .post("http://localhost:5000/login", user)
+        .post(`${SERVER}/login`, user)
         .then(res => {
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("user", res.data.username);
@@ -41,7 +43,7 @@ function Login() {
 }
     
     useLayoutEffect(() => {
-        fetch("http://localhost:5000/isUserAuth", {
+        fetch(`${SERVER}/isUserAuth`, {
             'method': "GET",
             'headers': {
                 "x-access-token": localStorage.getItem("token")
