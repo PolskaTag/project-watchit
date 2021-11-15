@@ -4,6 +4,7 @@ import { Redirect, useHistory } from 'react-router-dom'//Link,
 import "./style/login.css";
 import loginImg from "./images/login.png";
 import Navbar from './Navbar';
+ 
 //import { render } from 'react-dom';
 
 function Login() {
@@ -30,9 +31,9 @@ function Login() {
             localStorage.setItem("user", res.data.username);
             setCheckAdmin(res.data.admin);
             setErrorMessage(res.data.message); 
-            console.log("check admin");
-            console.log(res.data.admin);
-            console.log(res.data);
+            // console.log("check admin");
+            // console.log(res.data.admin);
+            // console.log(res.data);
         })
     } catch(err) {
         setErrorMessage(err);
