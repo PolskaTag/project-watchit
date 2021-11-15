@@ -29,11 +29,15 @@ t = loginCreds["token"]
 #print(video['videos'])
 # view logins returned json
 header = {"x-access-token": t}
-response = requests.get("http://localhost:5000/videos", headers=header)
-h = response.json()
+#response = requests.get("http://localhost:5000/videos", headers=header)
+#h = response.json()
 #print(h[0])
 
 
+payload = {"username" : "test123"}
+username = "capstone"
+u = requests.get(f'http://localhost:5000/videoIDs/{"test"}',headers=header)
+print(u.json())
 #this function returns videoID number found in the users db
 def maxVideoID(videoArry):
     maxVideoIDCheck = 0
@@ -52,6 +56,6 @@ def gg(count):
    # print(count)
     return r
 
-print(gg(count))
+#print(gg(count))
 #print(p.name)
 #print(p.getMaxVideoIDNumber())
