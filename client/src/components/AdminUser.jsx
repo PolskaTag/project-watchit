@@ -42,7 +42,7 @@ function AdminUser() {
         .catch(err => alert(err))
 
         // Make a request for the videos
-        axios.get('http://localhost:5000/videos', { headers: {
+        axios.get(`http://localhost:5000/videoIDs/${"test123"}`, { headers: {
           "x-access-token": localStorage.getItem("token")
       }})
         .then((res) => {
@@ -105,6 +105,7 @@ function AdminUser() {
          }
       }
 
+      /*logs the user out*/
       async function logoutHandler() {
         if (localStorage.getItem("token") != null) {
             console.log("User has been successfully logged out. " + username);
@@ -117,7 +118,7 @@ function AdminUser() {
             console.log("No user is logged in.");
         }
     }
-
+          /*this is displays on screen, if conditions are met - buttons, user selection box and video*/
           return (
             <div className="admin-container">  
             {showCancelDiv? <img src={cancelButton} className="cancelButton" alt="cancel button" onClick={setHamber} /> : null}

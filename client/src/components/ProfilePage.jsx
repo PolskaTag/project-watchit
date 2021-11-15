@@ -1,9 +1,11 @@
 import axios from "axios";
+import { text } from "body-parser";
 import React, { useRef, useState, useLayoutEffect } from "react";
 import ReactDOM from 'react-dom';
 import { Redirect } from "react-router";
 import Navbar from './Navbar.jsx'
 import "./style/profilepage.css"
+
 
 function ProfilePage() {
 
@@ -30,8 +32,8 @@ function ProfilePage() {
       {allUserUdaList.map((userUda,index) => (
         userUda.map((uda, index) => (
           <li key={index} className="list-group-item">
-          {index+1} {uda.udaName} | {uda.script} | {uda.params}
-          <button onClick={function(){deleteUda(userId, uda._id)}} className="btn btn-sm btn-outline-danger">Delete</button>
+          {index+1} {uda.udaName} | {uda.script} | {uda.params}{"  "}
+          <button onClick={function(){deleteUda(userId, uda._id)}} className="btn btn-outline-danger btn-sm float-right">Delete</button>
           </li>
         ))
       )
@@ -92,7 +94,7 @@ function ProfilePage() {
             axios.get("http://localhost:5000/uda/" + data.id,
               {headers: {'x-access-token': localStorage.getItem("token")}})
               .then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 setUserUdaList(res.data)
               })
             
@@ -101,15 +103,43 @@ function ProfilePage() {
 
     }, [])
 
+   function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+   }
+
+   function handleRetrieve(e) {
+    e.preventDefault()
+    const form = e.target;
+
+    const entry = {
+
+    }
+
+    const file = 
+
+    console.log(entry);
+
+    //using userID to add to users document
+    try {
+        axios.post("http://localhost:5000/retrieveLog", entry)
+            .then(res => console.log(res));
+    } catch (err) {
+        console.log(err);
+    }
+}
 
   return (
     <div className="profile-container">
         <Navbar/>
-        <h1>Welcome {username} {userId}</h1>
+        <div className="userwelcome">
+        <h1 >Welcome {capitalize(username)}</h1>
+        <h2>Id# {userId}</h2>
+        </div>
         <br/>
-        {udaList ? <div><h1>{username} UDA List</h1><br/>{udaList}</div>: null}
+        {udaList ? <div style={{color: "#502b3a"},{fontSize: "1em"}}><h1 style={{textAlign: "center"}}>{capitalize(username)} UDA List</h1><br/>{udaList}</div>: null}
          <br/>
-         {allUserList ? <div><h1>All UDA List</h1><br/>{allUserList}</div>: null}
+         {allUserList ? <div><h1 style={{textAlign: "center"}}>All UDA List</h1><br/>{allUserList}</div>: null}
+         <hr/>
         <div>
           <h1>Add a UDA</h1>
           <form onSubmit={addUda}>
@@ -117,6 +147,12 @@ function ProfilePage() {
             <input required type="text" class="form-control" id="udaName" placeholder="UDA Name"/>
             <input required type="text" class="form-control" id="Script" placeholder="Script"/>
             <input required type="text" class="form-control" id="Params" placeholder="Params"/>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+          </form><br/><br/>
+          <h1>Retrieve Logs</h1>
+          <form onSubmit={event => handleRetrieve(event)}>
+            <div class="form-group">
             <button type="submit" class="btn btn-primary">Submit</button>
           </div>
           </form>
