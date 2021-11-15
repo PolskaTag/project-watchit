@@ -27,11 +27,10 @@ function ObjectConfigurator(props) {
             </Card>
             <Formik.Formik
             enableReinitialize
-            initialValues={{
-                object: props.object
-            }}>
+            initialValues={props.config}>
                 {({values}) => (
-                    <Formik.Form>
+                    // <Formik.Form>
+                    <>
                         <Formik.Field
                             name="object"
                             type="select"
@@ -41,6 +40,8 @@ function ObjectConfigurator(props) {
                             <MenuItem value="car">car</MenuItem>
                             <MenuItem value="person">person</MenuItem>
                             <MenuItem value="bike">bike</MenuItem>
+                            <MenuItem value="banana">banana</MenuItem>
+                            <MenuItem value="bottle">bottle</MenuItem>
                         </Formik.Field>
                         <Button 
                             // disabled={isSubmitting}
@@ -50,7 +51,8 @@ function ObjectConfigurator(props) {
                             Update Object
                         </Button>
                         {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
-                    </Formik.Form>
+                    </>
+                    // </Formik.Form>
                 )}
             </Formik.Formik>
         </div>

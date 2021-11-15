@@ -43,21 +43,16 @@ c, addr = s.accept()
 
 data = c.recv(1024).decode()
 
-# start = time.time()
+start = time.time()
 
 while data != 'q':
-    if data == 'person':
-        c.send('Record')
-        for func in actions['person']:
-            func[0](*func[1:])
-        time.sleep(10)
+    # Cooldown period, video will not record until program has been up for twenty seconds and twenty seconds since last recording.
+    # elif data == 'person' and time.time() - start > 20:
+    if data == 'person' and time.time() - start > 20:
+        c.send(b'Record')
+        start = time.time()
+        threading.Thread(target=pf.dofuncts, args=(actions['person'],)).start()
     elif not data:
         break
-    #Cooldown period, video will not record until program has been up for twenty seconds and twenty seconds since last recording.
-    # elif data == 'person' and time.time() - start > 20:
-        start = time.time()
-        c.send(b"Record")
-        actions['person'][0]()
     data = c.recv(1024).decode()
-
 c.close()

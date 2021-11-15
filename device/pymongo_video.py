@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 import os
 
-def get_database():
+def __get_database():
     """
     Grabs the database using credentials. In production we will obtain this using environmental variables instead of hardcoding.
     """
@@ -15,7 +15,7 @@ def get_database():
     # Default database for user data
     return client['Users']
 
-def new_video(collection, user, video):
+def new_video(user, video):
     """
     Appends new video to mongoDB array of user
 
@@ -23,10 +23,23 @@ def new_video(collection, user, video):
     :param user: user email
     :param video: dictionary of video information containing {videoID, url, filename, timestamp}
     """
+    dbname = __get_database()
+    collection_name = dbname["users"]
 
-    collection.update_one(
+    collection_name.update_one(
         {"username" : user},
         {"$push": {"videos": video}}
     )
 
+    return None
+
+def delete_video(user, videoID):
+
+    dbname = __get_database()
+    collection_name = dbname["users"]
+
+    collection_name.update_one(
+        {"username" : user},
+        {"$pull": {"videos": {"videoID": videoID}}}
+    )
     return None
