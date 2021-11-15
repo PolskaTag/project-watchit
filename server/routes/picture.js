@@ -31,4 +31,39 @@ router.route("/pictures").get(verifyJWT, (req, res) => {
   });
 });
 
+
+// An api that gets all the pictures from users
+router.route("/pics/:username").get(verifyJWT, (req, res) => {
+  const username = req.params.username;
+  console.log("CAME 1" + username)
+  
+  // First find all the user's pictures
+  User.findOne({ username: username }).then((dbUser) => {
+   // console.log( dbUser)
+    if(dbUser==null){
+      console.log(dbUser)
+      return res.json("Could not find that user, please try again...")
+    }
+    if(dbUser.pictures.length == 0){
+      return res.json(0)
+    }
+
+    // variable where we'll put user's pictures
+    let results = [];
+    
+    // for each picture the user has, push there pictures into results
+      dbUser.pictures.forEach((video) => {  
+        results.push(dbUser.pictures);
+        try {
+          picture.url = getPresignedUrl(picture.name);
+        } catch (e) {
+          console.log(e);
+        }
+      });
+    
+    res.json(results);
+    
+  }) .catch(err => res.status(400).json('Error: '+ err + ' : value: ' + 0));
+});
+
 module.exports = router;
