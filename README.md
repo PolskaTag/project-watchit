@@ -11,6 +11,7 @@ WatchIT connects camera footage with object detection/recognition to give you th
 ### PC Setup for CUDA OpenCV
 
 1. Downloads 
+* [Miniconda](https://docs.conda.io/en/latest/miniconda.html) Python from python.org did not work for me, missing a DLL
 * latest [OpenCV](https://opencv.org/releases/) as of this update it is 4.5.4
 * [OpenCV-Contrib](https://github.com/opencv/opencv_contrib/tree/4.5.4) extra modules for opencv
 * [Cuda Tookit 11.4.3](https://developer.nvidia.com/cuda-11-4-3-download-archive?target_os=Windows&target_arch=x86_64&target_version=11&target_type=exe_local) 
@@ -28,4 +29,12 @@ WatchIT connects camera footage with object detection/recognition to give you th
 
 3. CMAKE
 * Create build folder, this will be the location where Visual Studio will build OpenCV
-[CMAKE Location](readME/CMakeFolder.png)
+![CMAKE Location](readME/CMakeFolder.png)
+* Source is location of your openCV folder and build is location of your build folder
+* Install numpy to the environment where you will be installing OpenCV
+* Click configure specify your version of Visual Studio as generator and Finish
+* Ensure that Gstreamer is has path location to the devel files similar to what is shown
+![Gstreamer](readME/Gstreamer.png)
+* Check the following WITH_CUDA, OPENCV_DNN_CUDA, ENABLE_FAST_MATH
+* Link OPENCV_EXTRA_MODULES_PATH to your opencv-contrib-4.5.4\modules that we downloaded
+
