@@ -34,6 +34,7 @@ function DeviceConfigurator(props) {
                     type="input"
                     variant="filled"
                     label="Ip Address"
+                    InputProps={{readOnly: true}}
                     style={{width: "50%"}}
                     as={TextField}/>
             </>
@@ -49,7 +50,8 @@ function DeviceConfigurator(props) {
                 console.log(data);
             }}>
                 {({values, isSubmitting}) => (
-                    <Formik.Form>
+                    // <Formik.Form>
+                    <>
                         <Card border="dark">
                             <Card.Body>Device Configuration</Card.Body>
                         </Card>
@@ -62,7 +64,8 @@ function DeviceConfigurator(props) {
                             Update Device
                         </Button>
                         {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
-                    </Formik.Form>
+                        </>
+                    // </Formik.Form>
                 )}
             </Formik.Formik>
         </div>
