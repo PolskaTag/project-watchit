@@ -46,6 +46,7 @@ The current production link is 34.201.36.147
 **4.Visual Studio**
 * Find **OpenCV.sln** located in the build folder and open it with Visual Studio
 * Change debug mode to release mode 
+
 ![release](readME/vsrelease.png)
 * Expand the CMakeTarget folder along the right side
 * Right click **ALL_BUILD** and build
