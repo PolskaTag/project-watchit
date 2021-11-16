@@ -4,6 +4,7 @@ import Select from 'react-select';
 import MakeUserSelection from './MakeUserSelection';
 import Display from './Display';
 
+const SERVER = process.env.NODE_ENV === "production" ? (process.env.REACT_APP_SERVER || "http://localhost:5000") : "http://localhost:5000";
 
 function AdminRead() {
 
@@ -12,7 +13,7 @@ function AdminRead() {
     const [selectUser, setSelectUser] = useState("")
     
     useEffect(() =>{
-        axios.get("http://localhost:5000/adminread", { headers: {
+        axios.get(`${SERVER}/adminread`, { headers: {
           "x-access-token": localStorage.getItem("token")
       }})
         .then((response) =>{
@@ -38,7 +39,7 @@ function AdminRead() {
       const deleteUser = (id) =>{
         console.log("I AM ID")
           console.log(id);
-        axios.delete(`http://localhost:5000/admindelete/${id}`)
+        axios.delete(`${SERVER}/admindelete/${id}`)
         .then((response) =>{
             console.log(response);
         });

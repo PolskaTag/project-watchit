@@ -6,6 +6,7 @@ import { Redirect } from "react-router";
 import Navbar from './Navbar.jsx'
 import "./style/profilepage.css"
 
+const SERVER = process.env.NODE_ENV === "production" ? (process.env.REACT_APP_SERVER || "http://localhost:5000") : "http://localhost:5000";
 
 function ProfilePage() {
 
@@ -42,7 +43,7 @@ function ProfilePage() {
   );
 
   function deleteUda(userId, udaId){
-    axios.delete(`http://localhost:5000/uda/${userId}/${udaId}`,
+    axios.delete(`${SERVER}/uda/${userId}/${udaId}`,
     {headers: {'x-access-token': localStorage.getItem("token")}})
   }
 
@@ -57,7 +58,7 @@ function ProfilePage() {
 
     //using userID to add to users document
     try {
-      axios.post("http://localhost:5000/uda/" + userId + "/add", newUda,
+      axios.post(`${SERVER}/uda/` + userId + "/add", newUda,
        {headers: {'x-access-token': localStorage.getItem("token")}})
        .then(res => console.log(res));
     } catch (err) {
@@ -67,7 +68,7 @@ function ProfilePage() {
  
   useLayoutEffect(() => {
     // Checks if the user is authenticated
-    fetch("http://localhost:5000/isUserAuth", {
+    fetch(`${SERVER}/isUserAuth`, {
       'method': "GET",
       'headers': {
       "x-access-token": localStorage.getItem("token")
@@ -81,7 +82,7 @@ function ProfilePage() {
             
             // get all users udas
             try {
-              axios.get("http://localhost:5000/uda", {headers: {"x-access-token": localStorage.getItem("token")}})
+              axios.get(`${SERVER}/uda`, {headers: {"x-access-token": localStorage.getItem("token")}})
               .then(res => {
                 // console.log(res);
                 setAllUserUdaList(res.data);
@@ -91,7 +92,7 @@ function ProfilePage() {
             }
 
             // Get the users UDAs
-            axios.get("http://localhost:5000/uda/" + data.id,
+            axios.get(`${SERVER}/uda/` + data.id,
               {headers: {'x-access-token': localStorage.getItem("token")}})
               .then(res => {
                 // console.log(res.data);
@@ -106,6 +107,27 @@ function ProfilePage() {
    function capitalize(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);
    }
+
+   function handleRetrieve(e) {
+    e.preventDefault()
+    const form = e.target;
+
+    const entry = {
+
+    }
+
+    const file = 
+
+    console.log(entry);
+
+    //using userID to add to users document
+    try {
+        axios.post(`${SERVER}/retrieveLog`, entry)
+            .then(res => console.log(res));
+    } catch (err) {
+        console.log(err);
+    }
+}
 
   return (
     <div className="profile-container">
@@ -126,6 +148,12 @@ function ProfilePage() {
             <input required type="text" class="form-control" id="udaName" placeholder="UDA Name"/>
             <input required type="text" class="form-control" id="Script" placeholder="Script"/>
             <input required type="text" class="form-control" id="Params" placeholder="Params"/>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+          </form><br/><br/>
+          <h1>Retrieve Logs</h1>
+          <form onSubmit={event => handleRetrieve(event)}>
+            <div class="form-group">
             <button type="submit" class="btn btn-primary">Submit</button>
           </div>
           </form>
