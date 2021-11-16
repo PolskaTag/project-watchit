@@ -28,6 +28,7 @@ WatchIT connects camera footage with object detection/recognition to give you th
 * Repeat for include and lib
 
 **3. CMAKE**
+* Unzip OpenCV and OpenCV_Contrib
 * Create build folder, this will be the location where Visual Studio will build OpenCV
 ![CMAKE Location](readME/CMakeFolder.png)
 * Source is location of your openCV folder and build is location of your build folder
@@ -38,12 +39,13 @@ WatchIT connects camera footage with object detection/recognition to give you th
 * Check the following WITH_CUDA, OPENCV_DNN_CUDA, ENABLE_FAST_MATH
 * Link OPENCV_EXTRA_MODULES_PATH to your opencv-contrib-4.5.4\modules that we downloaded
 * Click configure again after selecting the previous
-* Check CUDA_FAST_MATH and enter your CUDA_ARCH_BIN (can find the compute capability version related to your video card [here]https://en.wikipedia.org/wiki/CUDA)
+* Check CUDA_FAST_MATH and enter your CUDA_ARCH_BIN (can find the compute capability version related to your video card [here](https://en.wikipedia.org/wiki/CUDA)
 * Click generate
 
 **4.Visual Studio**
 * Find **OpenCV.sln** located in the build folder and open it with Visual Studio
-* Change debug mode to release mode ![release](readME/vsrelease.png)
+* Change debug mode to release mode 
+![release](readME/vsrelease.png)
 * Expand the CMakeTarget folder along the right side
 * Right click **ALL_BUILD** and build
 * After completion right click **INSTALL** and build
