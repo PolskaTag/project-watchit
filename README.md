@@ -3,10 +3,8 @@
 Philip Lapinski, Viet Le, Steven Zhou, Jake Taylor, Themba Binns, Nathanael Hansell
 
 
-## WatchIT
-A camera system that you can tell what to do.
-
-WatchIT connects camera footage with object detection/recognition to give you the power to run actions on detection. Want to send customized reminders when you get walk through the door? Want to see who's munching on your favorite snacks? Want to keep better track of your front door? Use WatchIT.
+## WatchIT Overview
+WatchIT is a system that allows users to connect a video feed with object recognition to run user defined actions. By using an online control interface and embedded devices, Users can set up a device, select which objects to detect and then assign actions to be taken, after the object is recognized. Users are also able to have multiple configurations of objects and actions, allowing them to watch over multiple scenarios. Want to know who has been stealing your stuff from the pantry? Setup a device, pick what was stolen as the object and pick an action to be run when the camera sees it.
 
 ### PC Setup for CUDA OpenCV
 
