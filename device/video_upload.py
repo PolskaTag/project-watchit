@@ -1,10 +1,14 @@
-import presigned as pr
 import pymongo_video as pv
 import boto3
 import os
 from datetime import datetime
+import logging
+from botocore.exceptions import ClientError
+import requests
 
-def upload_video(count):
+logger = logging.getLogger(__name__)
+
+def upload_video(count, user="capstone"):
     """
     This function is called after video is finished recording. 
 
@@ -18,12 +22,50 @@ def upload_video(count):
                         aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'),
                         aws_secret_access_key=os.environ.get('AWS_SECRET_KEY')
                         )
-                        
-    dbname = pv.get_database()
-    collection_name = dbname["users"]
 
-    url = pr.generate_presigned_url(s3_client, "put_object", {"Bucket": os.environ.get('AWS_BUCKET_NAME'), "Key": name}, 30)
+    url = __generate_presigned_url(s3_client, "put_object", {"Bucket": os.environ.get('AWS_BUCKET_NAME'), "Key": name}, 30)
 
-    pr.upload_video(url, name)
+    # Upload video so S3 bucket
+    __upload_video(url, name)
 
-    pv.new_video(collection_name, "test123", {"videoID" : count, "url" : f"https://{os.environ.get('AWS_BUCKET_NAME')}.s3.amazonaws.com/{name}", "name": name, "time": datetime.now()})
+    # Adds entry to mongoDB user video list
+    pv.new_video(user, {"videoID" : count, "url" : f"https://{os.environ.get('AWS_BUCKET_NAME')}.s3.amazonaws.com/{user}/{name}",
+                 "name": name, "time": datetime.now()})
+
+def __generate_presigned_url(s3_client, client_method, method_parameters, expires_in):
+    """
+    Generate a presigned Amazon S3 URL that can be used to perform an action.
+
+    :param s3_client: A Boto3 Amazon S3 client.
+    :param client_method: The name of the client method that the URL performs.
+    :param method_parameters: The parameters of the specified client method.
+    :param expires_in: The number of seconds the presigned URL is valid for.
+    :return: The presigned URL.
+    """
+    try:
+        url = s3_client.generate_presigned_url(
+            ClientMethod=client_method,
+            Params=method_parameters,
+            ExpiresIn=expires_in
+        )
+        logger.info("Got presigned URL: %s", url)
+    except ClientError:
+        logger.exception(
+            "Couldn't get a presigned URL for client method '%s'.", client_method)
+        raise
+    return url
+
+def __upload_video(url, filename):
+
+    response = None
+
+    print("Uploading file.")
+    with open(filename, 'rb') as object_file:
+        object_text = object_file.read()
+    response = requests.put(url, data=object_text)
+
+    print("Got response:")
+    print(f"Status: {response.status_code}")
+    print(response.text)
+    return None
+

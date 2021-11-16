@@ -164,6 +164,30 @@ router.get("/adminupdate", async (req, res) => {
   }
 });
 
+router.post("/deletevideo", async (req, res) => {
+  const userID = req.body.userid;
+  const videoID = req.body.videoid;
+  try {
+    await User.findById(userID, (err, deleteItem) => {
+      console.log("inside delete")
+    //  const u = deleteItem.videos.findById(videoID)
+      deleteItem.videos.forEach(video => {
+         if(videoID == video.videoID){
+          console.log(deleteItem.videos)
+           console.log(video._id)
+            console.log(video.videoID)
+            //deleteItem.videos.updateOne({$pull:{videoID:[video.videoID]}})
+         }
+      });
+     // console.log(u) 
+      //deleteItem.save();
+      res.send("video deleted");
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 router.delete("/admindelete/:id", async (req, res) => {
   const id = req.params.id;
 
@@ -171,5 +195,7 @@ router.delete("/admindelete/:id", async (req, res) => {
   res.send("Deleted");
   console.log("Deleted");
 });
+
+
 
 module.exports = router;

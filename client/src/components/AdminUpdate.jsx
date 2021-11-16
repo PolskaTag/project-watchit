@@ -3,6 +3,7 @@ import axios from 'axios'
 import Select from 'react-select';
 import MakeUserSelection from './MakeUserSelection';
 
+const SERVER = process.env.NODE_ENV === "production" ? (process.env.REACT_APP_SERVER || "http://localhost:5000") : "http://localhost:5000";
 
 function AdminUpdate() {
     
@@ -15,7 +16,7 @@ function AdminUpdate() {
     const [selectUser, setSelectUser] = useState("")
     
     useEffect(() =>{
-        axios.get("http://localhost:5000/adminread",{ headers: {
+        axios.get(`${SERVER}/adminread`,{ headers: {
             "x-access-token": localStorage.getItem("token")
         }})
         .then((response) =>{
@@ -25,7 +26,7 @@ function AdminUpdate() {
     }, []);
 
     const updateUser = (id) =>{
-        axios.post("http://localhost:5000/adminupdate", {
+        axios.post(`${SERVER}/adminupdate`, {
             id: id,
             username: newUsername,
             admin: newAdmin,

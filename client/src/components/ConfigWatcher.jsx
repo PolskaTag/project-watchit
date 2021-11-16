@@ -92,6 +92,33 @@ function ConfigWatcher() {
         }
     }
 
+    function handleFormLog(e) {
+        e.preventDefault()
+        const form = e.target;
+        
+        const newUda = {
+            udaName: form[0].value,
+            script: "http://localhost:5000/logging",
+            params: form[1].value
+        }
+
+        const entry = {
+            watcherName: form[0].value,
+            statement: form[1].value
+        }
+
+        console.log(entry);
+
+
+        //using userID to add to users document
+        try {
+            axios.post("http://localhost:5000/logging", entry)
+                .then(res => console.log(res));
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     function handleTestNotification(e) {
         e.preventDefault()
 
@@ -109,6 +136,29 @@ function ConfigWatcher() {
         //using userID to add to users document
         try {
             axios.post("http://localhost:5000/notification", email)
+                .then(res => console.log(res));
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    function handleTestLog(e) {
+        e.preventDefault()
+
+        console.log(e);
+        const form = e.target;
+        
+
+        const entry = {
+            watcherName: form[0].value,
+            statement: form[1].value
+        }
+
+        console.log(entry);
+        
+        //using userID to add to users document
+        try {
+            axios.post("http://localhost:5000/logging", entry)
                 .then(res => console.log(res));
         } catch (err) {
             console.log(err);
@@ -294,6 +344,16 @@ function ConfigWatcher() {
                         <label htmlFor="watchername">Watcher Name: </label>
                         <label htmlFor="seconds">Seconds: </label>
                         <input type="text" id="seconds" name="seconds"></input><br /><br />
+                        <input type="submit" value="Submit"></input>
+                    </form>
+                    </TabPane>
+                    <TabPane tab="Log" key="5">
+                    <form onSubmit={event => handleFormLog(event)}>
+                        <label htmlFor="watchername">Watcher Name: </label>
+                        <input type="text" id="watchername" name="watchername"></input><br /><br />
+                        <label htmlFor="statement">Custom Statement: </label>
+                        <input type="text" id="statement" name="statement"></input><br /><br />
+                        <p>*Note: if statement is left blank, a default statement will be used</p>
                         <input type="submit" value="Submit"></input>
                     </form>
                     </TabPane>
