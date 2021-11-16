@@ -10,7 +10,10 @@ import { Card, InputGroup, FormControl, Form } from "react-bootstrap";
 import Select from "react-select";
 import Item from "antd/lib/list/Item";
 
-const SERVER = process.env.REACT_APP_SERVER || "http://localhost:5000";
+const SERVER =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_SERVER || "http://localhost:5000"
+    : "http://localhost:5000";
 
 function Pictures() {
   const [username, setUsername] = useState(null);

@@ -5,7 +5,7 @@ import { Redirect } from "react-router";
 import Navbar from './Navbar.jsx'
 import "./style/profilepage.css"
 
-const SERVER = process.env.REACT_APP_SERVER || "http://localhost:5000";
+const SERVER = process.env.NODE_ENV === "production" ? (process.env.REACT_APP_SERVER || "http://localhost:5000") : "http://localhost:5000";
 
 function editUDA() {
 

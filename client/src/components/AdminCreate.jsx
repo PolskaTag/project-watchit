@@ -2,6 +2,8 @@ import { useState } from 'react';//useLayoutEffect,
 //import "./style/register.css";
 import axios from 'axios';
 
+const SERVER = process.env.NODE_ENV === "production" ? (process.env.REACT_APP_SERVER || "http://localhost:5000") : "http://localhost:5000";
+
 function AdminCreate() {
     //const history = useHistory()
 
@@ -22,7 +24,7 @@ function AdminCreate() {
         console.warn(JSON.stringify(user))
 
         axios
-        .post("http://localhost:5000/adminregister", user).then((response) => {
+        .post(`${SERVER}/adminregister`, user).then((response) => {
             console.log(response);
             setErrorMessage(response.data.message);
             console.log(errorMessage);

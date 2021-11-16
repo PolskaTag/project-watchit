@@ -5,7 +5,7 @@ import Navbar from './Navbar.jsx'
 import watchItLogo from "./images/WatchIT-logos_black_land.png";
 import "./style/landingPage.css";
 
-const SERVER = process.env.REACT_APP_SERVER || "http://localhost:5000";
+const SERVER = process.env.NODE_ENV === "production" ? (process.env.REACT_APP_SERVER || "http://localhost:5000") : "http://localhost:5000";
 
 function LandingPage() {
 

@@ -15,8 +15,7 @@ import Navbar from "../Navbar";
 import CreatableSelect from 'react-select/creatable';
 import { ActionMeta, OnChangeValue } from 'react-select';
 
-const SERVER = process.env.REACT_APP_SERVER || "http://localhost:5000";
-
+const SERVER = process.env.NODE_ENV === "production" ? (process.env.REACT_APP_SERVER || "http://localhost:5000") : "http://localhost:5000";
 
 function WatcherConfigurator() {
 

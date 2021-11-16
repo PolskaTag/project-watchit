@@ -5,7 +5,7 @@ import Navbar from './Navbar.jsx'
 import "./style/videolist.css"
 import VideoController from "./video";
 
-const SERVER = process.env.REACT_APP_SERVER || "http://localhost:5000";
+const SERVER = process.env.NODE_ENV === "production" ? (process.env.REACT_APP_SERVER || "http://localhost:5000") : "http://localhost:5000";
 
 //predefined array with URLs for testing purposes
 // const recording = [

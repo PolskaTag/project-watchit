@@ -2,7 +2,7 @@ import { useHistory, Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import "./style/navbar.css"
 
-const SERVER = process.env.REACT_APP_SERVER || "http://localhost:5000";
+const SERVER = process.env.NODE_ENV === "production" ? (process.env.REACT_APP_SERVER || "http://localhost:5000") : "http://localhost:5000";
 
 function Navbar() {
 

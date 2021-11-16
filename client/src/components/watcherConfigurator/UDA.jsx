@@ -219,7 +219,6 @@ function UDA(props) {
             <UdaBaseUI uda={values}/>
             <div>
               <Button
-                onClick={()=> {console.log(process.env.REACT_APP_SERVER)}}
                 disabled={isSubmitting}
                 variant="contained"
                 style={{width: "100%"}}>
