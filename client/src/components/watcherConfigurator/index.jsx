@@ -15,6 +15,7 @@ import Navbar from "../Navbar";
 import CreatableSelect from 'react-select/creatable';
 import { ActionMeta, OnChangeValue } from 'react-select';
 
+const SERVER = process.env.NODE_ENV === "production" ? (process.env.REACT_APP_SERVER || "http://localhost:5000") : "http://localhost:5000";
 
 function WatcherConfigurator() {
 
@@ -32,7 +33,7 @@ function WatcherConfigurator() {
     // Gets the array of user's watchers
     // Uses setState with the response from call.
     function getWatcherData(userId) {
-        axios.get("http://localhost:5000/watchers/" + userId,
+        axios.get(`${SERVER}/watchers/` + userId,
         {"headers": {"x-access-token": localStorage.getItem("token")}})
         .then((res) => {
             console.log(res.data);
@@ -41,7 +42,7 @@ function WatcherConfigurator() {
     }
 
     function createWatcher(userId, watcherData){
-        axios.post("http://localhost:5000/watchers/" + userId,
+        axios.post(`${SERVER}/watchers/` + userId,
         watcherData,
         {"headers": {"x-access-token": localStorage.getItem("token")}})
         .then((res) => console.log(res));
@@ -117,7 +118,7 @@ function WatcherConfigurator() {
     useEffect(() => {
 
         // Check to see if the user is auth
-        axios.get("http://localhost:5000/isUserAuth",
+        axios.get(`${SERVER}/isUserAuth`,
          {"headers": {"x-access-token": localStorage.getItem("token")}})
         .then((res) => {
             if(res.data.isLoggedIn){
@@ -132,6 +133,7 @@ function WatcherConfigurator() {
 
     return (
         <div className="container">
+            <Navbar/>
             <div className="watcherConfig-content">
                 <Form onSubmit={handleSave}>
                 <Card className="text-center" border="dark">

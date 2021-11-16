@@ -5,6 +5,8 @@ import Navbar from './Navbar.jsx'
 import "./style/videolist.css"
 import VideoController from "./video";
 
+const SERVER = process.env.NODE_ENV === "production" ? (process.env.REACT_APP_SERVER || "http://localhost:5000") : "http://localhost:5000";
+
 //predefined array with URLs for testing purposes
 // const recording = [
 //         {
@@ -58,7 +60,7 @@ function VideoList() {
   const deleteItem = (vidID, userID) =>{
     console.log(vidID)
   if(window.confirm("Are you sure you want to delete this video?")){
-    axios.post("http://localhost:5000/deletevideo", {
+    axios.post(`${SERVER}/deletevideo`, {
         userid: userID,
         videoid : vidID,
         
@@ -98,7 +100,7 @@ function VideoList() {
 
   useLayoutEffect(() => {
     // Check if the user is authenticated
-    fetch("http://localhost:5000/isUserAuth", {
+    fetch(`${SERVER}/isUserAuth`, {
       'method': "GET",
       'headers': {
           "x-access-token": localStorage.getItem("token")
@@ -115,7 +117,7 @@ function VideoList() {
         
            setUserID(data.id)
         // Make a request for the videos
-        axios.get("http://localhost:5000/videoIDs/" + data.username, {headers: {"x-access-token": localStorage.getItem("token")}})
+        axios.get(`${SERVER}/videoIDs/` + data.username, {headers: {"x-access-token": localStorage.getItem("token")}})
           .then((res) => {
             
             //console.log(res.data)

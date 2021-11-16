@@ -5,6 +5,7 @@ import Navbar from './Navbar.jsx'
 import watchItLogo from "./images/WatchIT-logos_black_land.png";
 import "./style/landingPage.css";
 
+const SERVER = process.env.NODE_ENV === "production" ? (process.env.REACT_APP_SERVER || "http://localhost:5000") : "http://localhost:5000";
 
 function LandingPage() {
 
@@ -12,7 +13,7 @@ function LandingPage() {
 
     useLayoutEffect(() => {
         // Check if the user is authenticated
-        fetch("http://localhost:5000/isUserAuth", {
+        fetch(`${SERVER}/isUserAuth`, {
             'method': "GET",
             'headers': {
                 "x-access-token": localStorage.getItem("token")

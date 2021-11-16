@@ -218,7 +218,7 @@ function UDA(props) {
             </Card>
             <UdaBaseUI uda={values}/>
             <div>
-              <Button 
+              <Button
                 disabled={isSubmitting}
                 variant="contained"
                 style={{width: "100%"}}>
