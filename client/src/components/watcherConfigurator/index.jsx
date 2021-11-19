@@ -12,6 +12,10 @@ import UDA from "./UDA";
 import * as Formik from "formik";
 import './index.css';
 import Navbar from "../Navbar";
+import CreatableSelect from 'react-select/creatable';
+import { ActionMeta, OnChangeValue } from 'react-select';
+
+const SERVER = process.env.NODE_ENV === "production" ? (process.env.REACT_APP_SERVER || "http://localhost:5000") : "http://localhost:5000";
 
 function WatcherConfigurator() {
 
@@ -26,15 +30,10 @@ function WatcherConfigurator() {
         options: {}
     })
 
-    const sampleUDAList = [
-        {udaName: "sample1", script:"notification",params: "sample params email", udaType:"email"},
-        {udaName: "sample2", script:"text",params: "sample params text", udaType:"text"},
-        {udaName: "sample3", script:"logging", params: "sample params logging", udaType:"logging"}]
-
     // Gets the array of user's watchers
     // Uses setState with the response from call.
     function getWatcherData(userId) {
-        axios.get("http://localhost:5000/watchers/" + userId,
+        axios.get(`${SERVER}/watchers/` + userId,
         {"headers": {"x-access-token": localStorage.getItem("token")}})
         .then((res) => {
             console.log(res.data);
@@ -43,7 +42,7 @@ function WatcherConfigurator() {
     }
 
     function createWatcher(userId, watcherData){
-        axios.post("http://localhost:5000/watchers/" + userId,
+        axios.post(`${SERVER}/watchers/` + userId,
         watcherData,
         {"headers": {"x-access-token": localStorage.getItem("token")}})
         .then((res) => console.log(res));
@@ -51,30 +50,75 @@ function WatcherConfigurator() {
 
     // Creates a select component - Lets the user select their available watchers
     const selectWatcher = (watchers) => {
-        // onChange function for when something gets selected
-        const _onChange = (e) => {
-            setSelectedWatcher(e.value);
-        }
 
         // options for our select component
         const options = watchers.map((watcher) => {
             return {value: watcher, label: watcher.watcherName}
         })
+
+        // onChange function for when something gets selected, or created
+        const _onChange = (
+            newValue,
+            actionMeta
+        ) => {
+            console.group("Input Changed");
+            console.log(newValue);
+            console.log(actionMeta);
+            console.groupEnd();
+
+            let watcher = newValue.value;
+
+            // If a new option is made, create a watcher config
+            // and add the value of the create as the watcherName
+            if(actionMeta.action === "create-option"){
+
+                // Add the new watcher to the list of watchers
+                setWatchers((prevState) => {
+                    watcher = {
+                        watcherName: newValue.label,
+                        ipAddress: "",
+                        object: "",
+                        udaList: [],
+                        options: {}
+                    }
+                    return([...prevState, watcher])
+                })
+
+                // Finally make that new watcher the selected watcher
+                setSelectedWatcher(watcher);
+            } else {
+                // Make the watcher the selected watcher
+                setSelectedWatcher(watcher);
+            }
+            
+            // setSelectedWatcher(e.value);
+        }
+
+        const handleInputChange = (inputValue, actionMeta) => {
+            console.group("Input Changed");
+            console.log(inputValue);
+            console.log(actionMeta);
+            console.groupEnd();
+        }
         return (
-            <Select options={options} onChange={_onChange}></Select>
+            <CreatableSelect
+                isClearable
+                options={options}
+                onChange={_onChange}
+                onInputChange={handleInputChange}/>
         )
     }
 
     const handleSave = (e) => {
         e.preventDefault();
         console.log(e);
-        console.log(e.target[0]);
+        // console.log(e.target[0]);
     }
 
     useEffect(() => {
 
         // Check to see if the user is auth
-        axios.get("http://localhost:5000/isUserAuth",
+        axios.get(`${SERVER}/isUserAuth`,
          {"headers": {"x-access-token": localStorage.getItem("token")}})
         .then((res) => {
             if(res.data.isLoggedIn){
@@ -89,6 +133,7 @@ function WatcherConfigurator() {
 
     return (
         <div className="container">
+            <Navbar/>
             <div className="watcherConfig-content">
                 <Form onSubmit={handleSave}>
                 <Card className="text-center" border="dark">
@@ -100,10 +145,11 @@ function WatcherConfigurator() {
                     </Card.Body>
                 </Card>
                 {username !== "" ? selectWatcher(watchers) : null}
-                <Button variant="primary">Create</Button>
-                <Button variant="danger">Delete</Button>
+                {/* <Button variant="primary">Create</Button> */}
+                {/* <Button variant="danger">Delete</Button> */}
+                {/* <pre>{JSON.stringify(selectedWatcher, null, 2)}</pre> */}
                 <DeviceConfigurator config={selectedWatcher}/>
-                <ObjectConfigurator object={selectedWatcher.object}/>
+                <ObjectConfigurator config={selectedWatcher}/>
                 <ActionConfigurator config={selectedWatcher.udaList}/>
                 <Button type="submit">Save</Button>
                 </Form>

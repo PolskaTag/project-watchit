@@ -17,6 +17,7 @@ import {
   MenuItem
 } from "@material-ui/core";
 import * as yup from "yup";
+import InputLabel from '@mui/material/InputLabel';
 
 function UDA(props) {
 
@@ -32,22 +33,22 @@ function UDA(props) {
       toRender = emailUi();
       break;
     case 'logging':
-      toRender = loggingUi(uda);
+      toRender = loggingUi();
       break;
     case 'sound':
-      toRender = soundUi(uda);
+      toRender = soundUi();
       break;
     case 'text':
-      toRender = textUi(uda);
+      toRender = textUi();
       break;
     case 'light':
-      toRender = lightUi(uda);
+      toRender = lightUi();
       break;
     case 'snapshot':
-      toRender = snapshotUi(uda);
+      toRender = snapshotUi();
       break;
     case 'video':
-      toRender = videoUi(uda);
+      toRender = videoUi();
       break;
     default:
       console.log("Unable to parse udaType");
@@ -65,6 +66,20 @@ function UDA(props) {
               style={{width: "100%"}}
               as={TextField}
             />
+      <Formik.Field
+              placeholder="UDA Type"
+              name="udaType"
+              type="select"
+              variant="filled"
+              style={{width: "100%"}}
+              label="UDA Type"
+              as={Select}
+            >
+               <MenuItem value="email">email</MenuItem>
+               <MenuItem value="video">video</MenuItem>
+               <MenuItem value="sound">sound</MenuItem>
+               <MenuItem value="log">log</MenuItem>
+      </Formik.Field>
       {toRender}
       </>
     )
@@ -91,7 +106,7 @@ function UDA(props) {
             <Formik.Field
               placeholder="Message Body"
               name="params.body"
-              type="input"
+              type="textArea"
               variant="filled"
               label="Message Body"
               style={{width: "100%"}}
@@ -100,105 +115,80 @@ function UDA(props) {
           </div>
           </>
         )
-          // return (
-          //   <>
-          //       <Form.Group>
-          //         <Form.Label>Email Address</Form.Label>
-          //         <Form.Control
-          //           type="text"
-          //           placeholder="sample@extension.com"
-          //           defaultValue={uda.params.recipient} />
-          //       </Form.Group>
-          //       <Form.Group>
-          //         <Form.Label>Message Body</Form.Label>
-          //         <Form.Control
-          //           type="text"
-          //           placeholder=""
-          //           defaultValue={uda.params.body} />
-          //       </Form.Group>
-          //   </>
-          // )
     }
 
     // Returns a loggingUDA UI specific for emails
-    const loggingUi = (uda) => {
-       if(uda.udaType === "logging"){
+    const loggingUi = () => {
           return (
             <>
             </>
           )
-       }
     }
 
     // Returns a soundUDA UI specific for emails
-    const soundUi = (uda) => {
-       if(uda.udaType === "sound"){
+    const soundUi = () => {
           return (
             <>
             </>
           )
-       }
     }
 
     // Returns a textUDA UI specific for emails
-    const textUi = (uda) => {
-       if(uda.udaType === "text"){
+    const textUi = () => {
           return (
             <>
             </>
           )
-       }
     }
 
     // Returns a lightUDA UI specific for emails
-    const lightUi = (uda) => {
-       if(uda.udaType === "light"){
+    const lightUi = () => {
           return (
             <>
             </>
           )
-       }
     }
 
     // Returns a snapshotUDA UI specific for emails
-    const snapshotUi = (uda) => {
-       if(uda.udaType === "snapshot"){
+    const snapshotUi = () => {
           return (
             <>
             </>
           )
-       }
     }
 
     // Returns a videoUDA UI specific for emails
-    const videoUi = (uda) => {
-       if(uda.udaType === "video"){
+    const videoUi = () => {
           return (
             <>
-            <Form.Group>
-       
-              <Form.Label>Video Title</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Video Title"
-                defaultValue={uda.params.video} style={{marginBottom: ".6em"}}/>
-                
-              <Form.Label>Video Duration</Form.Label>
-              <div style={{display: "block"}}>
-                <select style={{width: "22.5em", "border-radius":"3px", height: "2.4em", border: "none"}}>
-                  <option>10 Seconds</option>
-                  <option>15 Seconds</option>
-                  <option>20 Seconds</option>
-                  <option>25 Seconds</option>
-                  <option>30 Seconds</option>
-                </select>
-              </div>
-              
-        
-            </Form.Group>
+            <Formik.Field
+              placeholder="Video Title"
+              name="params.videoTitle"
+              type="input"
+              variant="filled"
+              label="Video Title"
+              style={{width: "100%"}}
+              as={TextField}
+            />
+
+            <Formik.Field
+              name="params.videoDuration"
+              type="select"
+              variant="filled"
+              style={{width: "100%"}}
+              label="Video Duration"
+              inputLabel="Duration"
+              as={Select}
+            >
+              <InputLabel>Duration</InputLabel>
+               <MenuItem value={10}>10 Seconds</MenuItem>
+               <MenuItem value={15}>15 Seconds</MenuItem>
+               <MenuItem value={20}>20 Seconds</MenuItem>
+               <MenuItem value={25}>25 Seconds</MenuItem>
+               <MenuItem value={30}>30 Seconds</MenuItem>
+            </Formik.Field>
             </>
           )
-       }
     }
 
     useEffect(() => {
@@ -216,27 +206,28 @@ function UDA(props) {
           params: props.config.params
         }}
         onSubmit={(data, { setSubmitting }) => {
-          // setSubmitting(true);
+          setSubmitting(true);
           console.log("submit ", data);
-          // setSubmitting(false);
+          setSubmitting(false);
         }}>
         {({ values, isSubmitting}) => (
-          <Formik.Form>
+          // <Formik.Form>
+          <>
             <Card border="dark">
               <Card.Header>UDA Type: {values.udaType}</Card.Header>
             </Card>
             <UdaBaseUI uda={values}/>
             <div>
-              <Button 
+              <Button
                 disabled={isSubmitting}
-                type="submit"
                 variant="contained"
                 style={{width: "100%"}}>
                 Update UDA
               </Button>
             </div>
             {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
-          </Formik.Form>
+          </>
+          // </Formik.Form>
         )}
       </Formik.Formik>
     )

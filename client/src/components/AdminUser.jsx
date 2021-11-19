@@ -13,6 +13,7 @@ import MakeUserSelection from "./MakeUserSelection";
 import MakeVideoSelection from "./MakeVideoSelection";
 import { Redirect} from 'react-router-dom'
 
+const SERVER = process.env.NODE_ENV === "production" ? (process.env.REACT_APP_SERVER || "http://localhost:5000") : "http://localhost:5000";
 
 function AdminUser() {
     
@@ -28,7 +29,7 @@ function AdminUser() {
 
       /*check user authorization*/
       useLayoutEffect(() => {
-        fetch("http://localhost:5000/isUserAuth", {
+        fetch(`${SERVER}/isUserAuth`, {
             'method': "GET",
             'headers': {
                 "x-access-token": localStorage.getItem("token")
@@ -42,7 +43,7 @@ function AdminUser() {
         .catch(err => alert(err))
 
         // Make a request for the videos
-        axios.get('http://localhost:5000/videos', { headers: {
+        axios.get(`${SERVER}/videoIDs/${"test123"}`, { headers: {
           "x-access-token": localStorage.getItem("token")
       }})
         .then((res) => {
@@ -56,7 +57,7 @@ function AdminUser() {
 
     /*get all the users in the database*/
     useEffect(() =>{
-      axios.get("http://localhost:5000/adminread", { headers: {
+      axios.get(`${SERVER}/adminread`, { headers: {
         "x-access-token": localStorage.getItem("token")
     }})
       .then((response) =>{

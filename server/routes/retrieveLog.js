@@ -3,6 +3,8 @@ const { uploadFile } = require("../s3");
 const express = require("express");
 const router = express.Router();
 const fs = require('fs');
+const downloadsFolder = require('downloads-folder');
+
 
 //here
 const multer = require("multer");
@@ -46,16 +48,15 @@ router.route('/retrieveLog').post((req, res) => {
        console.log(objectData);
        const homeDir = require('os').homedir();
        const desktopDir = `${homeDir}/Desktop`;
-       const outputPath = desktopDir + "/watcher.log";
-       console.log(desktopDir);
+       const outputPath = downloadsFolder() + "/watcher.log";
+       console.log(outputPath);
        fs.writeFileSync(outputPath, JSON.stringify(objectData, null, 0).replace(/\\r/g, '\r').replace(/\\n/g, '\n') , 'utf-8');
     } else {
       console.log(err);
        res.status(500).send(err);
     }
-
-    
   })
+
 });
 
 

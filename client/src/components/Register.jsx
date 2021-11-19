@@ -5,6 +5,8 @@ import "./style/register.css";
 import Navbar from './Navbar';
 import axios from 'axios'
 
+const SERVER = process.env.NODE_ENV === "production" ? (process.env.REACT_APP_SERVER || "http://localhost:5000") : "http://localhost:5000";
+
 function Register() {
     const history = useHistory()
 
@@ -24,7 +26,7 @@ function Register() {
         console.warn(JSON.stringify(user))
 
         axios
-        .post("http://localhost:5000/register", user).then((response) => {
+        .post(`${SERVER}/register`, user).then((response) => {
             console.log(response);
             setErrorMessage(response.data.message);
         })

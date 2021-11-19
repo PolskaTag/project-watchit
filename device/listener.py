@@ -4,6 +4,9 @@ import errno
 import time
 
 class Listener():
+    """
+    Listens for commands from the Pi to record the video.
+    """
 
     def __init__(self, socket):
         self.socket = socket
@@ -15,7 +18,7 @@ class Listener():
     def __listening(self):
         while True:
             try:
-                msg = self.socket.recv(1024).decode()
+                data = self.socket.recv(1024).decode()
             except socket.error as e:
                 err = e.args[0]
                 if err == errno.EAGAIN or err == errno.EWOULDBLOCK:
@@ -24,9 +27,9 @@ class Listener():
                     print(e)
                     exit(1)
             else:
-                if msg == 'Record':
+                if data == 'Record':
                     self.record = True
-                elif msg == "Close":
+                elif data == "Close":
                     self.stop()
             time.sleep(0.5)
 
