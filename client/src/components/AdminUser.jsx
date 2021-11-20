@@ -26,7 +26,7 @@ function AdminUser() {
       const [showExtraSelectDiv, setEtraSelectDiv] = useState(true);
       const [showSidebarDiv, setShowSidebarDiv ] = useState(true);
       const [users, setUsers] = useState([]);
-
+      const [newVideos, setNewVideos] = useState([]);
       /*check user authorization*/
       useLayoutEffect(() => {
         fetch(`${SERVER}/isUserAuth`, {
@@ -101,6 +101,23 @@ function AdminUser() {
                  setNewUser(users[i].videos);
                  console.log("I AM USER I")
                  console.log(users[i])
+
+                 axios.get(`${SERVER}/videoIDs/` + users[i].username, {headers: {"x-access-token": localStorage.getItem("token")}})
+                 .then((res) => {
+                   
+                   //console.log(res.data)
+                   if(res.data!==0){
+                     const newVideos = [...res.data[0]];
+                     console.log(newVideos);
+                     setNewVideos(newVideos);
+                     setEtraSelectDiv(true);
+                   }
+                   else{
+                     //setAnyVideo(false)
+                     setEtraSelectDiv(false);
+                     alert("This user has no video");     
+                   }
+               })    
                  
              }
          }

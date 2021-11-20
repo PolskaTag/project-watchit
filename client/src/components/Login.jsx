@@ -36,6 +36,9 @@ function Login() {
             // console.log("check admin");
             // console.log(res.data.admin);
             // console.log(res.data);
+            if(res.data.message === "Invalid Username or Password"){
+                alert("Invalid Username or Password");
+            }
         })
     } catch(err) {
         setErrorMessage(err);
@@ -76,8 +79,7 @@ function Login() {
                 </form>
             </div>
             {errorMessage === "Success" && checkAdmin?<Redirect to="/admin/user"/>: console.log("Validation Error")}
-            {errorMessage === "Success" && !checkAdmin?<Redirect to="/ProfilePage"/>: console.log("Validation Error")}
-            
+            {errorMessage === "Success" && !checkAdmin?<Redirect to="/ProfilePage"/>: console.log("Validation Error")}    
         </div>
     )
 }
