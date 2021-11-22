@@ -7,7 +7,7 @@ Philip Lapinski, Viet Le, Steven Zhou, Jake Taylor, Themba Binns, Nathanael Hans
 WatchIT is a system that allows users to connect a video feed with object detection to run user defined actions. By using an online control interface and embedded devices, Users can set up a device, select which objects to detect and then assign actions to be taken, after the object is detected. Users are also able to have multiple configurations of objects and actions, allowing them to watch over multiple scenarios. Want to know who has been stealing your stuff from the pantry? Setup a device, pick what was stolen as the object and pick an action to be run when the camera sees it.
 
 ### LIVE
-The current production link is 34.201.36.147
+The current production link is 18.207.245.254
 
 ### To Test
 I strongly recommend that you test our product through our production site listed above. There are secret values that are not included in source control that we keep hidden. Setting up your own backend would take hours of configuration.
