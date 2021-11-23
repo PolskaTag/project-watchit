@@ -392,8 +392,13 @@ h3 {
   .vid-container {
     width: 70% !important;
     height: 4em !important;
-    margin-top: -2em !important;
+    margin-top: -5em !important;
   }
+
+  .input-vid-search {
+    margin-top: 5em;
+  }
+
   .hamImg {
     width: 3em !important;
     height: 2em !important;

@@ -182,7 +182,7 @@ function AdminUser() {
                     <span className="span-search">Search for User's Videos</span>
                   </label>
                   <div className="select" >
-                    <Select isSearchable placeholder="Search for User's Videos" onChange={handleVideo} options={MakeVideoSelection(newUser)} className="innerSelect" />
+                    <Select isSearchable placeholder="Search for User's Videos" onChange={handleVideo} options={MakeVideoSelection(newVideos)} className="innerSelect" />
                   </div>
                   </div> : null}
 
