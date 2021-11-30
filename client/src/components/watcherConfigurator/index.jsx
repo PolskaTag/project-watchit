@@ -131,30 +131,67 @@ function WatcherConfigurator() {
         })
     }, [])
 
+    // return (
+    //     <div className="container">
+    //         <Navbar/>
+    //         <div className="watcherConfig-content">
+    //             <Form onSubmit={handleSave}>
+                // <Card className="text-center" border="dark">
+                //     <Card.Body>
+                //         <Card.Title>Watcher Configuration</Card.Title>
+                //         <Card.Text>
+                //             Configure your watcher profile, or create a new one!
+                //         </Card.Text>
+                //     </Card.Body>
+                // </Card>
+    //             {username !== "" ? selectWatcher(watchers) : null}
+    //             {/* <Button variant="primary">Create</Button> */}
+    //             {/* <Button variant="danger">Delete</Button> */}
+    //             {/* <pre>{JSON.stringify(selectedWatcher, null, 2)}</pre> */}
+    //             <DeviceConfigurator config={selectedWatcher}/>
+    //             <ObjectConfigurator config={selectedWatcher}/>
+    //             <ActionConfigurator config={selectedWatcher.udaList}/>
+    //             <Button type="submit">Save</Button>
+    //             </Form>
+    //         </div>
+    //     </div>
+    // )
+
     return (
-        <div className="container">
-            <Navbar/>
-            <div className="watcherConfig-content">
-                <Form onSubmit={handleSave}>
-                <Card className="text-center" border="dark">
-                    <Card.Body>
-                        <Card.Title>Watcher Configuration</Card.Title>
-                        <Card.Text>
-                            Configure your watcher profile, or create a new one!
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
-                {username !== "" ? selectWatcher(watchers) : null}
-                {/* <Button variant="primary">Create</Button> */}
-                {/* <Button variant="danger">Delete</Button> */}
-                {/* <pre>{JSON.stringify(selectedWatcher, null, 2)}</pre> */}
-                <DeviceConfigurator config={selectedWatcher}/>
-                <ObjectConfigurator config={selectedWatcher}/>
-                <ActionConfigurator config={selectedWatcher.udaList}/>
-                <Button type="submit">Save</Button>
-                </Form>
-            </div>
-        </div>
+        <Formik.Formik
+        enableReinitialize
+        initialValues={{
+            // watcherName: "",
+            // ipAddress: "",
+            // object: "",
+            // udaList: [],
+            // options: {}
+            watchers,
+            selectedWatcher
+        }}
+        onSubmit={(data) => {
+            console.log(data);
+        }}
+        >
+            {({values}) => (
+                <Formik.Form>
+                    <Card className="text-center" border="dark">
+                        <Card.Body>
+                            <Card.Title>Watcher Configuration</Card.Title>
+                            <Card.Text>
+                                Configure your watcher profile, or create a new one!
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                    {selectWatcher(values.watchers)}
+                    <DeviceConfigurator/>
+                    <ObjectConfigurator/>
+                    <ActionConfigurator/>
+                    <Button type="submit">Save Configuration</Button>
+                    <pre>{JSON.stringify(values, null, 2)}</pre>
+                </Formik.Form>
+            )}
+        </Formik.Formik>
     )
 }
 export default WatcherConfigurator;
