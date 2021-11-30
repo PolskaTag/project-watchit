@@ -62,3 +62,4 @@ server/config.env
 
 #watchit
 *.weights
+server/uploads/watcher.log

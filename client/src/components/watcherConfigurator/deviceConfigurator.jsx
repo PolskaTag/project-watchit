@@ -41,34 +41,59 @@ function DeviceConfigurator(props) {
         )
     }
 
+    // return (
+    //     <div className="my-3">
+    //         <Formik.Formik
+    //         enableReinitialize
+    //         initialValues={{...props.config}}
+    //         onSubmit={(data) => {
+    //             console.log(data);
+    //         }}>
+    //             {({values, isSubmitting}) => (
+    //                 // <Formik.Form>
+    //                 <>
+                        // <Card border="dark">
+                        //     <Card.Body>Device Configuration</Card.Body>
+                        // </Card>
+    //                     <CreateDeviceUI config={props.config}></CreateDeviceUI>
+    //                     <Button 
+    //                         // disabled={isSubmitting}
+    //                         type="submit"
+    //                         variant="contained"
+    //                         style={{width: "100%"}}>
+    //                         Update Device
+    //                     </Button>
+    //                     {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
+    //                     </>
+    //                 // </Formik.Form>
+    //             )}
+    //         </Formik.Formik>
+    //     </div>
+    // )
+
     return (
-        <div className="my-3">
-            <Formik.Formik
-            enableReinitialize
-            initialValues={{...props.config}}
-            onSubmit={(data) => {
-                console.log(data);
-            }}>
-                {({values, isSubmitting}) => (
-                    // <Formik.Form>
-                    <>
-                        <Card border="dark">
-                            <Card.Body>Device Configuration</Card.Body>
-                        </Card>
-                        <CreateDeviceUI config={props.config}></CreateDeviceUI>
-                        <Button 
-                            // disabled={isSubmitting}
-                            type="submit"
-                            variant="contained"
-                            style={{width: "100%"}}>
-                            Update Device
-                        </Button>
-                        {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
-                        </>
-                    // </Formik.Form>
-                )}
-            </Formik.Formik>
-        </div>
+        <>
+            <Card border="dark">
+                <Card.Body>Device Configuration</Card.Body>
+            </Card>
+            <Formik.Field 
+                placeholder="Watcher Name"
+                name="selectedWatcher.watcherName"
+                type="input"
+                variant="filled"
+                label="Watcher Name"
+                style={{width: "50%"}}
+                as={TextField}/>
+            <Formik.Field 
+                placeholder="IP Address"
+                name="selectedWatcher.ipAddress"
+                type="input"
+                variant="filled"
+                label="Ip Address"
+                InputProps={{readOnly: true}}
+                style={{width: "50%"}}
+                as={TextField}/>
+        </>
     )
 }
 export default DeviceConfigurator;
