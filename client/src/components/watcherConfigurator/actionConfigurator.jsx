@@ -30,38 +30,38 @@ import { TextField,
 import DeleteIcon from '@mui/icons-material/Delete';
 
 function ActionConfigurator(props) {
-    const [selectedUDA, setSelectedUDA] = useState(() => {
-        return(
-            {
-            udaName: "",
-            udaType: "",
-            script: "",
-            params: {}
-            }
-        )
-    });
+    // const [selectedUDA, setSelectedUDA] = useState(() => {
+    //     return(
+    //         {
+    //         udaName: "",
+    //         udaType: "",
+    //         script: "",
+    //         params: {}
+    //         }
+    //     )
+    // });
 
-    const options = props.config.map((option) => {
-            return (
-                {value: option, label: option.udaName}
-            )
-        })
+    // const options = props.config.map((option) => {
+    //         return (
+    //             {value: option, label: option.udaName}
+    //         )
+    //     })
 
-    const getSelectOptions = (udaList) => {
-        let results = udaList.map((uda) => {
-            return(
-                {value: uda, label: uda.udaName}
-            )
-        })
-        return results;
-    }
+    // const getSelectOptions = (udaList) => {
+    //     let results = udaList.map((uda) => {
+    //         return(
+    //             {value: uda, label: uda.udaName}
+    //         )
+    //     })
+    //     return results;
+    // }
 
-    const _onChange = (e) => {
-        console.log(e);
-            setSelectedUDA((prevState) => {
-                return({...e.target.value});
-            });
-        }
+    // const _onChange = (e) => {
+    //     console.log(e);
+    //         setSelectedUDA((prevState) => {
+    //             return({...e.target.value});
+    //         });
+    //     }
 
     const buildMenuItems = (udaList) => (
         udaList.map((uda) => {
@@ -71,9 +71,9 @@ function ActionConfigurator(props) {
         })
     )
 
-    const createUdaConfig = () => {
+    // const createUdaConfig = () => {
 
-    }
+    // }
 
     // return (
     //     <div className="my-3">
@@ -134,12 +134,14 @@ function ActionConfigurator(props) {
                 <Card.Body>Action Configuration</Card.Body>
             </Card>
             <Formik.Field
-                name="uda"
+                name="selectedUda"
                 type="select"
                 variant="filled"
                 style={{width: "100%"}}
                 as={Select}>
+                    {buildMenuItems(props.udaList)}
             </Formik.Field>
+            <UDA uda={props.selectedUda}/>
         </>
     )
 }

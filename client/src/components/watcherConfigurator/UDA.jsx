@@ -59,7 +59,7 @@ function UDA(props) {
       <>
       <Formik.Field
               placeholder="UDA Name"
-              name="udaName"
+              name="selectedUda.udaName"
               type="input"
               variant="filled"
               label="UDA Name"
@@ -68,7 +68,7 @@ function UDA(props) {
             />
       <Formik.Field
               placeholder="UDA Type"
-              name="udaType"
+              name="selectedUda.udaType"
               type="select"
               variant="filled"
               style={{width: "100%"}}
@@ -94,7 +94,7 @@ function UDA(props) {
           <div>
             <Formik.Field
               placeholder="Recipient Email Address"
-              name="params.recipient"
+              name="selectedUda.params.recipient"
               type="input"
               variant="filled"
               label="Email Address"
@@ -105,7 +105,7 @@ function UDA(props) {
           <div>
             <Formik.Field
               placeholder="Message Body"
-              name="params.body"
+              name="selectedUda.params.body"
               type="textArea"
               variant="filled"
               label="Message Body"
@@ -163,7 +163,7 @@ function UDA(props) {
             <>
             <Formik.Field
               placeholder="Video Title"
-              name="params.videoTitle"
+              name="selectedUda.params.videoTitle"
               type="input"
               variant="filled"
               label="Video Title"
@@ -172,7 +172,7 @@ function UDA(props) {
             />
 
             <Formik.Field
-              name="params.videoDuration"
+              name="selectedUda.params.videoDuration"
               type="select"
               variant="filled"
               style={{width: "100%"}}
@@ -196,40 +196,54 @@ function UDA(props) {
       // setUda(props.config);
     })
 
+    // return (
+    //   <Formik.Formik
+    //   enableReinitialize
+    //   initialValues={{
+    //       udaName: props.config.udaName,
+    //       udaType: props.config.udaType,
+    //       script: props.config.script,
+    //       params: props.config.params
+    //     }}
+    //     onSubmit={(data, { setSubmitting }) => {
+    //       setSubmitting(true);
+    //       console.log("submit ", data);
+    //       setSubmitting(false);
+    //     }}>
+    //     {({ values, isSubmitting}) => (
+    //       // <Formik.Form>
+    //       <>
+    //         <Card border="dark">
+    //           <Card.Header>UDA Type: {values.udaType}</Card.Header>
+    //         </Card>
+    //         <UdaBaseUI uda={values}/>
+    //         <div>
+    //           <Button
+    //             disabled={isSubmitting}
+    //             variant="contained"
+    //             style={{width: "100%"}}>
+    //             Update UDA
+    //           </Button>
+    //         </div>
+    //         {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
+    //       </>
+    //       // </Formik.Form>
+    //     )}
+    //   </Formik.Formik>
+    // )
+
     return (
-      <Formik.Formik
-      enableReinitialize
-      initialValues={{
-          udaName: props.config.udaName,
-          udaType: props.config.udaType,
-          script: props.config.script,
-          params: props.config.params
-        }}
-        onSubmit={(data, { setSubmitting }) => {
-          setSubmitting(true);
-          console.log("submit ", data);
-          setSubmitting(false);
-        }}>
-        {({ values, isSubmitting}) => (
-          // <Formik.Form>
-          <>
-            <Card border="dark">
-              <Card.Header>UDA Type: {values.udaType}</Card.Header>
-            </Card>
-            <UdaBaseUI uda={values}/>
-            <div>
-              <Button
-                disabled={isSubmitting}
-                variant="contained"
-                style={{width: "100%"}}>
-                Update UDA
-              </Button>
-            </div>
-            {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
-          </>
-          // </Formik.Form>
-        )}
-      </Formik.Formik>
+      <>
+      <Card border="dark">
+        <Card.Header>UDA Type: {props.uda.udaType}</Card.Header>
+      </Card>
+      <UdaBaseUI uda={props.uda}/>
+      <Button
+        variant="contained"
+        style={{width: "100%"}}>
+        Update UDA
+      </Button>
+      </>
     )
 
 }

@@ -158,7 +158,10 @@ function WatcherConfigurator() {
     // )
 
     return (
-        <Formik.Formik
+        <>
+        <div className="container">
+            <Navbar/>
+            <Formik.Formik
         enableReinitialize
         initialValues={{
             // watcherName: "",
@@ -167,7 +170,21 @@ function WatcherConfigurator() {
             // udaList: [],
             // options: {}
             watchers,
-            selectedWatcher
+            selectedWatcher,
+            selectedUda: {
+                _id: "",
+                udaName: "",
+                udaType: "",
+                script: "",
+                params: {}
+            },
+            editUda: {
+                _id: "",
+                udaName: "",
+                udaType: "",
+                script: "",
+                params: {}
+            }
         }}
         onSubmit={(data) => {
             console.log(data);
@@ -186,12 +203,14 @@ function WatcherConfigurator() {
                     {selectWatcher(values.watchers)}
                     <DeviceConfigurator/>
                     <ObjectConfigurator/>
-                    <ActionConfigurator/>
+                    <ActionConfigurator selectedUda={values.selectedUda} udaList={values.selectedWatcher.udaList}/>
                     <Button type="submit">Save Configuration</Button>
                     <pre>{JSON.stringify(values, null, 2)}</pre>
                 </Formik.Form>
             )}
         </Formik.Formik>
+        </div>
+        </>
     )
 }
 export default WatcherConfigurator;
