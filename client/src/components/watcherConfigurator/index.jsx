@@ -203,7 +203,8 @@ function WatcherConfigurator() {
                     {selectWatcher(values.watchers)}
                     <DeviceConfigurator/>
                     <ObjectConfigurator/>
-                    <ActionConfigurator selectedUda={values.selectedUda} udaList={values.selectedWatcher.udaList}/>
+                    {/* <ActionConfigurator selectedUda={values.selectedUda} udaList={values.selectedWatcher.udaList}/> */}
+                    <UDA udaList={values.selectedWatcher.udaList}/>
                     <Button type="submit">Save Configuration</Button>
                     <pre>{JSON.stringify(values, null, 2)}</pre>
                 </Formik.Form>

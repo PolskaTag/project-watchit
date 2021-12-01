@@ -18,6 +18,7 @@ import {
 } from "@material-ui/core";
 import * as yup from "yup";
 import InputLabel from '@mui/material/InputLabel';
+import { FieldArray } from 'formik';
 
 function UDA(props) {
 
@@ -234,10 +235,26 @@ function UDA(props) {
 
     return (
       <>
-      <Card border="dark">
+      {/* <Card border="dark">
         <Card.Header>UDA Type: {props.uda.udaType}</Card.Header>
-      </Card>
-      <UdaBaseUI uda={props.uda}/>
+      </Card> */}
+      <FieldArray name="selectedWatcher.udaList">
+        {arrayHelpers => (
+          <div>
+            <Button onClick={() => arrayHelpers.push({
+              _id: "",
+              udaName: "",
+              udaType: "",
+              script: "",
+              params: {}
+            })}>Add UDA</Button>
+            {/* {props.udaList.map((uda, index) => {
+              const name = `selectedWatcher.udaList.${index}.`
+            })} */}
+          </div>
+        )}
+      </FieldArray>
+      {/* <UdaBaseUI uda={props.uda}/> */}
       <Button
         variant="contained"
         style={{width: "100%"}}>
