@@ -4,6 +4,8 @@ import loginImg from "./images/register.png";
 import "./style/register.css";
 import Navbar from './Navbar';
 import axios from 'axios'
+import { Redirect} from 'react-router-dom'
+
 
 const SERVER = process.env.NODE_ENV === "production" ? (process.env.REACT_APP_SERVER || "http://localhost:5000") : "http://localhost:5000";
 
@@ -29,6 +31,16 @@ function Register() {
         .post(`${SERVER}/register`, user).then((response) => {
             console.log(response);
             setErrorMessage(response.data.message);
+
+            if(response.data.message === "Username has already been taken"){
+                alert("Username already taken! Please choose another username...");
+            }
+            else if(response.data.message === '"Confirm password" does not match'){
+                alert("Confirm password does not match!");
+            }
+            else if(response.data.message === "\"password\" length must be at least 8 characters long"){
+                alert("Password length must be at least 8 characters long!");
+            }
         })
         // fetch("http://localhost:5000/register", {
         //     method: "POST",
@@ -64,6 +76,7 @@ function Register() {
                     <input required type="submit" value="Register"/><br/>
                 </form>
             </div>
+            {errorMessage === "Success"?<Redirect to="/Login"/>: console.log("Registration failed")}
         </div>
     )
 }
