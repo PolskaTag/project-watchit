@@ -18,95 +18,67 @@ import {
 } from "@material-ui/core";
 import * as yup from "yup";
 import InputLabel from '@mui/material/InputLabel';
-import { FieldArray } from 'formik';
+import { FieldArray, useField } from 'formik';
 
-function UDA(props) {
+function UDA({uda, name, ...props}) {
+  // const [field, meta] = useField(props);
+  // const errorText = meta.error && meta.touched ? meta.error : "";
 
-  // Makes our UI for the Form
-  const UdaBaseUI = ({uda}) => {
+  // // Makes our UI for the Form
+  // const UdaBaseUI = ({uda, name}) => {
+  // console.log(uda);
+  // // This is the udaType specific UI payload
 
-    // console.log(uda);
-
-  // This is the udaType specific UI payload
-  let toRender = <></>;
-  switch (uda.udaType) {
-    case 'email':
-      toRender = emailUi();
-      break;
-    case 'logging':
-      toRender = loggingUi();
-      break;
-    case 'sound':
-      toRender = soundUi();
-      break;
-    case 'text':
-      toRender = textUi();
-      break;
-    case 'light':
-      toRender = lightUi();
-      break;
-    case 'snapshot':
-      toRender = snapshotUi();
-      break;
-    case 'video':
-      toRender = videoUi();
-      break;
-    default:
-      console.log("Unable to parse udaType");
-      break;
-  }
-
-    return (
-      <>
-      <Formik.Field
-              placeholder="UDA Name"
-              name="selectedUda.udaName"
-              type="input"
-              variant="filled"
-              label="UDA Name"
-              style={{width: "100%"}}
-              as={TextField}
-            />
-      <Formik.Field
-              placeholder="UDA Type"
-              name="selectedUda.udaType"
-              type="select"
-              variant="filled"
-              style={{width: "100%"}}
-              label="UDA Type"
-              as={Select}
-            >
-               <MenuItem value="email">email</MenuItem>
-               <MenuItem value="video">video</MenuItem>
-               <MenuItem value="sound">sound</MenuItem>
-               <MenuItem value="log">log</MenuItem>
-      </Formik.Field>
-      {toRender}
-      </>
-    )
-  }
+  //   return (
+  //     <>
+  //     {/* <Formik.Field
+  //             placeholder="UDA Name"
+  //             name={`selectedWatcher.udaList.${index}.udaName`}
+  //             type="input"
+  //             variant="filled"
+  //             label="UDA Name"
+  //             style={{width: "100%"}}
+  //             as={TextField}
+  //           />
+  //     <Formik.Field
+  //             placeholder="UDA Type"
+  //             name={`selectedWatcher.udaList.${index}.udaType`}
+  //             type="select"
+  //             variant="filled"
+  //             style={{width: "100%"}}
+  //             label="UDA Type"
+  //             as={Select}
+  //           >
+  //              <MenuItem value="email">email</MenuItem>
+  //              <MenuItem value="video">video</MenuItem>
+  //              <MenuItem value="sound">sound</MenuItem>
+  //              <MenuItem value="log">log</MenuItem>
+  //     </Formik.Field> */}
+  //     {toRender}
+  //     </>
+  //   )
+  // }
 
     // Returns a emailUDA UI specific for emails
-    const emailUi = () => {
-      // console.log(uda);
+    const EmailUi = (name) => {
+      // const [field] = useField(props);
+      // console.log(name);
        
         return(
-          <>
-          <div>
+          <div key={uda._id}>
             <Formik.Field
               placeholder="Recipient Email Address"
-              name="selectedUda.params.recipient"
+              // {...props}
+              name= {`${name}.params.recipient`}
               type="input"
               variant="filled"
               label="Email Address"
               style={{width: "100%"}}
               as={TextField}
             />
-          </div>
-          <div>
             <Formik.Field
               placeholder="Message Body"
-              name="selectedUda.params.body"
+              name={`${name}.params.body`}
               type="textArea"
               variant="filled"
               label="Message Body"
@@ -114,12 +86,11 @@ function UDA(props) {
               as={TextField}
             />
           </div>
-          </>
         )
     }
 
     // Returns a loggingUDA UI specific for emails
-    const loggingUi = () => {
+    const LoggingUi = () => {
           return (
             <>
             </>
@@ -127,7 +98,7 @@ function UDA(props) {
     }
 
     // Returns a soundUDA UI specific for emails
-    const soundUi = () => {
+    const SoundUi = () => {
           return (
             <>
             </>
@@ -135,7 +106,7 @@ function UDA(props) {
     }
 
     // Returns a textUDA UI specific for emails
-    const textUi = () => {
+    const TextUi = () => {
           return (
             <>
             </>
@@ -143,7 +114,7 @@ function UDA(props) {
     }
 
     // Returns a lightUDA UI specific for emails
-    const lightUi = () => {
+    const LightUi = () => {
           return (
             <>
             </>
@@ -151,7 +122,7 @@ function UDA(props) {
     }
 
     // Returns a snapshotUDA UI specific for emails
-    const snapshotUi = () => {
+    const SnapshotUi = () => {
           return (
             <>
             </>
@@ -159,12 +130,12 @@ function UDA(props) {
     }
 
     // Returns a videoUDA UI specific for emails
-    const videoUi = () => {
+    const VideoUi = (name) => {
           return (
             <>
             <Formik.Field
               placeholder="Video Title"
-              name="selectedUda.params.videoTitle"
+              name={`${name}.params.videoTitle`}
               type="input"
               variant="filled"
               label="Video Title"
@@ -173,12 +144,12 @@ function UDA(props) {
             />
 
             <Formik.Field
-              name="selectedUda.params.videoDuration"
+              name={`${name}.params.videoDuration`}
               type="select"
               variant="filled"
               style={{width: "100%"}}
               label="Video Duration"
-              inputLabel="Duration"
+              inputlabel="Duration"
               as={Select}
             >
               <InputLabel>Duration</InputLabel>
@@ -192,10 +163,38 @@ function UDA(props) {
           )
     }
 
-    useEffect(() => {
-      console.log("rerender");
-      // setUda(props.config);
-    })
+      let toRender = <></>;
+      switch (uda.udaType) {
+        case 'email':
+          toRender = EmailUi(name);
+          break;
+        case 'logging':
+          toRender = LoggingUi();
+          break;
+        case 'sound':
+          toRender = SoundUi();
+          break;
+        case 'text':
+          toRender = TextUi();
+          break;
+        case 'light':
+          toRender = LightUi();
+          break;
+        case 'snapshot':
+          toRender = SnapshotUi();
+          break;
+        case 'video':
+          toRender = VideoUi(name);
+          break;
+        default:
+          console.log("Unable to parse udaType");
+          break;
+      }
+
+    // useEffect(() => {
+    //   console.log("rerender");
+    //   // setUda(props.config);
+    // })
 
     // return (
     //   <Formik.Formik
@@ -214,9 +213,9 @@ function UDA(props) {
     //     {({ values, isSubmitting}) => (
     //       // <Formik.Form>
     //       <>
-    //         <Card border="dark">
-    //           <Card.Header>UDA Type: {values.udaType}</Card.Header>
-    //         </Card>
+            // <Card border="dark">
+            //   <Card.Header>UDA Type: {values.udaType}</Card.Header>
+            // </Card>
     //         <UdaBaseUI uda={values}/>
     //         <div>
     //           <Button
@@ -233,33 +232,97 @@ function UDA(props) {
     //   </Formik.Formik>
     // )
 
+    // return (
+    //   <>
+    //   {/* <Card border="dark">
+    //     <Card.Header>UDA Type: {props.uda.udaType}</Card.Header>
+    //   </Card> */}
+    //   <UdaBaseUI uda={uda} index={index}/>
+    //   {/* <Button
+    //     variant="contained"
+    //     style={{width: "100%"}}>
+    //     Update UDA
+    //   </Button> */}
+    //   </>
+    // )
+
     return (
       <>
-      {/* <Card border="dark">
-        <Card.Header>UDA Type: {props.uda.udaType}</Card.Header>
-      </Card> */}
-      <FieldArray name="selectedWatcher.udaList">
-        {arrayHelpers => (
-          <div>
-            <Button onClick={() => arrayHelpers.push({
-              _id: "",
-              udaName: "",
-              udaType: "",
-              script: "",
-              params: {}
-            })}>Add UDA</Button>
-            {/* {props.udaList.map((uda, index) => {
-              const name = `selectedWatcher.udaList.${index}.`
-            })} */}
-          </div>
-        )}
-      </FieldArray>
-      {/* <UdaBaseUI uda={props.uda}/> */}
-      <Button
-        variant="contained"
-        style={{width: "100%"}}>
-        Update UDA
-      </Button>
+      <Card border="dark">
+        <Card.Header>UDA Configuration</Card.Header>
+      </Card>
+      {/* <pre>{JSON.stringify(name, null, 2)}</pre> */}
+        <Formik.Field
+          placeholder="UDA Name"
+          name={name+'.udaName'}
+          type="input"
+          variant="filled"
+          label="UDA Name"
+          style={{width: "100%"}}
+          as={TextField}
+        />
+      <Formik.Field
+        placeholder="UDA Type"
+        name={name + `.udaType`}
+        type="select"
+        variant="filled"
+        style={{width: "100%"}}
+        label="UDA Type"
+        labelId="udaType-select-label"
+        as={Select}
+      >
+        <InputLabel id="udaType-select-label">UDA Type</InputLabel>
+        <MenuItem value="email">email</MenuItem>
+        <MenuItem value="video">video</MenuItem>
+        <MenuItem value="sound">sound</MenuItem>
+        <MenuItem value="log">log</MenuItem>
+
+      </Formik.Field>
+
+      {/* <Formik.Field
+          placeholder="email recip"
+          name={name+'.params.recipient'}
+          type="input"
+          variant="filled"
+          label="UDA Name"
+          style={{width: "100%"}}
+          as={TextField}
+        /> */}
+        {/* {uda.udaType === "email" && <>{toRender}</>} */}
+        {toRender}
+        {/* {function () {
+          // This is the udaType specific UI payload
+          let toRender = <></>;
+
+          switch (uda.udaType) {
+            case 'email':
+              toRender = EmailUi(name);
+              break;
+            case 'logging':
+              toRender = LoggingUi();
+              break;
+            case 'sound':
+              toRender = SoundUi();
+              break;
+            case 'text':
+              toRender = TextUi();
+              break;
+            case 'light':
+              toRender = LightUi();
+              break;
+            case 'snapshot':
+              toRender = SnapshotUi();
+              break;
+            case 'video':
+              toRender = VideoUi(name);
+              break;
+            default:
+              console.log("Unable to parse udaType");
+              break;
+          }
+          console.log(toRender);
+          return (<>{toRender}</>);
+        }} */}
       </>
     )
 
