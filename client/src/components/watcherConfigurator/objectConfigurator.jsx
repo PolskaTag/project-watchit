@@ -20,42 +20,63 @@ function ObjectConfigurator(props) {
             )
         })
 
+    // return (
+    //     <div className="my-3">
+            // <Card border="dark">
+            //     <Card.Body>Object Configuration</Card.Body>
+            // </Card>
+    //         <Formik.Formik
+    //         enableReinitialize
+    //         initialValues={props.config}>
+    //             {({values}) => (
+    //                 // <Formik.Form>
+    //                 <>
+                        // <Formik.Field
+                        //     name="object"
+                        //     type="select"
+                        //     variant="filled"
+                        //     style={{width: "100%"}}
+                        //     as={Select}>
+                        //     <MenuItem value="car">car</MenuItem>
+                        //     <MenuItem value="person">person</MenuItem>
+                        //     <MenuItem value="bike">bike</MenuItem>
+                        //     <MenuItem value="banana">banana</MenuItem>
+                        //     <MenuItem value="bottle">bottle</MenuItem>
+                        // </Formik.Field>
+    //                     <Button 
+    //                         // disabled={isSubmitting}
+    //                         type="submit"
+    //                         variant="contained"
+    //                         style={{width: "100%"}}>
+    //                         Update Object
+    //                     </Button>
+    //                     {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
+    //                 </>
+    //                 // </Formik.Form>
+    //             )}
+    //         </Formik.Formik>
+    //     </div>
+    // )
+
     return (
-        <div className="my-3">
+        <>
             <Card border="dark">
                 <Card.Body>Object Configuration</Card.Body>
             </Card>
-            <Formik.Formik
-            enableReinitialize
-            initialValues={props.config}>
-                {({values}) => (
-                    // <Formik.Form>
-                    <>
-                        <Formik.Field
-                            name="object"
-                            type="select"
-                            variant="filled"
-                            style={{width: "100%"}}
-                            as={Select}>
-                            <MenuItem value="car">car</MenuItem>
-                            <MenuItem value="person">person</MenuItem>
-                            <MenuItem value="bike">bike</MenuItem>
-                            <MenuItem value="banana">banana</MenuItem>
-                            <MenuItem value="bottle">bottle</MenuItem>
-                        </Formik.Field>
-                        <Button 
-                            // disabled={isSubmitting}
-                            type="submit"
-                            variant="contained"
-                            style={{width: "100%"}}>
-                            Update Object
-                        </Button>
-                        {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
-                    </>
-                    // </Formik.Form>
-                )}
-            </Formik.Formik>
-        </div>
+            <Formik.Field
+                name="selectedWatcher.object"
+                type="select"
+                variant="filled"
+                style={{width: "100%"}}
+                as={Select}>
+                <MenuItem value="car">car</MenuItem>
+                <MenuItem value="person">person</MenuItem>
+                <MenuItem value="bike">bike</MenuItem>
+                <MenuItem value="banana">banana</MenuItem>
+                <MenuItem value="bottle">bottle</MenuItem>
+            </Formik.Field>
+        </>
+
     )
 }
 export default ObjectConfigurator;
