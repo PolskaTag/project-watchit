@@ -12,7 +12,6 @@ cap = cv2.VideoCapture(0)
 
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
-# print(f"FPS: {cap.get(5)}")
 
 # # Generate the labels associated with object
 LABELS = hf.filesplit('project-watchit/device/model/coco.txt')
@@ -21,7 +20,7 @@ if not LABELS:
 
 # # Set confidence required to send message and count obtains the highest current videoID
 min_confidence = 0.6
-count = 3001
+count = hf.video_count() + 1
 
 fourcc = cv2.VideoWriter_fourcc(*"avc1")
 writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 30, (frame_width, frame_height))
@@ -72,8 +71,6 @@ while True:
     # Can pass in user name after count
         Process(target=vu.upload_video, args=(count,)).start()
         Process(target=pf.dofuncts, args=(actions['person'],)).start()
-        # uploader = Process(target=vu.upload_video, args=(count,))
-        # uploader.start()
         count += 1
         writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 30, (frame_width, frame_height))
         person = False
