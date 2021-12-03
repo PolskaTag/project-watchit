@@ -15,7 +15,7 @@ frame_height = int(cap.get(4))
 # print(f"FPS: {cap.get(5)}")
 
 # # Generate the labels associated with object
-LABELS = hf.filesplit(r'/home/pi/Python/project-watchit/device/model/coco.txt')
+LABELS = hf.filesplit('project-watchit/device/model/coco.txt')
 if not LABELS:
     exit(1)
 
@@ -26,7 +26,7 @@ count = 3001
 fourcc = cv2.VideoWriter_fourcc(*"avc1")
 writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 30, (frame_width, frame_height))
 
-net = cv2.dnn.readNetFromDarknet('/home/pi/Python/project-watchit/device/model/yolov4-tiny.cfg', '/home/pi/Python/project-watchit/device/model/yolov4-tiny.weights')
+net = cv2.dnn.readNetFromDarknet('project-watchit/device/model/yolov4-tiny.cfg', 'project-watchit/device/model/yolov4-tiny.weights')
 ln = net.getUnconnectedOutLayersNames()
 
 person = False
