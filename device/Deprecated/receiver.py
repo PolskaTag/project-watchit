@@ -2,10 +2,12 @@ import socket
 import time
 import helperfuncs as hf
 from collections import defaultdict
-import json
 import pifuncs as pf
 import requests
 import threading
+import subprocess
+
+subprocess.run({""})
 
 temp = hf.userdata()
 userId = temp['userId']

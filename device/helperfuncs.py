@@ -69,20 +69,19 @@ def framegrab():
 
     grabbed, frame = vs.read()
 
-def objectdetection(frame, model, socket, layers, LABELS, min_confidence=0.6):
-        blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (320, 320),
-        swapRB=True, crop=False)
-        model.setInput(blob)
-        layerOutputs = model.forward(layers)
-        for output in layerOutputs:
-            one_class = set()
-            for detection in output:
-                scores = detection[5:]
-                classID = np.argmax(scores)
-                confidence = scores[classID]
-                if confidence > min_confidence and classID not in one_class:
-                    one_class.add(classID)
-                    socket.send(LABELS[classID].encode())
+def objectdetection(frame, model, layers, LABELS, min_confidence=0.6):
+    blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (320, 320), swapRB=True, crop=False)
+    model.setInput(blob)
+    layerOutputs = model.forward(layers)
+    one_class = set()
+    for output in layerOutputs:
+        for detection in output:
+            scores = detection[5:]
+            classID = np.argmax(scores)
+            confidence = scores[classID]
+            if confidence > min_confidence and classID not in one_class:
+                one_class.add(classID)
+                print(LABELS[classID])
 
 def main():
     return None
