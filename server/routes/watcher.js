@@ -71,6 +71,14 @@ router.route("/watchers/:userId/:watcherId").get(verifyJWT, (req, res) => {
 // create a watcher
 router.route("/watchers/:userId").post(verifyJWT, (req, res) => {
   const watcher = req.body;
+
+  watcher._id === "" ? delete watcher._id : null;
+
+  // cast _id to ObjectId(_id)
+  watcher.udaList.forEach((uda) => {
+    uda._id === "" ? delete uda._id : null;
+  });
+
   console.log(watcher);
   User.findById(req.params.userId).then(
     (dbUser) => {
@@ -79,8 +87,9 @@ router.route("/watchers/:userId").post(verifyJWT, (req, res) => {
       } catch (err) {
         console.log(err);
       }
-
-      dbUser.save();
+      dbUser.save((err, data) => {
+        console.log(err);
+      });
       res.json({ message: "success", watcher: dbUser.watcher });
     },
     (err) => {
@@ -108,9 +117,10 @@ router.route("/watchers/:userId/:watcherId").post(verifyJWT, (req, res) => {
 // delete a watcher
 router
   .route("/watchers/:userId/:watcherId/delete")
-  .post(verifyJWT, (req, res) => {
+  .delete(verifyJWT, (req, res) => {
+    const id = ObjectId(req.params.watcherId);
     User.findById(req.params.userId).then((dbUser) => {
-      dbUser.watcher.pull(req.params.watcherId);
+      dbUser.watcher.pull(id);
       dbUser.save((err, data) => {
         if (err) console.log(err);
         res.json(data);
