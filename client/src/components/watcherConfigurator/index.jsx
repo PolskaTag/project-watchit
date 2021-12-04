@@ -118,6 +118,14 @@ function WatcherConfigurator() {
         // console.log(e.target[0]);
     }
 
+    const handleDeleteConfig = (watcherToDelete) => {
+        axios.delete(`${SERVER}/watchers/${userId}/${watcherToDelete._id}/delete`,
+            {headers: {"x-access-token": localStorage.getItem("token")}})
+                .then((response) => {
+                    console.log(response);
+                })
+    }
+
     useEffect(() => {
 
         // Check to see if the user is auth
@@ -185,6 +193,13 @@ function WatcherConfigurator() {
         }}
         onSubmit={(data) => {
             console.log(data);
+            axios.post(`${SERVER}/watchers/${userId}`,
+             data.selectedWatcher,
+             {"headers": {"x-access-token": localStorage.getItem("token")}})
+                .then((response) => {
+                    console.log(response);
+                })
+
         }}
         >
             {({values}) => (
@@ -237,6 +252,20 @@ function WatcherConfigurator() {
                     <div className="d-grid gap-2">
                     <Button type="submit" variant="primary" size="lg">
                         Save Configuration
+                    </Button>
+                    </div>
+                    <div className="d-grid gap-2">
+                    <Button onClick={() => {
+                        if(values.selectedWatcher._id !== "") {
+                            try {
+                                // We want to delete if watcher is in db
+                                handleDeleteConfig(values.selectedWatcher);
+                            } catch (error) {
+                                console.log(error);
+                            }
+                        }
+                    }} variant="danger" size="lg">
+                        Delete Configuration
                     </Button>
                     </div>
                     {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
