@@ -82,7 +82,7 @@ def objectdetection(frame, model, layers, LABELS, queue, min_confidence=0.6):
             if confidence > min_confidence:
             # if confidence > min_confidence and classID not in one_class:
                 # one_class.add(classID)
-                if LABELS[classID] == 'person':
+                if LABELS[classID] == 'bottle':
                     queue.put(1)
 
 def main():

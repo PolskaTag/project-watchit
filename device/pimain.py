@@ -1,6 +1,5 @@
 import multiprocessing as mp
 import cv2
-import numpy as np
 import helperfuncs as hf
 import pifuncs as pf
 from collections import defaultdict
@@ -51,10 +50,11 @@ while True:
         mp.Process(target=hf.objectdetection, args=(frame, net, ln, LABELS, queue)).start()
 
     if not queue.empty():
-        queue.get()
+        while not queue.empty():
+            queue.get()
         print("Worked")
         hf.recordvideo(cap, writer)
-    # # Can pass in user name after count
+    # Can pass in user name after count
         mp.Process(target=vu.upload_video, args=(count,)).start()
         mp.Process(target=pf.dofuncts, args=(actions['person'],)).start()
         count += 1
