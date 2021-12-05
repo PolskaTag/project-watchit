@@ -5,7 +5,6 @@ import pifuncs as pf
 from collections import defaultdict
 import video_upload as vu
 import os
-import time
 
 cap = cv2.VideoCapture(0)
 
@@ -33,7 +32,6 @@ actions = defaultdict(list)
 actions['person'].append((pf.intruder,))
 
 ret_value = mp.Value("i", False, lock=True)
-start = time.time()
 
 while True:
     ret, frame = cap.read()
@@ -51,7 +49,6 @@ while True:
 
     if ret_value.value:
         print("Worked")
-        start = time.time()
         mp.Process(target=pf.dofuncts, args=(actions['person'],)).start()
         hf.recordvideo(cap, writer)
         ret_value.value = False
