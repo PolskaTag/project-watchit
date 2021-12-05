@@ -1,10 +1,9 @@
+import multiprocessing as mp
 import cv2
 import numpy as np
 import helperfuncs as hf
 import pifuncs as pf
-import threading
 from collections import defaultdict
-from multiprocessing import Process
 import video_upload as vu
 import os
 
@@ -35,6 +34,8 @@ frame_cnt = 0
 actions = defaultdict(list)
 actions['person'].append((pf.intruder,))
 
+queue = mp.Queue()
+
 while True:
     ret, frame = cap.read()
 
@@ -43,34 +44,19 @@ while True:
 
     cv2.imshow('frame', frame)
 
-    # Object detection on every 10th frame
+    # Object detection on every 30th frame
     if frame_cnt >= 30:
         frame_cnt = 0
         print("Processing")
-        # ml = Process(target=hf.objectdetection, args=(frame, net, ln, LABELS, ))
-        # ml.start()
-        # ml.join()
-        blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (320, 320),
-            swapRB=True, crop=False)
-        net.setInput(blob)
-        layerOutputs = net.forward(ln)
-        # one_class = set()
-        for output in layerOutputs:
-            for detection in output:
-                scores = detection[5:]
-                classID = np.argmax(scores)
-                confidence = scores[classID]
-                # if confidence > min_confidence and classID not in one_class:
-                if confidence > min_confidence:
-                    # one_class.add(classID)
-                    if LABELS[classID] == 'person':
-                        person =True
+        mp.Process(target=hf.objectdetection, args=(frame, net, ln, LABELS, queue)).start()
 
-    if person:
+    if not queue.empty():
+        queue.get()
+        print("Worked")
         hf.recordvideo(cap, writer)
-    # Can pass in user name after count
-        Process(target=vu.upload_video, args=(count,)).start()
-        Process(target=pf.dofuncts, args=(actions['person'],)).start()
+    # # Can pass in user name after count
+        mp.Process(target=vu.upload_video, args=(count,)).start()
+        mp.Process(target=pf.dofuncts, args=(actions['person'],)).start()
         count += 1
         writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 30, (frame_width, frame_height))
         person = False
@@ -81,10 +67,10 @@ while True:
 
     frame_cnt += 1
 
-writer.release()
-
 # Remove extra file created by function
 os.remove(f'output{count}.mp4')
 
+print("OK")
 cap.release()
+writer.release()
 cv2.destroyAllWindows()
