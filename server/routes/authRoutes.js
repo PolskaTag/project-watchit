@@ -169,17 +169,17 @@ router.post("/deletevideo", async (req, res) => {
   const videoID = req.body.videoid;
   try {
     await User.findById(userID, (err, deleteItem) => {
-      console.log("inside delete")
-    //  const u = deleteItem.videos.findById(videoID)
-      deleteItem.videos.forEach(video => {
-         if(videoID == video.videoID){
-          console.log(deleteItem.videos)
-           console.log(video._id)
-            console.log(video.videoID)
-            //deleteItem.videos.updateOne({$pull:{videoID:[video.videoID]}})
-         }
+      console.log("inside delete");
+      //  const u = deleteItem.videos.findById(videoID)
+      deleteItem.videos.forEach((video) => {
+        if (videoID == video.videoID) {
+          console.log(deleteItem.videos);
+          console.log(video._id);
+          console.log(video.videoID);
+          //deleteItem.videos.updateOne({$pull:{videoID:[video.videoID]}})
+        }
       });
-     // console.log(u) 
+      // console.log(u)
       //deleteItem.save();
       res.send("video deleted");
     });
@@ -196,6 +196,15 @@ router.delete("/admindelete/:id", async (req, res) => {
   console.log("Deleted");
 });
 
-
+router.delete("/user/:username", async (req, res) => {
+  const cleanUserName = req.params.username.toLowerCase();
+  User.findOneAndDelete({ username: cleanUserName }, (err, docs) => {
+    if (err) {
+      res.json({ data: err, message: "error" });
+    } else {
+      res.json({ data: docs, message: "deleted" });
+    }
+  });
+});
 
 module.exports = router;
