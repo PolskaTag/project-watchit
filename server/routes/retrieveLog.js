@@ -69,7 +69,7 @@ router.route('/retrieveLog').post((req, res) => {
 
 });
 
-router.route('/retrieveLog/please').get((req, res) => {
+router.route('/retrieveLog/show').get((req, res) => {
   //console.log("oh my god it's getting");
   setTimeout(()=>{
     resolve();

@@ -135,7 +135,7 @@ function ProfilePage() {
     //setTimeout(() => {  console.log("test timeout"); }, 2000);
 
     try {
-      axios.get(`${SERVER}/retrieveLog/please`, entry)
+      axios.get(`${SERVER}/retrieveLog/show`, entry)
           .then(res => setLogList(res.data));
 
   } catch (err) {
@@ -168,12 +168,6 @@ function handleTest(e) {
 
 const logBox = useRef(null);
 
-function clearBox()
-{
-    console.log("in clear box");
-    //logBox. = "";
-}
-
 //document.getElementById("hideButton").style.visibility = "hidden";
 const hideBox = () => document.getElementById("logBox").style.visibility = "hidden";
 
@@ -204,13 +198,7 @@ const hideBox = () => document.getElementById("logBox").style.visibility = "hidd
             <div class="form-group">
             <button type="submit" class="btn btn-primary">Submit</button>
           </div>
-          </form>
-          <h1>Test Logs</h1>
-          <form onSubmit={event => handleTest(event)}>
-            <div class="form-group">
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </div>
-          </form><br/><br/><br/>
+          </form><br/>
 
         </div>
         <div>
