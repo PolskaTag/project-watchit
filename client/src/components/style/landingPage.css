@@ -1,32 +1,133 @@
-body{
-     background-color: #cce9f6 !important;
+body {
+  background-color: #cce9f6 !important;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .landing-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .landing-image {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    position: absolute;
-    top: -200px;
-    z-index: -1;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
+  top: -200px;
+  z-index: -1;
 }
 
 h1 {
-    font-size: 60px;
-    font-family: "Arial";
-    font-weight: bold;
+  font-size: 60px;
+  font-family: "Arial";
+  font-weight: bold;
+}
+
+.piPic {
+  display: flex;
+  flex-direction: row;
+  height: 150px;
+}
+
+.pic1 {
+  flex: 50%;
+}
+
+.pic1 img {
+  height: 10vh;
+  font-size: 50px;
+}
+
+.pic2 {
+  flex: 50%;
+}
+
+.pic2 img {
+  width: "100%";
+  height: "15em";
+}
+
+.pTag {
+  margin-top: 4em;
+  font-size: 20px;
+  text-align: justify;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 1060px) {
+  .pic1 img {
+    margin-left: 3em;
+    font-size: 45px;
+  }
+
+  .piPic .pic2 {
+    height: "15em";
+    margin-right: 9em;
+    margin-left: 10em;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .pic1 img {
+    margin-left: 5em;
+    font-size: 45px;
+  }
+
+  .piPic .pic2 {
+    height: "15em";
+    margin-right: 10em;
+    margin-left: 12em;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .pic1 img {
+    margin-left: 6em;
+    font-size: 45px;
+  }
+
+  .piPic .pic2 {
+    height: "15em";
+    margin-right: 14em;
+    margin-left: 15em;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .pic1 img {
+    margin-left: 6em;
+    font-size: 55px;
+  }
+
+  .piPic .pic2 {
+    height: 15em;
+    margin-right: 16em;
+    margin-left: 16em;
+  }
+}
+
+.lineDiv {
+  background-color: #101820;
+  height: 2.1em;
+  margin-top: 2.65em;
+  width: 85em;
+  color: #f2aa4c;
+  text-align: center;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 30px;
+}
+
+.lineDiv .p2 {
+  color: gray;
+  margin-top: -1.7em;
+  font-size: 15px;
+  font-family: "Times New Roman", Times, serif;
 }

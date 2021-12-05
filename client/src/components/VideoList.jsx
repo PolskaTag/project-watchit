@@ -137,7 +137,7 @@ function VideoList() {
     
     return (
       <div className="video-page">
-       <h5>< Navbar/> </h5><br></br>
+      <div className="nav"> < Navbar/></div> <br></br>
         <h1 style={{textAlign:"center"}}>All Video Recordings</h1>
         
       <div className="urlList" >

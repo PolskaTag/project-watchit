@@ -68,8 +68,9 @@ function Login() {
 
     return (
         <div className="container">
+            
             <div className="login-container">
-                <Navbar/>
+            <Navbar/>
                 <h2>Login</h2>
                 <img src={loginImg} className="login-logo" alt="login pic"/><br/>
                 <form onSubmit={(e) => handleLogin(e)}>

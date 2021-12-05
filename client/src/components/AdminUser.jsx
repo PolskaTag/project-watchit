@@ -43,13 +43,18 @@ function AdminUser() {
         .catch(err => alert(err))
 
         // Make a request for the videos
-        axios.get(`${SERVER}/videoIDs/${"test123"}`, { headers: {
+        axios.get(`${SERVER}/videos`, { headers: {
           "x-access-token": localStorage.getItem("token")
       }})
         .then((res) => {
-           console.log(res.data);
-          const newVideos = [...res.data[0]];
-          console.log(newVideos);
+           console.log(res.data.length);
+           let i;
+           let newVideos = [];
+           
+           for(i = 0; i < res.data.length; i++){    
+             newVideos.push(...res.data[i]);   
+           }
+        //  console.log(newVideos);
           setVideos(newVideos);
         })
     }, [])

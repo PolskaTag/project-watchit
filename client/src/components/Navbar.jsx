@@ -21,6 +21,8 @@ function Navbar() {
         }
     }
 
+
+
     useEffect(() => {
         // Check if user is authenticated
         fetch(`${SERVER}/isUserAuth`, {
@@ -36,18 +38,18 @@ function Navbar() {
     }, [])
 
     return (
-            <div>
-                <ul className="navList">
+            <div className="topnav" id="myTopnav">
+                    <a  ><Link to="/">Home</Link></a>
                     {!localStorage.getItem("token") ?
-                    <li className="navItem"><Link to="/login">Login</Link></li>
+                    <a ><Link to="/login">Login</Link></a>
                     :
-                    <li className="navItem"><Link onClick={logoutHandler} to="/">Logout</Link></li>}
-                    <li className="navItem"><Link to="/register">Register</Link></li>
-                    <li className="navItem"><Link to="/ProfilePage">ProfilePage</Link></li>
-                    <li className="navItem"><Link to="/VideoList">VideoList</Link></li>
-                    <li className="navItem"><Link to="/Pictures">Pictures</Link></li>
-                    <li className="navItem"><Link to="/watcherConfigurator">Configure Watcher</Link></li>
-                </ul>
+                    <a  ><Link onClick={logoutHandler} to="/login">Logout</Link></a>}
+                     {!localStorage.getItem("token") ?
+                     <a  ><Link to="/register">Register</Link></a> : null}
+                    <a ><Link to="/ProfilePage">ProfilePage</Link></a>
+                    <a ><Link to="/VideoList">VideoList</Link></a>
+                    <a ><Link to="/Pictures">Pictures</Link></a>
+                    <a ><Link to="/watcherConfigurator">Configure Watcher</Link></a>    
             </div>
     )
 }

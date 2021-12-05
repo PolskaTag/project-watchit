@@ -12,13 +12,13 @@ from Tb2 import LoggedInUser
 #print(response.json()
 
 # to log the user in and get the token
-user = {"username": "capstone", "password": "apple123"}
+#user = {"username": "capstone", "password": "apple123"}
 #print("user is " + user['username'])
-login = requests.post("http://localhost:5000/login", json=user)
+#login = requests.post("http://localhost:5000/login", json=user)
 # view logins returned json
 #print(login.json())
-loginCreds = login.json()
-t = loginCreds["token"]
+#loginCreds = login.json()
+#t = loginCreds["token"]
 #print(loginCreds["token"])
 
 
@@ -28,34 +28,26 @@ t = loginCreds["token"]
 #video = json.loads(y)
 #print(video['videos'])
 # view logins returned json
-header = {"x-access-token": t}
+#header = {"x-access-token": t}
 #response = requests.get("http://localhost:5000/videos", headers=header)
 #h = response.json()
 #print(h[0])
 
 
-payload = {"username" : "test123"}
-username = "capstone"
-u = requests.get(f'http://localhost:5000/videoIDs/{"test"}',headers=header)
-print(u.json())
+#payload = {"username" : "test123"}
+#username = "capstone"
+#u = requests.get(f'http://localhost:5000/videoIDs/{"test"}',headers=header)
+#print(u.json())
 #this function returns videoID number found in the users db
-def maxVideoID(videoArry):
-    maxVideoIDCheck = 0
-    for video in videoArry:  
-        if video["videoID"] > maxVideoIDCheck:
-            maxVideoIDCheck = video["videoID"]
+#def maxVideoID(videoArry):
+ #   maxVideoIDCheck = 0
+  #  for video in videoArry:  
+   #     if video["videoID"] > maxVideoIDCheck:
+    #        maxVideoIDCheck = video["videoID"]
 
-    return maxVideoIDCheck
+    #return maxVideoIDCheck
 
 #print(maxVideoID(h[0]))    
-count = 20
-p = LoggedInUser({"username": "capstone", "password": "apple123"})
-def gg(count):    
-   
-    r = int(p.getMaxVideoIDNumber()) + count
-   # print(count)
-    return r
-
-#print(gg(count))
-#print(p.name)
-#print(p.getMaxVideoIDNumber())
+#count = 20
+User = LoggedInUser({"username": "capstone", "password": "apple123"})
+print(User.getMaxVideoIDNumber())

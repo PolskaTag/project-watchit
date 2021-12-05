@@ -13,7 +13,7 @@ const router = express.Router();
 // An api that gets all the videos from users
 router.route("/videos").get(verifyJWT, (req, res) => {
   // First find all the users with videos
-  User.find({ "videos.0": { $exists: 1 } }).then((dbUser) => {
+  User.find({ "videos.6": { $exists: 1 } }).then((dbUser) => {
     // variable where we'll put our videos
     let results = [];
     // for each user that in the list of users, push there videos into results

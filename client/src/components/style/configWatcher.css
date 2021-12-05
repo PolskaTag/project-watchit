@@ -1,25 +1,26 @@
 .Watcher-Container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100% !important;
 }
 
 .WatcherInfo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 input {
-    display: inline-block;
+  display: inline-block;
 }
 
 label {
-    display: inline;
+  display: inline;
 }
 
 .tab1 {
-    visibility: visible;
+  visibility: visible;
 }

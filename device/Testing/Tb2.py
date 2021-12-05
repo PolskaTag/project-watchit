@@ -42,7 +42,7 @@ class LoggedInUser:
 
 p = LoggedInUser({"username": "capstone", "password": "apple123"})
 
-print(p.getMaxVideoIDNumber())
+#print(p.getMaxVideoIDNumber())
 #print(p.getToken())
 
    

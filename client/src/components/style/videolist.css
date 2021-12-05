@@ -69,6 +69,10 @@
   background-color: black;
 }
 
+.nav {
+  margin-left: 0em;
+}
+
 .tv {
   background-image: url("../images/tv.png");
   width: 100%;
