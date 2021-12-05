@@ -40,6 +40,9 @@ def delete_video(user, videoID):
 
     collection_name.update_one(
         {"username" : user},
-        {"$pull": {"videos": {"videoID": videoID}}}
+        {"$pull": {"videos": {"videoID": {"$gte": 5}}}}
     )
     return None
+
+if __name__ == "__main__":
+    delete_video("capstone", 5)
