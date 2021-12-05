@@ -63,7 +63,7 @@
   /*background-color: rgba(97, 98, 71, .8);*/
   background-color: rgba(0, 0, 0, 0.9) !important;
   width: 2em !important;
-  height: 37em !important;
+  height: 95.6% !important;
   z-index: 9 !important;
   position: fixed !important;
   margin-top: 2.5em !important;
@@ -111,7 +111,7 @@
 #links {
   margin-left: 0em !important;
   position: absolute !important;
-  margin-top: 2em !important;
+  margin-top: 10em !important;
   width: 100% !important;
   font-size: 1.2em !important;
   z-index: 15 !important;
@@ -183,7 +183,7 @@ ul {
   display: flex !important;
   flex-direction: row !important;
   position: fixed !important;
-  margin-top: -37.5em !important;
+  margin-top: -58.5em !important;
   text-align: center !important;
   justify-content: center !important;
 }

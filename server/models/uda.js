@@ -36,7 +36,7 @@ const udaSchema = mongoose.Schema({
   },
   script: {
     type: String,
-    required: true,
+    required: false,
   },
   params: {},
 });
