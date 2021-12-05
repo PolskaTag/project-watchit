@@ -14,6 +14,8 @@ function ProfilePage() {
   const [userId, setUserId] = useState("")
   const [userUdaList, setUserUdaList] = useState([])
   const [allUserUdaList, setAllUserUdaList] = useState([])
+  const [logList, setLogList] = useState("")
+
 
   // Create Component for udaList
   const udaList = (
@@ -109,16 +111,18 @@ function ProfilePage() {
    }
 
    function handleRetrieve(e) {
+    document.getElementById("logBox").style.visibility = "visible"
+    document.getElementById("hideButton").style.visibility = "visible"
     e.preventDefault()
     const form = e.target;
 
     const entry = {
-
+      identifier: userId
     }
 
-    const file = 
+    //const file = 
 
-    console.log(entry);
+    //console.log(entry);
 
     //using userID to add to users document
     try {
@@ -127,7 +131,51 @@ function ProfilePage() {
     } catch (err) {
         console.log(err);
     }
+
+    //setTimeout(() => {  console.log("test timeout"); }, 2000);
+
+    try {
+      axios.get(`${SERVER}/retrieveLog/please`, entry)
+          .then(res => setLogList(res.data));
+
+  } catch (err) {
+      console.log(err);
+  }
 }
+
+function handleTest(e) {
+  e.preventDefault()
+  const form = e.target;
+
+  const entry = {
+    identifier: userId
+  }
+
+  //const file = 
+
+  //console.log(userId);
+
+  //console.log(entry);
+
+  //using userID to add to users document
+  try {
+      axios.post(`${SERVER}/logging`, entry)
+          .then(res => console.log(res));
+  } catch (err) {
+      console.log(err);
+  }
+}
+
+const logBox = useRef(null);
+
+function clearBox()
+{
+    console.log("in clear box");
+    //logBox. = "";
+}
+
+//document.getElementById("hideButton").style.visibility = "hidden";
+const hideBox = () => document.getElementById("logBox").style.visibility = "hidden";
 
   return (
     <div className="profile-container">
@@ -157,7 +205,22 @@ function ProfilePage() {
             <button type="submit" class="btn btn-primary">Submit</button>
           </div>
           </form>
+          <h1>Test Logs</h1>
+          <form onSubmit={event => handleTest(event)}>
+            <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+          </form><br/><br/><br/>
+
         </div>
+        <div>
+            <div id="logBox" ref={logBox}>
+              {logList}
+            </div>
+            <div id="notif">
+            <button class="btn btn-primary" id = "hideButton" onClick={hideBox}> Hide Logs </button>
+            </div> 
+          </div>
         {/* <form onSubmit={addUda}>
           <input required type="text" placeholder="UDA Name"></input>
           <input required type="text" placeholder="Script"/>
@@ -168,6 +231,5 @@ function ProfilePage() {
     </div>
   )
 }
-
 
 export default ProfilePage

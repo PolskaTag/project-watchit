@@ -27,13 +27,14 @@ const s3 = new S3({
   secretAccessKey,
 });
 
-
-const initiatedTime = new Date().toLocaleString();
-const initiatedStatement = 'Log initiated @ ' + initiatedTime + "\r\n";
 let lineNum = 1;
+const initiatedTime = new Date().toLocaleString();
+const initiatedStatement = lineNum + ' Log initiated @ ' + initiatedTime + "\r\n";
+
 
 try {
   const data = fs.appendFileSync('../server/uploads/watcher.log', initiatedStatement)
+  //const data = fs.appendFileSync('../server/uploads/watcher.log', initiatedStatement)
   //file written successfully
 } catch (err) {
   console.error(err)
@@ -41,19 +42,21 @@ try {
 
 router.route('/logging').post((req, res) => {
 
-  let output = lineNum + "" + "\r\n";
+  let output;// = lineNum + "" + "\r\n";
 
   if (req.body.statement == "") {
-    output = "Watcher: " + req.body.watcherName + " triggered at " + Date().toLocaleString();
+    //output = lineNum + " Watcher: " + req.body.watcherName + " triggered at " + Date().toLocaleString() + "\r\n";
+    output = " Watcher triggered at " + Date().toLocaleString() + "\r\n";
   }
   else {
-    output = "Watcher: " + req.body.watcherName + " triggered at " + Date().toLocaleString();
+    output = " Watcher triggered at " + Date().toLocaleString() + "\r\n";
   }
 
   
   
   try {
-    const data = fs.appendFileSync('../server/uploads/watcher.log', output)
+    const data = fs.appendFileSync('../server/uploads/' + req.body.identifier + 'watcher.log', output)
+    //const data = fs.appendFileSync('../server/uploads/watcher.log', output)
     //file written successfully
   } catch (err) {
     console.error(err)
@@ -68,7 +71,7 @@ router.route('/logging').post((req, res) => {
     Body: ''
   };
 
-  const file = "../server/uploads/watcher.log";
+  const file = "../server/uploads/" + req.body.identifier + "watcher.log";
   const fileStream = fs.createReadStream(file);
   fileStream.on('error', function(err) {
     console.log('File Error', err);

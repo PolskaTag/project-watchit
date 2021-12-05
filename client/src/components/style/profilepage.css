@@ -29,3 +29,30 @@
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   color: rgb(80, 80, 58);
 }
+
+#logBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 650px;
+}
+
+#hideButton {
+  width: 100px;
+  height: 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.btn {
+  width: 100px;
+  height: 40px;
+  text-align: center;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+
