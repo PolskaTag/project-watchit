@@ -20,7 +20,7 @@ def __userdata(username, password, url):
                   json={"username": username, "password": password})
     return r.json()
 
-def video_count(url="http://34.201.36.147:5000", username="capstone", password="apple123"):
+def video_count(url="http://18.207.245.254:5000", username="capstone", password="apple123"):
     """
     Find max video count so we do not overwrite existing videos.
     """
@@ -69,19 +69,21 @@ def framegrab():
 
     grabbed, frame = vs.read()
 
-def objectdetection(frame, model, layers, LABELS, min_confidence=0.6):
+def objectdetection(frame, model, layers, LABELS, queue, min_confidence=0.6):
     blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (320, 320), swapRB=True, crop=False)
     model.setInput(blob)
     layerOutputs = model.forward(layers)
-    one_class = set()
+    # one_class = set()
     for output in layerOutputs:
         for detection in output:
             scores = detection[5:]
             classID = np.argmax(scores)
             confidence = scores[classID]
-            if confidence > min_confidence and classID not in one_class:
-                one_class.add(classID)
-                print(LABELS[classID])
+            if confidence > min_confidence:
+            # if confidence > min_confidence and classID not in one_class:
+                # one_class.add(classID)
+                if LABELS[classID] == 'bottle':
+                    queue.put(1)
 
 def main():
     return None
