@@ -26,14 +26,12 @@ writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 30, (frame_width, frame_h
 net = cv2.dnn.readNetFromDarknet('project-watchit/device/model/yolov4-tiny.cfg', 'project-watchit/device/model/yolov4-tiny.weights')
 ln = net.getUnconnectedOutLayersNames()
 
-person = False
-
 frame_cnt = 0
 
 actions = defaultdict(list)
 actions['person'].append((pf.intruder,))
 
-queue = mp.Queue()
+ret_value = mp.Value("i", False, lock=True)
 
 while True:
     ret, frame = cap.read()
@@ -44,22 +42,20 @@ while True:
     cv2.imshow('frame', frame)
 
     # Object detection on every 30th frame
-    if frame_cnt >= 30:
+    if frame_cnt >= 30 and ret_value.value == False:
         frame_cnt = 0
         print("Processing")
-        mp.Process(target=hf.objectdetection, args=(frame, net, ln, LABELS, queue)).start()
+        mp.Process(target=hf.objectdetection, args=(frame, net, ln, LABELS, ret_value)).start()
 
-    if not queue.empty():
-        while not queue.empty():
-            queue.get()
+    if ret_value.value:
         print("Worked")
-        hf.recordvideo(cap, writer)
-    # Can pass in user name after count
-        mp.Process(target=vu.upload_video, args=(count,)).start()
         mp.Process(target=pf.dofuncts, args=(actions['person'],)).start()
+        hf.recordvideo(cap, writer)
+        ret_value.value = False
+        # Can pass in user name after count
+        mp.Process(target=vu.upload_video, args=(count,)).start()
         count += 1
         writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 30, (frame_width, frame_height))
-        person = False
 
     # Push q to exit program
     if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -70,7 +66,10 @@ while True:
 # Remove extra file created by function
 os.remove(f'output{count}.mp4')
 
+cv2.destroyAllWindows()
+
 print("OK")
 cap.release()
+print("DOK")
 writer.release()
-cv2.destroyAllWindows()
+print("WOK")
