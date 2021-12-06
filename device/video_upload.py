@@ -15,7 +15,7 @@ def upload_video(count, user="capstone"):
     :param count: used in naming of the video, used in a strictly iterative fashion. 
     """
 
-    name = f"output{count}.mp4"
+    name = f"{userName}-video{count}.mp4"
 
     s3_client = boto3.client(
                         's3',

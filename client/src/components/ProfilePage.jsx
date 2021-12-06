@@ -14,6 +14,8 @@ function ProfilePage() {
   const [userId, setUserId] = useState("")
   const [userUdaList, setUserUdaList] = useState([])
   const [allUserUdaList, setAllUserUdaList] = useState([])
+  const [logList, setLogList] = useState("")
+
 
   // Create Component for udaList
   const udaList = (
@@ -109,47 +111,94 @@ function ProfilePage() {
    }
 
    function handleRetrieve(e) {
-    e.preventDefault()
-    const form = e.target;
+     console.log(e);
+  //   document.getElementById("logBox").style.visibility = "visible"
+  //   document.getElementById("hideButton").style.visibility = "visible"
+  //   e.preventDefault()
+  //   const form = e.target;
 
-    const entry = {
+  //   const entry = {
+  //     identifier: userId
+  //   }
 
-    }
+  //   //const file = 
 
-    const file = 
+  //   //console.log(entry);
 
-    console.log(entry);
+  //   //using userID to add to users document
+  //   try {
+  //       axios.post(`${SERVER}/retrieveLog`, entry)
+  //           .then(res => console.log(res));
+  //   } catch (err) {
+  //       console.log(err);
+  //   }
 
-    //using userID to add to users document
-    try {
-        axios.post(`${SERVER}/retrieveLog`, entry)
-            .then(res => console.log(res));
-    } catch (err) {
-        console.log(err);
-    }
+  //   //setTimeout(() => {  console.log("test timeout"); }, 2000);
+
+  //   try {
+  //     axios.get(`${SERVER}/retrieveLog/show`, entry)
+  //         .then(res => setLogList(res.data));
+
+  // } catch (err) {
+  //     console.log(err);
+  // }
 }
+
+function handleTest(e) {
+  e.preventDefault()
+  const form = e.target;
+
+  const entry = {
+    identifier: userId
+  }
+
+  //const file = 
+
+  //console.log(userId);
+
+  //console.log(entry);
+
+  //using userID to add to users document
+  try {
+      axios.post(`${SERVER}/logging`, entry)
+          .then(res => console.log(res));
+  } catch (err) {
+      console.log(err);
+  }
+}
+
+const logBox = useRef(null);
+
+//document.getElementById("hideButton").style.visibility = "hidden";
+const hideBox = () => document.getElementById("logBox").style.visibility = "hidden";
 
   return (
     <>
-    <Navbar />
-    <div className="container">
-      <div className="userwelcome">
+    <Navbar/>
+    <div className="profile-container">
+        <div className="userwelcome">
         <h1 >Welcome {capitalize(username)}</h1>
         <h2>Id# {userId}</h2>
-      </div>
-      <br/>
-        
-      <h1>Retrieve Logs</h1>
-        <form onSubmit={event => handleRetrieve(event)}>
-          <div class="form-group">
+          <h1>Retrieve Logs</h1>
+          <form onSubmit={event => handleRetrieve(event)}>
+            <div class="form-group">
             <button type="submit" class="btn btn-primary">Submit</button>
           </div>
-        </form>
+          </form><br/>
+
+        </div>
+        <div>
+            <div id="logBox" ref={logBox}>
+              {logList}
+            </div>
+            <div id="notif">
+            <button class="btn btn-primary" id = "hideButton" onClick={hideBox}> Hide Logs </button>
+            </div> 
+          </div>
         {!localStorage.getItem("token") ? <Redirect to="/login"></Redirect>: null}
     </div>
     </>
   )
 }
-
 
 export default ProfilePage

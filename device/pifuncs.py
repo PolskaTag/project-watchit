@@ -9,7 +9,7 @@ def runEmailUda(dictionary):
     :params dictionary: provides target email and message to be sent.
     """
     
-    domain = 'http://34.201.36.147:5000'
+    domain = 'http://18.207.245.254:5000'
     requests.post(f'{domain}/notification', json={"email": dictionary['recipient'], "watcherName": dictionary['body']})
 
 def intruder(filepath='project-watchit/device/resources/sounds/intruder.mp3'):
@@ -19,7 +19,7 @@ def lights():
     return None
 
 def runLogsUda(dictionary):
-    domain = 'http://34.201.36.147:5000'
+    domain = 'http://18.207.245.254:5000'
     requests.post(f'{domain}/logging')
     
 def runVideoUDA():
