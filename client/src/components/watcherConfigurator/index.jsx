@@ -170,8 +170,8 @@ function WatcherConfigurator() {
 
     return (
         <>
+        <Navbar />
         <div className="container">
-            <Navbar/>
             <Formik.Formik
         enableReinitialize
         initialValues={{

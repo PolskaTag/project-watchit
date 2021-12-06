@@ -111,36 +111,37 @@ function ProfilePage() {
    }
 
    function handleRetrieve(e) {
-    document.getElementById("logBox").style.visibility = "visible"
-    document.getElementById("hideButton").style.visibility = "visible"
-    e.preventDefault()
-    const form = e.target;
+     console.log(e);
+  //   document.getElementById("logBox").style.visibility = "visible"
+  //   document.getElementById("hideButton").style.visibility = "visible"
+  //   e.preventDefault()
+  //   const form = e.target;
 
-    const entry = {
-      identifier: userId
-    }
+  //   const entry = {
+  //     identifier: userId
+  //   }
 
-    //const file = 
+  //   //const file = 
 
-    //console.log(entry);
+  //   //console.log(entry);
 
-    //using userID to add to users document
-    try {
-        axios.post(`${SERVER}/retrieveLog`, entry)
-            .then(res => console.log(res));
-    } catch (err) {
-        console.log(err);
-    }
+  //   //using userID to add to users document
+  //   try {
+  //       axios.post(`${SERVER}/retrieveLog`, entry)
+  //           .then(res => console.log(res));
+  //   } catch (err) {
+  //       console.log(err);
+  //   }
 
-    //setTimeout(() => {  console.log("test timeout"); }, 2000);
+  //   //setTimeout(() => {  console.log("test timeout"); }, 2000);
 
-    try {
-      axios.get(`${SERVER}/retrieveLog/show`, entry)
-          .then(res => setLogList(res.data));
+  //   try {
+  //     axios.get(`${SERVER}/retrieveLog/show`, entry)
+  //         .then(res => setLogList(res.data));
 
-  } catch (err) {
-      console.log(err);
-  }
+  // } catch (err) {
+  //     console.log(err);
+  // }
 }
 
 function handleTest(e) {
@@ -172,27 +173,12 @@ const logBox = useRef(null);
 const hideBox = () => document.getElementById("logBox").style.visibility = "hidden";
 
   return (
+    <>
+    <Navbar/>
     <div className="profile-container">
-        <Navbar/>
         <div className="userwelcome">
         <h1 >Welcome {capitalize(username)}</h1>
         <h2>Id# {userId}</h2>
-        </div>
-        <br/>
-        {udaList ? <div style={{color: "#502b3a"},{fontSize: "1em"}}><h1 style={{textAlign: "center"}}>{capitalize(username)} UDA List</h1><br/>{udaList}</div>: null}
-         <br/>
-         {allUserList ? <div><h1 style={{textAlign: "center"}}>All UDA List</h1><br/>{allUserList}</div>: null}
-         <hr/>
-        <div>
-          <h1>Add a UDA</h1>
-          <form onSubmit={addUda}>
-            <div class="form-group">
-            <input required type="text" class="form-control" id="udaName" placeholder="UDA Name"/>
-            <input required type="text" class="form-control" id="Script" placeholder="Script"/>
-            <input required type="text" class="form-control" id="Params" placeholder="Params"/>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </div>
-          </form><br/><br/>
           <h1>Retrieve Logs</h1>
           <form onSubmit={event => handleRetrieve(event)}>
             <div class="form-group">
@@ -209,14 +195,9 @@ const hideBox = () => document.getElementById("logBox").style.visibility = "hidd
             <button class="btn btn-primary" id = "hideButton" onClick={hideBox}> Hide Logs </button>
             </div> 
           </div>
-        {/* <form onSubmit={addUda}>
-          <input required type="text" placeholder="UDA Name"></input>
-          <input required type="text" placeholder="Script"/>
-          <input required type="text" placeholder="Params"/>
-          <input required type="submit" value="Add UDA"/>
-        </form> */}
         {!localStorage.getItem("token") ? <Redirect to="/login"></Redirect>: null}
     </div>
+    </>
   )
 }
 

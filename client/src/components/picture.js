@@ -150,62 +150,64 @@ function Pictures() {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
   return (
-    <div className="mainDiv">
+    <>
       <Navbar />
-      <br />
+      <div className="mainDiv">
+        <br />
 
-      <div style={{ textAlign: "center" }}>
-        <h2>{username ? capitalize(username) : null}</h2>
-        <p>A list of User pictures.</p>
+        <div style={{ textAlign: "center" }}>
+          <h2>{username ? capitalize(username) : null}</h2>
+          <p>A list of User pictures.</p>
 
-        <form onSubmit={handleSubmit} encType="multipart/form-data">
-          <input
-            type="file"
-            accept=".png, .jpg, .jpeg"
-            name="photo"
-            onChange={onChangeFile}
-          />
-          <input type="submit" />
-        </form>
-        <div
-          style={{
-            padding: "0 20px",
-          }}
-        >
-          {
-            <Carousel
-              data={data}
-              time={2000}
-              slide={true}
-              width="850px"
-              height="400px"
-              captionStyle={captionStyle}
-              radius="10px"
-              slideNumber={true}
-              slideNumberStyle={slideNumberStyle}
-              captionPosition="bottom"
-              automatic={false}
-              dots={true}
-              pauseIconColor="white"
-              pauseIconSize="40px"
-              slideBackgroundColor="none"
-              slideImageFit="cover"
-              thumbnails={true}
-              thumbnailWidth="100px"
-              style={{
-                textAlign: "center",
-                maxWidth: "850px",
-                maxHeight: "500px",
-                margin: "40px auto",
-              }}
+          <form onSubmit={handleSubmit} encType="multipart/form-data">
+            <input
+              type="file"
+              accept=".png, .jpg, .jpeg"
+              name="photo"
+              onChange={onChangeFile}
             />
-          }
-          {!localStorage.getItem("token") ? (
-            <Redirect to="/login"></Redirect>
-          ) : null}
+            <input type="submit" />
+          </form>
+          <div
+            style={{
+              padding: "0 20px",
+            }}
+          >
+            {
+              <Carousel
+                data={data}
+                time={2000}
+                slide={true}
+                width="850px"
+                height="400px"
+                captionStyle={captionStyle}
+                radius="10px"
+                slideNumber={true}
+                slideNumberStyle={slideNumberStyle}
+                captionPosition="bottom"
+                automatic={false}
+                dots={true}
+                pauseIconColor="white"
+                pauseIconSize="40px"
+                slideBackgroundColor="none"
+                slideImageFit="cover"
+                thumbnails={true}
+                thumbnailWidth="100px"
+                style={{
+                  textAlign: "center",
+                  maxWidth: "850px",
+                  maxHeight: "500px",
+                  margin: "40px auto",
+                }}
+              />
+            }
+            {!localStorage.getItem("token") ? (
+              <Redirect to="/login"></Redirect>
+            ) : null}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

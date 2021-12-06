@@ -26,15 +26,18 @@ function LandingPage() {
     console.log(Date());
 
     return (
+        <>
+        <Navbar />
         <div className="container">
             <div className="landing-container">
-                <Navbar/>
+                <div className="landing-image">
+                    <img src={watchItLogo} className="landing-logo" alt="logo"/><br/>
+                </div>
+                <p className="landing-about">WatchIt is an object detection system designed to work with a Raspberry Pi and additional low powered peripherals. Current home devices are generally suited towards a singular task and still largely dependent on the user's smartphone to coordinate between devices. We want the ability for users to customize actions based upon what objects are detected by our model. </p>
+
             </div>
-            <div className="landing-image">
-                <img src={watchItLogo} className="landing-logo" alt="logo"/><br/>
-                
-            </div>
-        </div>   
+        </div>
+        </>   
     )
 }   
 

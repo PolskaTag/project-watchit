@@ -16,6 +16,7 @@ import VideoList from "./components/VideoList";
 import ConfigWatcher from "./components/ConfigWatcher";
 import watcherConfigurator from "./components/watcherConfigurator/index";
 import Pictures from "./components/picture";
+import Navbar from "./components/Navbar";
 
 const App = () => {
   return (
