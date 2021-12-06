@@ -1,3 +1,4 @@
+from requests.api import head
 import pymongo_video as pv
 import boto3
 import os
@@ -23,7 +24,8 @@ def upload_video(count, user="capstone"):
                         aws_secret_access_key=os.environ.get('AWS_SECRET_KEY')
                         )
 
-    url = __generate_presigned_url(s3_client, "put_object", {"Bucket": os.environ.get('AWS_BUCKET_NAME'), "Key": name}, 30)
+    url = __generate_presigned_url(s3_client, "put_object", {"Bucket": os.environ.get('AWS_BUCKET_NAME'), "Key": name, 
+                                "ContentType": "video/mp4"}, 30)
 
     # Upload video so S3 bucket
     __upload_video(url, name)
@@ -62,7 +64,8 @@ def __upload_video(url, filename):
     print("Uploading file.")
     with open(filename, 'rb') as object_file:
         object_text = object_file.read()
-    response = requests.put(url, data=object_text)
+    headers = {"Content-Type": "video/mp4"}
+    response = requests.put(url, data=object_text, headers=headers)
 
     print("Got response:")
     print(f"Status: {response.status_code}")

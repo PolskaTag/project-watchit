@@ -3,7 +3,6 @@ import time
 import helperfuncs as hf
 import pifuncs as pf
 from collections import defaultdict
-import json
 import requests
 import getpass
 import threading

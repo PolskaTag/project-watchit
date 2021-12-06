@@ -13,6 +13,8 @@ import os
 cap = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
     payload=(int)96" ! rtpjpegdepay ! jpegdec ! videoconvert ! appsink' , cv2.CAP_GSTREAMER)
 
+# cap = cv2.VideoCapture(r'C:\Users\ventu\Python\project-watchit\device\model\car_Trim.mp4')
+
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 
@@ -30,7 +32,7 @@ min_confidence = 0.6
 count = hf.video_count() + 1
 
 fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 20, (frame_width, frame_height))
+writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 30, (frame_width, frame_height))
 
 net = hf.setupmodel()
 ln = net.getUnconnectedOutLayersNames()
@@ -71,7 +73,6 @@ while True:
         count += 1
         writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 20, (frame_width, frame_height))
         temp.record = False
-        
     # Push q to exit program
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
@@ -80,7 +81,6 @@ while True:
 
 s.send(('q').encode())
 writer.release()
-
 # Remove extra file created by function
 os.remove(f'output{count}.mp4')
 

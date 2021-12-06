@@ -20,7 +20,7 @@ def __userdata(username, password, url):
                   json={"username": username, "password": password})
     return r.json()
 
-def video_count(url="http://34.201.36.147:5000", username="capstone", password="apple123"):
+def video_count(url="http://18.207.245.254:5000", username="capstone", password="apple123"):
     """
     Find max video count so we do not overwrite existing videos.
     """
@@ -54,7 +54,7 @@ def setupmodel(cfg=r'C:\Users\ventu\Python\project-watchit\device\model\yolov4-p
 
     return model
 
-def startup_socket(host="192.168.86.23", port=8080):
+def startup_socket(host="192.168.86.26", port=8080):
     s = socket.socket(socket.AF_INET,
             socket.SOCK_STREAM)
 
