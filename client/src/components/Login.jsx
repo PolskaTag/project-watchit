@@ -67,9 +67,10 @@ function Login() {
     }, [history])
 
     return (
+        <>
+        <Navbar />
         <div className="container">
             <div className="login-container">
-                <Navbar/>
                 <h2>Login</h2>
                 <img src={loginImg} className="login-logo" alt="login pic"/><br/>
                 <form onSubmit={(e) => handleLogin(e)}>
@@ -81,6 +82,7 @@ function Login() {
             {errorMessage === "Success" && checkAdmin?<Redirect to="/admin/user"/>: console.log("Validation Error")}
             {errorMessage === "Success" && !checkAdmin?<Redirect to="/ProfilePage"/>: console.log("Validation Error")}    
         </div>
+        </>
     )
 }
 

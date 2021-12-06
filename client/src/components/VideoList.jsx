@@ -83,13 +83,15 @@ function VideoList() {
               <div className="newDiv" >
                 
                 <li key={index+recording.name}> 
-             
-                   <a style={{listStyleType: "none"}} onClick={()=>play(recording.url)} href="#">
+                  <div className="vid-list-item">
+                    <a style={{listStyleType: "none"}} onClick={()=>play(recording.url)} href="#">
                      <div className="list" style={{marginBottom: ".2em"}} >
                         Video {recording.name}  {recording.time} 
                       </div>
                     </a>
-                    <button className="listButton" onClick={()=>{deleteItem(recording.videoID, userID)}}>Delete</button>     
+                    <button className="listButton" onClick={()=>{deleteItem(recording.videoID, userID)}}>Delete</button>
+                  </div>
+                        
                 </li>
                 </div>
             ))}
@@ -136,8 +138,9 @@ function VideoList() {
 }, [])
     
     return (
+      <>
+      <Navbar />
       <div className="video-page">
-       <h5>< Navbar/> </h5><br></br>
         <h1 style={{textAlign:"center"}}>All Video Recordings</h1>
         
       <div className="urlList" >
@@ -150,6 +153,7 @@ function VideoList() {
       </div> 
         {!localStorage.getItem("token") ? <Redirect to="/login"></Redirect>: null}
        </div>
+       </>
     )
 }
 

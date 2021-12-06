@@ -130,42 +130,24 @@ function ProfilePage() {
 }
 
   return (
-    <div className="profile-container">
-        <Navbar/>
-        <div className="userwelcome">
+    <>
+    <Navbar />
+    <div className="container">
+      <div className="userwelcome">
         <h1 >Welcome {capitalize(username)}</h1>
         <h2>Id# {userId}</h2>
-        </div>
-        <br/>
-        {udaList ? <div style={{color: "#502b3a"},{fontSize: "1em"}}><h1 style={{textAlign: "center"}}>{capitalize(username)} UDA List</h1><br/>{udaList}</div>: null}
-         <br/>
-         {allUserList ? <div><h1 style={{textAlign: "center"}}>All UDA List</h1><br/>{allUserList}</div>: null}
-         <hr/>
-        <div>
-          <h1>Add a UDA</h1>
-          <form onSubmit={addUda}>
-            <div class="form-group">
-            <input required type="text" class="form-control" id="udaName" placeholder="UDA Name"/>
-            <input required type="text" class="form-control" id="Script" placeholder="Script"/>
-            <input required type="text" class="form-control" id="Params" placeholder="Params"/>
+      </div>
+      <br/>
+        
+      <h1>Retrieve Logs</h1>
+        <form onSubmit={event => handleRetrieve(event)}>
+          <div class="form-group">
             <button type="submit" class="btn btn-primary">Submit</button>
           </div>
-          </form><br/><br/>
-          <h1>Retrieve Logs</h1>
-          <form onSubmit={event => handleRetrieve(event)}>
-            <div class="form-group">
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </div>
-          </form>
-        </div>
-        {/* <form onSubmit={addUda}>
-          <input required type="text" placeholder="UDA Name"></input>
-          <input required type="text" placeholder="Script"/>
-          <input required type="text" placeholder="Params"/>
-          <input required type="submit" value="Add UDA"/>
-        </form> */}
+        </form>
         {!localStorage.getItem("token") ? <Redirect to="/login"></Redirect>: null}
     </div>
+    </>
   )
 }
 

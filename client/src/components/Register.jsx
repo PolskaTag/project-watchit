@@ -63,10 +63,10 @@ function Register() {
     }, [history])
 
     return (
+        <>
+        <Navbar />
         <div className="container">
             <div className="register-container">
-
-                <Navbar/>
                 <h2>Account Registration</h2>
                 <img src={loginImg} className="register-logo" alt="login pic"/><br/>
                 <form onSubmit={event => handleRegister(event)}>
@@ -78,6 +78,7 @@ function Register() {
             </div>
             {errorMessage === "Success"?<Redirect to="/Login"/>: console.log("Registration failed")}
         </div>
+        </>
     )
 }
 
