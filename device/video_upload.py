@@ -16,7 +16,7 @@ def upload_video(count, user="capstone"):
     :param count: used in naming of the video, used in a strictly iterative fashion. 
     """
 
-    name = f"output{count}.mp4"
+    name = f"{userName}-video{count}.mp4"
 
     s3_client = boto3.client(
                         's3',
@@ -24,8 +24,7 @@ def upload_video(count, user="capstone"):
                         aws_secret_access_key=os.environ.get('AWS_SECRET_KEY')
                         )
 
-    url = __generate_presigned_url(s3_client, "put_object", {"Bucket": os.environ.get('AWS_BUCKET_NAME'), "Key": name, 
-                                "ContentType": "video/mp4"}, 30)
+    url = __generate_presigned_url(s3_client, "put_object", {"Bucket": os.environ.get('AWS_BUCKET_NAME'), "Key": name, "ContentType": "video/mp4"}, 30)
 
     # Upload video so S3 bucket
     __upload_video(url, name)
@@ -57,14 +56,13 @@ def __generate_presigned_url(s3_client, client_method, method_parameters, expire
         raise
     return url
 
-def __upload_video(url, filename):
+def __upload_video(url, filename, headers={"Content-Type": "video/mp4"}):
 
     response = None
 
     print("Uploading file.")
     with open(filename, 'rb') as object_file:
         object_text = object_file.read()
-    headers = {"Content-Type": "video/mp4"}
     response = requests.put(url, data=object_text, headers=headers)
 
     print("Got response:")

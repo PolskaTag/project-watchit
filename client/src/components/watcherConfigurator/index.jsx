@@ -14,6 +14,9 @@ import './index.css';
 import Navbar from "../Navbar";
 import CreatableSelect from 'react-select/creatable';
 import { ActionMeta, OnChangeValue } from 'react-select';
+import { FieldArray } from 'formik';
+import { Select as mSelect, MenuItem, TextField } from '@material-ui/core';
+
 
 const SERVER = process.env.NODE_ENV === "production" ? (process.env.REACT_APP_SERVER || "http://localhost:5000") : "http://localhost:5000";
 
@@ -90,7 +93,7 @@ function WatcherConfigurator() {
                 // Make the watcher the selected watcher
                 setSelectedWatcher(watcher);
             }
-            
+
             // setSelectedWatcher(e.value);
         }
 
@@ -115,6 +118,14 @@ function WatcherConfigurator() {
         // console.log(e.target[0]);
     }
 
+    const handleDeleteConfig = (watcherToDelete) => {
+        axios.delete(`${SERVER}/watchers/${userId}/${watcherToDelete._id}/delete`,
+            {headers: {"x-access-token": localStorage.getItem("token")}})
+                .then((response) => {
+                    console.log(response);
+                })
+    }
+
     useEffect(() => {
 
         // Check to see if the user is auth
@@ -131,30 +142,138 @@ function WatcherConfigurator() {
         })
     }, [])
 
+    // return (
+    //     <div className="container">
+    //         <Navbar/>
+    //         <div className="watcherConfig-content">
+    //             <Form onSubmit={handleSave}>
+                // <Card className="text-center" border="dark">
+                //     <Card.Body>
+                //         <Card.Title>Watcher Configuration</Card.Title>
+                //         <Card.Text>
+                //             Configure your watcher profile, or create a new one!
+                //         </Card.Text>
+                //     </Card.Body>
+                // </Card>
+    //             {username !== "" ? selectWatcher(watchers) : null}
+    //             {/* <Button variant="primary">Create</Button> */}
+    //             {/* <Button variant="danger">Delete</Button> */}
+    //             {/* <pre>{JSON.stringify(selectedWatcher, null, 2)}</pre> */}
+    //             <DeviceConfigurator config={selectedWatcher}/>
+    //             <ObjectConfigurator config={selectedWatcher}/>
+    //             <ActionConfigurator config={selectedWatcher.udaList}/>
+    //             <Button type="submit">Save</Button>
+    //             </Form>
+    //         </div>
+    //     </div>
+    // )
+
     return (
+        <>
+        <Navbar />
         <div className="container">
-            <Navbar/>
-            <div className="watcherConfig-content">
-                <Form onSubmit={handleSave}>
-                <Card className="text-center" border="dark">
-                    <Card.Body>
-                        <Card.Title>Watcher Configuration</Card.Title>
-                        <Card.Text>
-                            Configure your watcher profile, or create a new one!
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
-                {username !== "" ? selectWatcher(watchers) : null}
-                {/* <Button variant="primary">Create</Button> */}
-                {/* <Button variant="danger">Delete</Button> */}
-                {/* <pre>{JSON.stringify(selectedWatcher, null, 2)}</pre> */}
-                <DeviceConfigurator config={selectedWatcher}/>
-                <ObjectConfigurator config={selectedWatcher}/>
-                <ActionConfigurator config={selectedWatcher.udaList}/>
-                <Button type="submit">Save</Button>
-                </Form>
-            </div>
+            <Formik.Formik
+        enableReinitialize
+        initialValues={{
+            // watcherName: "",
+            // ipAddress: "",
+            // object: "",
+            // udaList: [],
+            // options: {}
+            watchers,
+            selectedWatcher,
+            selectedUda: 0,
+            editUda: {
+                _id: "",
+                udaName: "",
+                udaType: "",
+                script: "",
+                params: {}
+            }
+        }}
+        onSubmit={(data) => {
+            console.log(data);
+            axios.post(`${SERVER}/watchers/${userId}`,
+             data.selectedWatcher,
+             {"headers": {"x-access-token": localStorage.getItem("token")}})
+                .then((response) => {
+                    console.log(response);
+                })
+
+        }}
+        >
+            {({values}) => (
+                <Formik.Form>
+                    <Card className="text-center" border="dark">
+                        <Card.Body>
+                            <Card.Title>Watcher Configuration</Card.Title>
+                            <Card.Text>
+                                Configure your watcher profile, or create a new one!
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                    {selectWatcher(values.watchers)}
+                    <DeviceConfigurator/>
+                    <ObjectConfigurator/>
+                    <FieldArray name="selectedWatcher.udaList">
+                        {arrayHelpers => (
+                            <>
+                                <Card border="dark">
+                                    <Card.Body>Action Configuration</Card.Body>
+                                </Card>
+                                <Formik.Field
+                                    name="selectedUda"
+                                    type="select"
+                                    variant="filled"
+                                    style={{width: "100%"}}
+                                    as={mSelect}>
+                                    {values.selectedWatcher.udaList.map((uda, index) => {
+                                        return (
+                                            <MenuItem value={index}>{uda.udaName}</MenuItem>
+                                        )
+                                    })}
+                                </Formik.Field>
+
+                                {values.selectedWatcher.udaList.length > 0 ? <UDA name={`selectedWatcher.udaList.${values.selectedUda}`} uda={values.selectedWatcher.udaList[values.selectedUda]}/> : null}
+                                <Button onClick={() => arrayHelpers.push({
+                                    _id: "",
+                                    udaName: "newUda",
+                                    udaType: "",
+                                    script: "",
+                                    params: {}
+                                    })}>Add UDA</Button>
+                                <Button variant="danger" onClick={() => arrayHelpers.remove(values.selectedUda)}>Remove UDA</Button>
+                            </>
+                        )}
+                    </FieldArray>
+                    {/* <ActionConfigurator selectedUda={values.selectedUda} udaList={values.selectedWatcher.udaList}/> */}
+                    {/* <UDA udaList={values.selectedWatcher.udaList}/> */}
+                    {/* <Button type="submit">Save Configuration</Button> */}
+                    <div className="d-grid gap-2">
+                    <Button type="submit" variant="primary" size="lg">
+                        Save Configuration
+                    </Button>
+                    </div>
+                    <div className="d-grid gap-2">
+                    <Button onClick={() => {
+                        if(values.selectedWatcher._id !== "") {
+                            try {
+                                // We want to delete if watcher is in db
+                                handleDeleteConfig(values.selectedWatcher);
+                            } catch (error) {
+                                console.log(error);
+                            }
+                        }
+                    }} variant="danger" size="lg">
+                        Delete Configuration
+                    </Button>
+                    </div>
+                    {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
+                </Formik.Form>
+            )}
+        </Formik.Formik>
         </div>
+        </>
     )
 }
 export default WatcherConfigurator;

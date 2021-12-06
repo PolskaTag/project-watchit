@@ -5,6 +5,9 @@ from collections import defaultdict
 import pifuncs as pf
 import requests
 import threading
+import subprocess
+
+subprocess.run({""})
 
 temp = hf.userdata()
 userId = temp['userId']

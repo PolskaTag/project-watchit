@@ -5,10 +5,10 @@ import axios from 'axios';
 import AdminCreate from "./AdminCreate";
 import AdminRead from "./AdminRead";
 import AdminUpdate from "./AdminUpdate";
-import AdminDelete from "./AdminDelete";
+//import AdminDelete from "./AdminDelete";
 import "./style/adminPage.css"
-import hamImage from "./images/hamImg.png";
-import cancelButton from "./images/cancelButton.png";
+//import hamImage from "./images/hamImg.png";
+//import cancelButton from "./images/cancelButton.png";
 import MakeUserSelection from "./MakeUserSelection";
 import MakeVideoSelection from "./MakeVideoSelection";
 import { Redirect} from 'react-router-dom'
@@ -26,7 +26,7 @@ function AdminUser() {
       const [showExtraSelectDiv, setEtraSelectDiv] = useState(true);
       const [showSidebarDiv, setShowSidebarDiv ] = useState(true);
       const [users, setUsers] = useState([]);
-
+      const [newVideos, setNewVideos] = useState([]);
       /*check user authorization*/
       useLayoutEffect(() => {
         fetch(`${SERVER}/isUserAuth`, {
@@ -67,11 +67,12 @@ function AdminUser() {
   }, []);
 
     
-    function setHamber(){
+   /* function setHamber(){
       setShowHamberDiv(true);
       setShowCancelDiv(false);
       setShowSidebarDiv(false);
       console.log("Hamber set")
+       {showHambergerDiv? <img src={hamImage} className="hamImg" alt="hamberger menu" onClick={setCancel} /> : null}
     }
 
     function setCancel(){
@@ -79,7 +80,8 @@ function AdminUser() {
       setShowCancelDiv(true);
       setShowSidebarDiv(true);
       console.log("Cancel set")
-    }
+      {showCancelDiv? <img src={cancelButton} className="cancelButton" alt="cancel button" onClick={setHamber} /> : null}
+    }*/
   
      /*change the state of the videos url based on users selection*/
       const [url, setUrl] = useState("")
@@ -101,6 +103,23 @@ function AdminUser() {
                  setNewUser(users[i].videos);
                  console.log("I AM USER I")
                  console.log(users[i])
+
+                 axios.get(`${SERVER}/videoIDs/` + users[i].username, {headers: {"x-access-token": localStorage.getItem("token")}})
+                 .then((res) => {
+                   
+                   //console.log(res.data)
+                   if(res.data!==0){
+                     const newVideos = [...res.data[0]];
+                     console.log(newVideos);
+                     setNewVideos(newVideos);
+                     setEtraSelectDiv(true);
+                   }
+                   else{
+                     //setAnyVideo(false)
+                     setEtraSelectDiv(false);
+                     alert("This user has no video");     
+                   }
+               })    
                  
              }
          }
@@ -122,7 +141,7 @@ function AdminUser() {
           /*this is displays on screen, if conditions are met - buttons, user selection box and video*/
           return (
             <div className="admin-container">  
-            {showCancelDiv? <img src={cancelButton} className="cancelButton" alt="cancel button" onClick={setHamber} /> : null}
+            
             {showSidebarDiv && <div id="sidebar">
             <div id="links">
             <div id="arrow"><p>&#10095;</p></div>
@@ -136,11 +155,9 @@ function AdminUser() {
             </div>
             </div>}
             <div className="header">         
-            <h2>WatchIt</h2>
-            <p className="pheader">Admin</p>
+            <h2>WatchIt Admin</h2>
             </div> 
-
-            {showHambergerDiv? <img src={hamImage} className="hamImg" alt="hamberger menu" onClick={setCancel} /> : null}
+    
             {active==="videoSearch" &&
             <><div className="input-vid-search">
                   <div className="searchDiv">
@@ -165,7 +182,7 @@ function AdminUser() {
                     <span className="span-search">Search for User's Videos</span>
                   </label>
                   <div className="select" >
-                    <Select isSearchable placeholder="Search for User's Videos" onChange={handleVideo} options={MakeVideoSelection(newUser)} className="innerSelect" />
+                    <Select isSearchable placeholder="Search for User's Videos" onChange={handleVideo} options={MakeVideoSelection(newVideos)} className="innerSelect" />
                   </div>
                   </div> : null}
 

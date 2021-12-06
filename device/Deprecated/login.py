@@ -1,11 +1,11 @@
 import socket
 import time
-import helperfuncs as hf
 import pifuncs as pf
 from collections import defaultdict
 import requests
 import getpass
 import threading
+import subprocess
 
 domain = 'http://34.201.36.147:5000'
 
@@ -25,7 +25,8 @@ while connected is False:
     
     if(token is not None):
          connected = True
-    
+
+subprocess.run([""])
 
 watchers = requests.get(f'{domain}/watchers/{userId}', headers={"x-access-token": token})
 #print(watchers.status_code)
@@ -70,8 +71,9 @@ data = c.recv(1024).decode()
 start = time.time()
 
 while data != 'q':
-    if data == label:
+    if data == label and time.time() - start > 20:
         c.send(b'Record')
+        start = time.time()
         threading.Thread(target=pf.dofuncts, args=(actions[label],)).start()
     elif not data:
         break

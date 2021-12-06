@@ -44,45 +44,22 @@ def recordvideo(stream, writer):
         frames += 1
     writer.release()
 
-def setupmodel(cfg=r'C:\Users\ventu\Python\project-watchit\device\model\yolov4-p6.cfg'
-                , weights=r'C:\Users\ventu\Python\project-watchit\device\model\yolov4-p6.weights'):
-
-    model = cv2.dnn.readNetFromDarknet(cfg, weights)
-
-    model.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
-    model.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
-
-    return model
-
-def startup_socket(host="192.168.86.26", port=8080):
-    s = socket.socket(socket.AF_INET,
-            socket.SOCK_STREAM)
-
-    s.connect((host,port))
-    s.setblocking(False)
-    return s
-
-def framegrab():
-    vs = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
-                    encoding-name=(string)H264, payload=(int)96" ! rtph264depay ! h264parse ! nvh264dec ! \
-                        videoconvert ! appsink', cv2.CAP_GSTREAMER)
-
-    grabbed, frame = vs.read()
-
-def objectdetection(frame, model, socket, layers, LABELS, min_confidence=0.6):
-        blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (320, 320),
-        swapRB=True, crop=False)
-        model.setInput(blob)
-        layerOutputs = model.forward(layers)
-        for output in layerOutputs:
-            one_class = set()
-            for detection in output:
-                scores = detection[5:]
-                classID = np.argmax(scores)
-                confidence = scores[classID]
-                if confidence > min_confidence and classID not in one_class:
-                    one_class.add(classID)
-                    socket.send(LABELS[classID].encode())
+def objectdetection(frame, model, layers, LABELS, value, min_confidence=0.6):
+    blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (320, 320), swapRB=True, crop=False)
+    model.setInput(blob)
+    layerOutputs = model.forward(layers)
+    one_class = set()
+    for output in layerOutputs:
+        for detection in output:
+            scores = detection[5:]
+            classID = np.argmax(scores)
+            confidence = scores[classID]
+            # if confidence > min_confidence:
+            if confidence > min_confidence and classID not in one_class:
+                one_class.add(classID)
+                if LABELS[classID] == 'person':
+                    value.value = True
+    return
 
 def main():
     return None

@@ -1,44 +1,103 @@
 import cv2
 import numpy as np
 import helperfuncs as hf
-from listener import Listener
+import pifuncs as pf
 import threading
+from collections import defaultdict
+from multiprocessing import Process
+import multiprocessing as mp
 import video_upload as vu
 import os
+import getpass
+import requests
 
-# cap = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
-#                     encoding-name=(string)H264, payload=(int)96" ! rtph264depay ! h264parse ! nvh264dec ! \
-#                         videoconvert ! appsink', cv2.CAP_GSTREAMER)
 
-cap = cv2.VideoCapture('udpsrc port=5200 caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, \
-    payload=(int)96" ! rtpjpegdepay ! jpegdec ! videoconvert ! appsink' , cv2.CAP_GSTREAMER)
+domain = 'http://18.207.245.254:5000'
 
-# cap = cv2.VideoCapture(r'C:\Users\ventu\Python\project-watchit\device\model\car_Trim.mp4')
+connected = False
+
+while connected is False:
+    
+    userName = input("Enter your User Name: ")
+    if userName == "exit":
+        exit()
+    passWord = getpass.getpass()
+    loginAttempt = {'username': userName, 'password': passWord}
+
+    login = requests.post(f'{domain}/login', json = loginAttempt)
+    token = login.json()['token']
+    userId = login.json()['userId']
+    
+    if(token is not None):
+         connected = True
+    
+
+watchers = requests.get(f'{domain}/watchers/{userId}', headers={"x-access-token": token})
+
+watcherId = watchers.json()
+
+functions = {"log" : pf.runLogsUda, "email" : pf.runEmailUda}
+actions = defaultdict(list)
+
+for entry in range(len(watcherId)):
+    print ("(",entry,")", watcherId[entry]["watcherName"])
+    
+watcherSelected = int(input("Select the Watcher Configuration to use: "))
+
+print(watcherId[watcherSelected]["watcherName"], "has been selected.")
+
+thisWatcher = watcherId[watcherSelected]
+
+objectLabel = watcherId[watcherSelected]["object"]
+print (objectLabel)
+
+#print(watcherId[0])
+#print(watcherId[watcherSelected]['udaList'])
+#print(functions['udaList'][0]['udaType'])
+#print(watcherId[0]['udaList'][0]['udaType'])
+
+#actions[watcherId[0]['object']].append((functions[watcherId[0]['udaList'][0]['udaType']],watcherId[0]['udaList']))
+
+
+
+
+if thisWatcher['udaList'][0]['udaType'] == "email":
+    for udas in watcherId[watcherSelected]['udaList']:
+        actions[objectLabel].append((functions[thisWatcher['udaList'][0]['udaType']],thisWatcher['udaList'][0]['params']))
+        actions[objectLabel].append((functions[thisWatcher['udaList'][1]['udaType']],thisWatcher['udaList']))
+else:
+    for udas in watcherId[watcherSelected]['udaList']:
+        actions[objectLabel].append((functions[thisWatcher['udaList'][0]['udaType']],thisWatcher['udaList']))
+
+
+print(actions[objectLabel])
+
+
+cap = cv2.VideoCapture(0)
 
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 
-# Enter in host and port into startup_socket, default is host=192.168.86.21 port=8080
-s = hf.startup_socket() + 1
-temp = Listener(s)
-
-# Generate the labels associated with object
-LABELS = hf.filesplit(r'C:\Users\ventu\Python\project-watchit\device\model\coco.txt')
+# # Generate the labels associated with object
+LABELS = hf.filesplit(r'/home/pi/Desktop/project-watchit-main/device/model/coco.txt')
 if not LABELS:
     exit(1)
 
-# Set confidence required to send message and count obtains the highest current videoID
-min_confidence = 0.6
-count = hf.video_count() + 1
+# # Set confidence required to send message and count obtains the highest current videoID
+min_confidence = 0.5
+count = hf.video_count(domain, userName, passWord) + 1
 
-fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 30, (frame_width, frame_height))
+fourcc = cv2.VideoWriter_fourcc(*"avc1")
+writer = cv2.VideoWriter(f'{userName}-video{count}.mp4', fourcc, 30, (frame_width, frame_height))
 
-net = hf.setupmodel()
+net = cv2.dnn.readNetFromDarknet('/home/pi/Desktop/project-watchit-main/device/model/yolov4-tiny.cfg', '/home/pi/Desktop/project-watchit-main/device/model/yolov4-tiny.weights')
 ln = net.getUnconnectedOutLayersNames()
+
+objectTrigger = False
 
 frame_cnt = 0
 
+countME = 0
 while True:
     ret, frame = cap.read()
 
@@ -46,45 +105,43 @@ while True:
         break
 
     cv2.imshow('frame', frame)
-
+    
     # Object detection on every 10th frame
-    if frame_cnt >= 10:
+    if frame_cnt >= 30:
         frame_cnt = 0
-        blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (320, 320),
-            swapRB=True, crop=False)
+        print('Processing',countME)
+        countME += 1
+        blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (320, 320), swapRB=True, crop=False)
         net.setInput(blob)
         layerOutputs = net.forward(ln)
-        one_class = set()
         for output in layerOutputs:
             for detection in output:
                 scores = detection[5:]
                 classID = np.argmax(scores)
                 confidence = scores[classID]
-                if confidence > min_confidence and classID not in one_class:
-                    one_class.add(classID)
-                    s.send(LABELS[classID].encode())
+                if confidence > min_confidence:
+                    if LABELS[classID] == objectLabel:
+                        objectTrigger =True
 
-    # Listens for messages from the Pi, if record command is received then the commands will execute
-    temp.start()
-    if temp.record:
+    if objectTrigger:
         hf.recordvideo(cap, writer)
-        # Can pass in user name after count
-        threading.Thread(target=vu.upload_video, args=(count,)).start()
+        print(objectLabel)
+    # Can pass in user name after count
+        Process(target=vu.upload_video, args=(count,userName)).start()
+        Process(target=pf.dofuncts, args=(actions[objectLabel],)).start()
         count += 1
-        writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 20, (frame_width, frame_height))
-        temp.record = False
+        writer = cv2.VideoWriter(f"{userName}-video{count}.mp4", fourcc, 30, (frame_width, frame_height))
+        objectTrigger = False
+
     # Push q to exit program
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
     frame_cnt += 1
 
-s.send(('q').encode())
 writer.release()
 # Remove extra file created by function
-os.remove(f'output{count}.mp4')
+os.remove(f'{userName}-video{count}.mp4')
 
-temp.stop()
-s.close()
 cap.release()
 cv2.destroyAllWindows()

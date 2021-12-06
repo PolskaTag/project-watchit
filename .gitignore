@@ -2,6 +2,10 @@
 #
 .DS_Store
 
+#log
+#
+*.log
+
 # Xcode
 #
 build/
@@ -62,3 +66,4 @@ server/config.env
 
 #watchit
 *.weights
+server/uploads/watcher.log
