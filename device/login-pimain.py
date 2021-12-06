@@ -89,7 +89,7 @@ min_confidence = 0.5
 count = hf.video_count(domain, userName, passWord) + 1
 
 fourcc = cv2.VideoWriter_fourcc(*"avc1")
-writer = cv2.VideoWriter(f'output{count}.mp4', fourcc, 30, (frame_width, frame_height))
+writer = cv2.VideoWriter(f'{userName}-video{count}.mp4', fourcc, 30, (frame_width, frame_height))
 
 net = cv2.dnn.readNetFromDarknet('/home/pi/Desktop/project-watchit-main/device/model/yolov4-tiny.cfg', '/home/pi/Desktop/project-watchit-main/device/model/yolov4-tiny.weights')
 ln = net.getUnconnectedOutLayersNames()
@@ -131,7 +131,7 @@ while True:
         Process(target=vu.upload_video, args=(count,userName)).start()
         Process(target=pf.dofuncts, args=(actions[objectLabel],)).start()
         count += 1
-        writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 30, (frame_width, frame_height))
+        writer = cv2.VideoWriter(f"{userName}-video{count}.mp4", fourcc, 30, (frame_width, frame_height))
         objectTrigger = False
 
     # Push q to exit program
@@ -143,7 +143,7 @@ while True:
 writer.release()
 
 # Remove extra file created by function
-os.remove(f'output{count}.mp4')
+os.remove(f'{userName}-video{count}.mp4')
 
 cap.release()
 cv2.destroyAllWindows()
