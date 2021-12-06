@@ -77,7 +77,6 @@ cap = cv2.VideoCapture(0)
 
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
-# print(f"FPS: {cap.get(5)}")
 
 # # Generate the labels associated with object
 LABELS = hf.filesplit(r'/home/pi/Desktop/project-watchit-main/device/model/coco.txt')
@@ -141,7 +140,6 @@ while True:
     frame_cnt += 1
 
 writer.release()
-
 # Remove extra file created by function
 os.remove(f'{userName}-video{count}.mp4')
 

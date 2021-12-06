@@ -1,0 +1,12 @@
+{
+    "username": "string",
+    "password": "string",
+    "email": "string",
+    "videos": {"videoID": "int", "url": "string", "name": "string", "time": "datetime"},
+    "createdAt": "datetime",
+    "updatedAt": "datetime",
+    "admin": "boolean",
+    "watcher": {"watcherName": "string", "ipAddress": "string", "object": "string",
+                "udaList": {"udaName": "string", "udaType": "string", "script": "string", 
+                    "params": {"recipient": "string", "body": "string"}}}
+}

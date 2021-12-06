@@ -1,3 +1,4 @@
+from requests.api import head
 import pymongo_video as pv
 import boto3
 import os
