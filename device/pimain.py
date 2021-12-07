@@ -47,6 +47,8 @@ while True:
         print("Processing")
         mp.Process(target=hf.objectdetection, args=(frame, net, ln, LABELS, ret_value)).start()
 
+    #this makes no sense
+
     if ret_value.value:
         print("Worked")
         mp.Process(target=pf.dofuncts, args=(actions['person'],)).start()
