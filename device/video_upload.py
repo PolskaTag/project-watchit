@@ -1,4 +1,3 @@
-from requests.api import head
 import pymongo_video as pv
 import boto3
 import os
@@ -9,14 +8,12 @@ import requests
 
 logger = logging.getLogger(__name__)
 
-def upload_video(count, user="capstone"):
+def upload_video(count, filename, user="capstone"):
     """
     This function is called after video is finished recording. 
 
     :param count: used in naming of the video, used in a strictly iterative fashion. 
     """
-
-    name = f"{userName}-video{count}.mp4"
 
     s3_client = boto3.client(
                         's3',
@@ -24,14 +21,14 @@ def upload_video(count, user="capstone"):
                         aws_secret_access_key=os.environ.get('AWS_SECRET_KEY')
                         )
 
-    url = __generate_presigned_url(s3_client, "put_object", {"Bucket": os.environ.get('AWS_BUCKET_NAME'), "Key": name, "ContentType": "video/mp4"}, 30)
+    url = __generate_presigned_url(s3_client, "put_object", {"Bucket": os.environ.get('AWS_BUCKET_NAME'), "Key": filename, "ContentType": "video/mp4"}, 30)
 
     # Upload video so S3 bucket
-    __upload_video(url, name)
+    __upload_video(url, filename)
 
     # Adds entry to mongoDB user video list
-    pv.new_video(user, {"videoID" : count, "url" : f"https://{os.environ.get('AWS_BUCKET_NAME')}.s3.amazonaws.com/{user}/{name}",
-                 "name": name, "time": datetime.now()})
+    pv.new_video(user, {"videoID" : count, "url" : f"https://{os.environ.get('AWS_BUCKET_NAME')}.s3.amazonaws.com/{filename}",
+                 "name": filename, "time": datetime.now()})
 
 def __generate_presigned_url(s3_client, client_method, method_parameters, expires_in):
     """
@@ -69,4 +66,3 @@ def __upload_video(url, filename, headers={"Content-Type": "video/mp4"}):
     print(f"Status: {response.status_code}")
     print(response.text)
     return None
-
