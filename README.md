@@ -26,3 +26,8 @@ If you'd like to run a development version of our backend, here's what you need 
 3. cd to project-watchit/server
 4. Create a new file at the root of server named "config.env"
 5. Paste in your ATLAS_URI key-value pair
+
+### Pi Setup
+1. Create conda env using the requirements.txt
+2. Setup Pi Camera by entering raspi-vid go to interface options and enable camera
+3. Run main.py
