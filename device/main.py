@@ -76,7 +76,6 @@ while True:
         mp.Process(target=hf.objectdetection, args=(frame, net, ln, LABELS, ret_value)).start()
 
     if ret_value.value:
-        print("Worked")
         mp.Process(target=pf.dofuncts, args=(actions[objectLabel],)).start()
         hf.recordvideo(cap, writer)
         ret_value.value = False
