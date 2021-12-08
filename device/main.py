@@ -1,38 +1,18 @@
 import cv2
-import numpy as np
 import helperfuncs as hf
+import login
 import pifuncs as pf
-import threading
 from collections import defaultdict
-from multiprocessing import Process
 import multiprocessing as mp
 import video_upload as vu
 import os
-import getpass
 import requests
+DOMAIN = 'http://18.207.245.254:5000'
 
+#User login prompt
+userId, token = login.signIn(DOMAIN)
 
-domain = 'http://18.207.245.254:5000'
-
-connected = False
-
-while connected is False:
-    
-    userName = input("Enter your User Name: ")
-    if userName == "exit":
-        exit()
-    passWord = getpass.getpass()
-    loginAttempt = {'username': userName, 'password': passWord}
-
-    login = requests.post(f'{domain}/login', json = loginAttempt)
-    token = login.json()['token']
-    userId = login.json()['userId']
-    
-    if(token is not None):
-         connected = True
-    
-
-watchers = requests.get(f'{domain}/watchers/{userId}', headers={"x-access-token": token})
+watchers = requests.get(f'{DOMAIN}/watchers/{userId}', headers={"x-access-token": token})
 
 watcherId = watchers.json()
 
@@ -51,16 +31,6 @@ thisWatcher = watcherId[watcherSelected]
 objectLabel = watcherId[watcherSelected]["object"]
 print (objectLabel)
 
-#print(watcherId[0])
-#print(watcherId[watcherSelected]['udaList'])
-#print(functions['udaList'][0]['udaType'])
-#print(watcherId[0]['udaList'][0]['udaType'])
-
-#actions[watcherId[0]['object']].append((functions[watcherId[0]['udaList'][0]['udaType']],watcherId[0]['udaList']))
-
-
-
-
 if thisWatcher['udaList'][0]['udaType'] == "email":
     for udas in watcherId[watcherSelected]['udaList']:
         actions[objectLabel].append((functions[thisWatcher['udaList'][0]['udaType']],thisWatcher['udaList'][0]['params']))
@@ -78,26 +48,25 @@ cap = cv2.VideoCapture(0)
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 
-# # Generate the labels associated with object
-LABELS = hf.filesplit(r'/home/pi/Desktop/project-watchit-main/device/model/coco.txt')
+# Generate the labels associated with object
+LABELS = hf.filesplit('project-watchit-main/device/model/coco.txt')
 if not LABELS:
     exit(1)
 
-# # Set confidence required to send message and count obtains the highest current videoID
-min_confidence = 0.5
-count = hf.video_count(domain, userName, passWord) + 1
+# Set confidence required to send message and count obtains the highest current videoID
+min_confidence = 0.6
+count = hf.video_count(DOMAIN, userId, passWord) + 1
 
 fourcc = cv2.VideoWriter_fourcc(*"avc1")
-writer = cv2.VideoWriter(f'{userName}-video{count}.mp4', fourcc, 30, (frame_width, frame_height))
+filename = f"{userName}-video{count}.mp4"
+writer = cv2.VideoWriter(filename, fourcc, 30, (frame_width, frame_height))
 
-net = cv2.dnn.readNetFromDarknet('/home/pi/Desktop/project-watchit-main/device/model/yolov4-tiny.cfg', '/home/pi/Desktop/project-watchit-main/device/model/yolov4-tiny.weights')
+net = cv2.dnn.readNetFromDarknet('project-watchit-main/device/model/yolov4-tiny.cfg', 'project-watchit-main/device/model/yolov4-tiny.weights')
 ln = net.getUnconnectedOutLayersNames()
 
-objectTrigger = False
-
 frame_cnt = 0
+ret_value = mp.Value("i", False, lock=True)
 
-countME = 0
 while True:
     ret, frame = cap.read()
 
@@ -106,32 +75,20 @@ while True:
 
     cv2.imshow('frame', frame)
     
-    # Object detection on every 10th frame
-    if frame_cnt >= 30:
+    # Object detection on every 30th frame
+    if frame_cnt >= 30 and ret_value.value == False:
         frame_cnt = 0
-        print('Processing',countME)
-        countME += 1
-        blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (320, 320), swapRB=True, crop=False)
-        net.setInput(blob)
-        layerOutputs = net.forward(ln)
-        for output in layerOutputs:
-            for detection in output:
-                scores = detection[5:]
-                classID = np.argmax(scores)
-                confidence = scores[classID]
-                if confidence > min_confidence:
-                    if LABELS[classID] == objectLabel:
-                        objectTrigger =True
+        mp.Process(target=hf.objectdetection, args=(frame, net, ln, LABELS, ret_value)).start()
 
-    if objectTrigger:
+    if ret_value.value:
+        print("Worked")
+        mp.Process(target=pf.dofuncts, args=(actions[objectLabel],)).start()
         hf.recordvideo(cap, writer)
-        print(objectLabel)
-    # Can pass in user name after count
-        Process(target=vu.upload_video, args=(count,userName)).start()
-        Process(target=pf.dofuncts, args=(actions[objectLabel],)).start()
+        ret_value.value = False
+        # Can pass in user name after count
+        mp.Process(target=vu.upload_video, args=(count,)).start()
         count += 1
-        writer = cv2.VideoWriter(f"{userName}-video{count}.mp4", fourcc, 30, (frame_width, frame_height))
-        objectTrigger = False
+        writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 30, (frame_width, frame_height))
 
     # Push q to exit program
     if cv2.waitKey(1) & 0xFF == ord('q'):
