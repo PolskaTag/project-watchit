@@ -1,6 +1,7 @@
 import cv2
-import requests
+from collections import defaultdict
 import numpy as np
+import pifuncs as pf
 
 def filesplit(filename):
     """
@@ -43,6 +44,24 @@ def objectdetection(frame, model, layers, LABELS, value, min_confidence=0.6):
             if confidence > min_confidence:
                 if LABELS[classID] == 'person':
                     value.value = True
+
+def addFuncts(watcherId, watcherSelected, objectLabel):
+
+    functions = {"log" : pf.runLogsUda, "email" : pf.runEmailUda}
+    actions = defaultdict(list)
+
+    thisWatcher = watcherId[watcherSelected]
+
+    if thisWatcher['udaList'][0]['udaType'] == "email":
+        for udas in watcherId[watcherSelected]['udaList']:
+            actions[objectLabel].append((functions[thisWatcher['udaList'][0]['udaType']],thisWatcher['udaList'][0]['params']))
+            actions[objectLabel].append((functions[thisWatcher['udaList'][1]['udaType']],thisWatcher['udaList']))
+    else:
+        for udas in watcherId[watcherSelected]['udaList']:
+            actions[objectLabel].append((functions[thisWatcher['udaList'][0]['udaType']],thisWatcher['udaList']))
+
+    return actions
+
 
 if __name__ == "__main__":
     None

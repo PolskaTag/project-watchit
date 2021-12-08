@@ -2,7 +2,6 @@ import cv2
 import helperfuncs as hf
 import login
 import pifuncs as pf
-from collections import defaultdict
 import multiprocessing as mp
 import video_upload as vu
 import os
@@ -30,9 +29,6 @@ watchers = requests.get(f'{DOMAIN}/watchers/{user}', headers={"x-access-token": 
 
 watcherId = watchers.json()
 
-functions = {"log" : pf.runLogsUda, "email" : pf.runEmailUda}
-actions = defaultdict(list)
-
 for entry in range(len(watcherId)):
     print ("(",entry,")", watcherId[entry]["watcherName"])
     
@@ -40,17 +36,9 @@ watcherSelected = int(input("Select the Watcher Configuration to use: "))
 
 print(watcherId[watcherSelected]["watcherName"], "has been selected.")
 
-thisWatcher = watcherId[watcherSelected]
-
 objectLabel = watcherId[watcherSelected]["object"]
 
-if thisWatcher['udaList'][0]['udaType'] == "email":
-    for udas in watcherId[watcherSelected]['udaList']:
-        actions[objectLabel].append((functions[thisWatcher['udaList'][0]['udaType']],thisWatcher['udaList'][0]['params']))
-        actions[objectLabel].append((functions[thisWatcher['udaList'][1]['udaType']],thisWatcher['udaList']))
-else:
-    for udas in watcherId[watcherSelected]['udaList']:
-        actions[objectLabel].append((functions[thisWatcher['udaList'][0]['udaType']],thisWatcher['udaList']))
+actions = hf.addFuncts(watcherId, watcherSelected, objectLabel)
 
 cap = cv2.VideoCapture(0)
 
