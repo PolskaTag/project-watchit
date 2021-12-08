@@ -1,7 +1,7 @@
 import getpass
 import requests
 
-def __get_userinfo():
+def get_userinfo():
 
     print('Welcome to WatchIt, please enter your username and password.')
     userName = input("Enter your User Name: ")
@@ -10,21 +10,26 @@ def __get_userinfo():
 
     return res
 
-def __login(domain, loginAttempt):
+def login(domain, loginAttempt):
 
     login = requests.post(f'{domain}/login', json = loginAttempt)
     return login.json()
 
-def signIn(domain):
+def __userdata(username, password, url):
+    r = requests.post(f"{url}/login",
+                  json={"username": username, "password": password})
+    return r.json()
 
-    connected = False
+def video_count(url="http://18.207.245.254:5000", username="capstone", password="apple123"):
+    """
+    Find max video count so we do not overwrite existing videos.
+    """
+    header_params = {"x-access-token": __userdata(username, password, url)['token']}
+    video_lst = requests.get(f"{url}/videoIDs/{username}", headers=header_params).json()
 
-    while not connected:
-        cred = __get_userinfo()
-        token = __login(domain, cred)
-        if 'token' not in token:
-            print(token['message'])
-        else:
-            connected = True
-
-    return token['userID'], token['token']
+    max = 0
+    for video in video_lst[0]:
+        videoID = int(video['videoID'])
+        if videoID > max:
+            max = videoID
+    return max

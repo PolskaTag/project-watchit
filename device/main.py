@@ -10,9 +10,23 @@ import requests
 DOMAIN = 'http://18.207.245.254:5000'
 
 #User login prompt
-userId, token = login.signIn(DOMAIN)
+connected = False
 
-watchers = requests.get(f'{DOMAIN}/watchers/{userId}', headers={"x-access-token": token})
+cred = userinfo = None
+
+while not connected:
+    cred = login.get_userinfo()
+    userinfo = login.login(DOMAIN, cred)
+    if 'token' not in userinfo:
+        print(userinfo['message'])
+    else:
+        connected = True
+
+user, password = cred['username'], cred['password']
+count = login.video_count(DOMAIN, user, password) + 1
+filename = f"{user}-video{count}.mp4"
+
+watchers = requests.get(f'{DOMAIN}/watchers/{user}', headers={"x-access-token": userinfo['token']})
 
 watcherId = watchers.json()
 
@@ -29,7 +43,6 @@ print(watcherId[watcherSelected]["watcherName"], "has been selected.")
 thisWatcher = watcherId[watcherSelected]
 
 objectLabel = watcherId[watcherSelected]["object"]
-print (objectLabel)
 
 if thisWatcher['udaList'][0]['udaType'] == "email":
     for udas in watcherId[watcherSelected]['udaList']:
@@ -38,10 +51,6 @@ if thisWatcher['udaList'][0]['udaType'] == "email":
 else:
     for udas in watcherId[watcherSelected]['udaList']:
         actions[objectLabel].append((functions[thisWatcher['udaList'][0]['udaType']],thisWatcher['udaList']))
-
-
-print(actions[objectLabel])
-
 
 cap = cv2.VideoCapture(0)
 
@@ -55,10 +64,8 @@ if not LABELS:
 
 # Set confidence required to send message and count obtains the highest current videoID
 min_confidence = 0.6
-count = hf.video_count(DOMAIN, userId, passWord) + 1
 
 fourcc = cv2.VideoWriter_fourcc(*"avc1")
-filename = f"{userName}-video{count}.mp4"
 writer = cv2.VideoWriter(filename, fourcc, 30, (frame_width, frame_height))
 
 net = cv2.dnn.readNetFromDarknet('project-watchit-main/device/model/yolov4-tiny.cfg', 'project-watchit-main/device/model/yolov4-tiny.weights')
@@ -86,9 +93,9 @@ while True:
         hf.recordvideo(cap, writer)
         ret_value.value = False
         # Can pass in user name after count
-        mp.Process(target=vu.upload_video, args=(count,)).start()
+        mp.Process(target=vu.upload_video, args=(count, filename)).start()
         count += 1
-        writer = cv2.VideoWriter(f"output{count}.mp4", fourcc, 30, (frame_width, frame_height))
+        writer = cv2.VideoWriter(filename, fourcc, 30, (frame_width, frame_height))
 
     # Push q to exit program
     if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -98,7 +105,7 @@ while True:
 
 writer.release()
 # Remove extra file created by function
-os.remove(f'{userName}-video{count}.mp4')
+os.remove(filename)
 
 cap.release()
 cv2.destroyAllWindows()
