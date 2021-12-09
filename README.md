@@ -38,13 +38,13 @@ These actions execute when the selected object is detected.
 | Bug | Description | Issue |
 | --- | --- | --- |
 | `Watcher Configuration Select` | Clicking the "x" field in the select crashes the application | [#51](#51)
-| `Deleting videos` | In videoList, clicking the delete button next to videos does not delete video |
-| `Logs` | In ProfilePage, clicking "submit" to get the logs does not retrieve logs |
-| `Email Time/date` | The time/date stamps on the emailUDA do follow the correct local time/date |
-| `Redirection - Watcher Config` | Users are not redirected to the login page if they are not logged in |
-| `Deleting Watcher Config` | User should not have to refresh screen to delete watcher configuration |
-| `Save Watcher Configuration` | Watcher Configuration should update if changes made and saved. They duplicate as of now |
-| `Email Body field` | Email body should be reflected in the actual email |
+| `Deleting videos` | In videoList, clicking the delete button next to videos does not delete video | #52
+| `Logs` | In ProfilePage, clicking "submit" to get the logs does not retrieve logs | #53
+| `Email Time/date` | The time/date stamps on the emailUDA do follow the correct local time/date | #54
+| `Redirection - Watcher Config` | Users are not redirected to the login page if they are not logged in | #55
+| `Deleting Watcher Config` | User should not have to refresh screen to delete watcher configuration | #56
+| `Save Watcher Configuration` | Watcher Configuration should update if changes made and saved. They duplicate as of now | #57
+| `Email Body field` | Email body should be reflected in the actual email | #58
 
 
 ### To Test
