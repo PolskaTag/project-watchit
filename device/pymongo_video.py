@@ -7,7 +7,7 @@ def __get_database():
     """
 
     # Provide the mongodb atlas url to connect python to mongodb using pymongo
-    CONNECTION_STRING = f"mongodb+srv://Steven:{os.environ.get('MONGO_PASS')}@cluster.d9abx.mongodb.net/Users?retryWrites=true&w=majority"
+    CONNECTION_STRING = f"mongodb+srv://{os.environ.get('MONGO_USER')}:{os.environ.get('MONGO_PASS')}@cluster.d9abx.mongodb.net/Users?retryWrites=true&w=majority"
 
     # Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
     client = MongoClient(CONNECTION_STRING)
@@ -40,7 +40,7 @@ def delete_video(user, videoID):
 
     collection_name.update_one(
         {"username" : user},
-        {"$pull": {"videos": {"videoID": {"$gte": 5}}}}
+        {"$pull": {"videos": {"videoID": videoID}}}
     )
     return None
 

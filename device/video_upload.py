@@ -8,7 +8,7 @@ import requests
 
 logger = logging.getLogger(__name__)
 
-def upload_video(count, filename, user="capstone"):
+def upload_video(count, filename, user):
     """
     This function is called after video is finished recording. 
 

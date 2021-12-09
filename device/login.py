@@ -20,7 +20,7 @@ def __userdata(username, password, url):
                   json={"username": username, "password": password})
     return r.json()
 
-def video_count(url="http://18.207.245.254:5000", username="capstone", password="apple123"):
+def video_count(url, username, password):
     """
     Find max video count so we do not overwrite existing videos.
     """

@@ -50,8 +50,8 @@ LABELS = hf.filesplit('project-watchit-main/device/model/coco.txt')
 if not LABELS:
     exit(1)
 
-# Set confidence required to send message and count obtains the highest current videoID
-min_confidence = 0.6
+# Set confidence required to send message and count obtains the highest current videoID default is 0.6
+# min_confidence = 0.6
 
 fourcc = cv2.VideoWriter_fourcc(*"avc1")
 writer = cv2.VideoWriter(filename, fourcc, 30, (frame_width, frame_height))
@@ -73,14 +73,14 @@ while True:
     # Object detection on every 30th frame
     if frame_cnt >= 30 and ret_value.value == False:
         frame_cnt = 0
-        mp.Process(target=hf.objectdetection, args=(frame, net, ln, LABELS, ret_value)).start()
+        mp.Process(target=hf.objectdetection, args=(frame, net, ln, LABELS, ret_value, objectLabel)).start()
 
     if ret_value.value:
         mp.Process(target=pf.dofuncts, args=(actions[objectLabel],)).start()
         hf.recordvideo(cap, writer)
         ret_value.value = False
         # Can pass in user name after count
-        mp.Process(target=vu.upload_video, args=(count, filename)).start()
+        mp.Process(target=vu.upload_video, args=(count, filename, user)).start()
         count += 1
         writer = cv2.VideoWriter(filename, fourcc, 30, (frame_width, frame_height))
 

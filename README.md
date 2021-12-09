@@ -73,4 +73,12 @@ If you'd like to run a development version of our backend, here's what you need 
 ### Pi Setup
 1. Create conda env using the requirements.txt
 2. Setup Pi Camera by entering raspi-vid go to interface options and enable camera
-3. Run main.py
+3. Setup env variables
+4. Run main.py
+
+#### Required ENV Variables
+1. AWS_ACCESS_KEY - Access Key for AWS EC2 instance
+2. AWS_SECRET_KEY - Secret Key for AWS EC2 instance
+3. AWS_BUCKET_NAME - Name of S3 bucket
+4. MONGO_USER - Username for mongoDB database access
+5. MONGO_PASS - Password for mongoDB database access

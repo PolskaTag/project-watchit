@@ -32,7 +32,7 @@ def recordvideo(stream, writer):
         frames += 1
     writer.release()
 
-def objectdetection(frame, model, layers, LABELS, value, min_confidence=0.6):
+def objectdetection(frame, model, layers, LABELS, value, object, min_confidence=0.6):
     blob = cv2.dnn.blobFromImage(frame, 1 / 255.0, (320, 320), swapRB=True, crop=False)
     model.setInput(blob)
     layerOutputs = model.forward(layers)
@@ -42,7 +42,7 @@ def objectdetection(frame, model, layers, LABELS, value, min_confidence=0.6):
             classID = np.argmax(scores)
             confidence = scores[classID]
             if confidence > min_confidence:
-                if LABELS[classID] == 'person':
+                if LABELS[classID] == object:
                     value.value = True
 
 def addFuncts(watcherId, watcherSelected, objectLabel):
