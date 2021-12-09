@@ -57,6 +57,14 @@ If you'd like to run a development version of our frontend, here are the steps.
 3. npm install
 4. npm start
 
+#### If you'd like to make a production build
+1. Create a file in project-watchit/client called ".env"
+2. Create a key-value pair for your API server.
+   The key must be REACT_APP_SERVER
+   The value should be the public IP of your hosting server with port 5000. Ex: "http://12.345.678.901:5000"
+3. In your terminal, type the command `npm run-script build`
+4. Once completed, paste the build folder into your deployment server. If you're using AWS, there are tutorials online that can take you through this process.
+
 ### Setting up the Backend
 If you'd like to run a development version of our backend, here's what you need to do.
 1. Setup MongoDB Atlas - https://account.mongodb.com/account/register
