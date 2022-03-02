@@ -19,7 +19,7 @@ import LandingPage from "./components/LandingPage/LandingPage";
 // import Navbar from "./components/Navbar";
 import Discover from "./components/LandingPage/Discover";
 import Join from "./components/LandingPage/Join";
-import SignIn from "./components/LandingPage/SignIn";
+import Login from "./components/LandingPage/Login";
 
 const App = () => {
   return (

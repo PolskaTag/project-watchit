@@ -12,7 +12,7 @@ function LandingPage() {
     <div className="landing-page">
       <header className="landing-header">
         <div className="logo-div">
-          <Link to="/">WT</Link>;
+          <Link to="/">WatchIT</Link>
         </div>
         <nav className="nav">
           <ul className="landing-links">
@@ -23,7 +23,7 @@ function LandingPage() {
               <Link to="/join">Join</Link>
             </li>
             <li>
-              <Link to="/SignIn">Sign In</Link>
+              <Link to="/login">Login</Link>
             </li>
           </ul>
         </nav>

@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import "bootstrap/dist/css/bootstrap.min.css";
 import Discover from "./components/LandingPage/Discover";
 import Join from "./components/LandingPage/Join";
-import SignIn from "./components/LandingPage/SignIn";
+import Login from "./components/LandingPage/Login";
 import LandingMain from "./components/LandingPage/LandingMain";
 
 ReactDOM.render(
@@ -16,7 +16,7 @@ ReactDOM.render(
           <Route path="/" element={<LandingMain />} />
           <Route path="/discover" element={<Discover />} />
           <Route path="join" element={<Join />} />
-          <Route path="signIn" element={<SignIn />} />
+          <Route path="login" element={<Login />} />
         </Route>
       </Routes>
     </BrowserRouter>
