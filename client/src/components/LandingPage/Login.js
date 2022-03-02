@@ -4,7 +4,7 @@ export default function Login() {
   return (
     <div className="login">
       <img className="login-logo" src={loginLogo}></img>
-      <form className="login-form">
+      <form className="form">
         <h1>Login</h1>
         <label>
           Email:{" "}

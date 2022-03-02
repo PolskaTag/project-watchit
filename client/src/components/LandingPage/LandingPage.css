@@ -139,33 +139,35 @@
 .login {
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-grow: 1;
   margin-top: 15vh;
-  justify-content: center;
 }
 
-.login-form {
+.form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  max-width: 600px;
   background-color: rgba(73, 57, 161, 0.95);
   padding: 2rem;
   border-radius: 15px;
+  box-shadow: 0 0 50px black;
 }
 
-.login-form h1 {
+.form h1 {
   font-size: var(--fs-h1);
   margin: 0;
 }
 
-.login-form label {
+.form label {
   width: 300px;
   margin: 1rem 0;
   /* background-color: yellow; */
 }
 
-.login-form label input {
+.form label input {
   /* background-color: inherit;
   padding: 0;
   border: none; */
@@ -188,3 +190,11 @@
   left: 0%;
   bottom: auto;
 } */
+
+/* Join.js */
+.join {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15vh;
+}
