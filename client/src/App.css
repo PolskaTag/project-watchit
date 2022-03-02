@@ -28,8 +28,16 @@
   --transition: all 0.25s cubic-bezier(0.65, 0.05, 0.36, 1);
 }
 
-body,
-html {
+body {
+  padding: 0;
   margin: 0;
+  /* background-color: #212121; */
+  font-family: var(--ff-primary);
+  color: var(--clr-light);
   min-height: 100vh;
+  width: auto;
+  /* display: flex;
+  flex-direction: column; */
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.3;
 }

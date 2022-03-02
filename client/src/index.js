@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 import Discover from "./components/LandingPage/Discover";
 import Join from "./components/LandingPage/Join";
 import SignIn from "./components/LandingPage/SignIn";
