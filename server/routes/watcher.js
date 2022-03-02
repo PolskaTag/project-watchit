@@ -28,7 +28,7 @@ router.route("/watchers").get(verifyJWT, (req, res) => {
 // get all users watchers
 router.route("/watchers/:userId").get(verifyJWT, (req, res) => {
   // Find the user by _id
-  User.findById(req.params.userId).then(
+  User.findOne({ username: req.params.userId }).then(
     (user) => {
       res.json(user.watcher);
     },

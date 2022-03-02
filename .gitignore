@@ -64,6 +64,8 @@ server/config.env
 #vscode
 .vscode
 
-#watchit
+#device folder
 *.weights
 server/uploads/watcher.log
+venv/
+__pycache__/

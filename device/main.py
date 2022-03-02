@@ -6,9 +6,9 @@ import multiprocessing as mp
 import video_upload as vu
 import os
 import requests
-DOMAIN = 'http://18.207.245.254:5000'
+DOMAIN = 'http://localhost:5000'
 
-#User login prompt
+# User login prompt
 connected = False
 
 cred = userinfo = None
@@ -25,13 +25,14 @@ user, password = cred['username'], cred['password']
 count = login.video_count(DOMAIN, user, password) + 1
 filename = f"{user}-video{count}.mp4"
 
-watchers = requests.get(f'{DOMAIN}/watchers/{user}', headers={"x-access-token": userinfo['token']})
+watchers = requests.get(f'{DOMAIN}/watchers/{user}',
+                        headers={"x-access-token": userinfo['token']})
 
 watcherId = watchers.json()
 
 for entry in range(len(watcherId)):
-    print ("(",entry,")", watcherId[entry]["watcherName"])
-    
+    print("(", entry, ")", watcherId[entry]["watcherName"])
+
 watcherSelected = int(input("Select the Watcher Configuration to use: "))
 
 print(watcherId[watcherSelected]["watcherName"], "has been selected.")
@@ -46,17 +47,18 @@ frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 
 # Generate the labels associated with object
-LABELS = hf.filesplit('project-watchit-main/device/model/coco.txt')
+LABELS = hf.filesplit('.\model\coco.txt')
 if not LABELS:
     exit(1)
 
 # Set confidence required to send message and count obtains the highest current videoID default is 0.6
 # min_confidence = 0.6
 
-fourcc = cv2.VideoWriter_fourcc(*"avc1")
-writer = cv2.VideoWriter(filename, fourcc, 30, (frame_width, frame_height))
+# fourcc = cv2.VideoWriter_fourcc(*"avc1")
+# writer = cv2.VideoWriter(filename, fourcc, 30, (frame_width, frame_height))
 
-net = cv2.dnn.readNetFromDarknet('project-watchit-main/device/model/yolov4-tiny.cfg', 'project-watchit-main/device/model/yolov4-tiny.weights')
+net = cv2.dnn.readNetFromDarknet('.\model\yolov4-tiny.cfg',
+                                 '.\model\yolov4.weights')
 ln = net.getUnconnectedOutLayersNames()
 
 frame_cnt = 0
@@ -69,20 +71,23 @@ while True:
         break
 
     cv2.imshow('frame', frame)
-    
+
     # Object detection on every 30th frame
     if frame_cnt >= 30 and ret_value.value == False:
         frame_cnt = 0
-        mp.Process(target=hf.objectdetection, args=(frame, net, ln, LABELS, ret_value, objectLabel)).start()
+        mp.Process(target=hf.objectdetection, args=(
+            frame, net, ln, LABELS, ret_value, objectLabel)).start()
 
-    if ret_value.value:
-        mp.Process(target=pf.dofuncts, args=(actions[objectLabel],)).start()
-        hf.recordvideo(cap, writer)
-        ret_value.value = False
-        # Can pass in user name after count
-        mp.Process(target=vu.upload_video, args=(count, filename, user)).start()
-        count += 1
-        writer = cv2.VideoWriter(filename, fourcc, 30, (frame_width, frame_height))
+    # if ret_value.value:
+    #     mp.Process(target=pf.dofuncts, args=(actions[objectLabel],)).start()
+    #     hf.recordvideo(cap, writer)
+    #     ret_value.value = False
+    #     # Can pass in user name after count
+    #     mp.Process(target=vu.upload_video, args=(
+    #         count, filename, user)).start()
+    #     count += 1
+    #     writer = cv2.VideoWriter(filename, fourcc, 30,
+    #                              (frame_width, frame_height))
 
     # Push q to exit program
     if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -90,9 +95,9 @@ while True:
 
     frame_cnt += 1
 
-writer.release()
+# writer.release()
 # Remove extra file created by function
-os.remove(filename)
+# os.remove(filename)
 
 cap.release()
 cv2.destroyAllWindows()
