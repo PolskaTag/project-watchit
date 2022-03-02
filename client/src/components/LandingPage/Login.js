@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function Login() {
   return (
     <div className="login">
-      <img className="login-logo" src={loginLogo}></img>
+      {/* <img className="login-logo" src={loginLogo}></img> */}
       <form className="form">
         <h1>Login</h1>
         <label>
