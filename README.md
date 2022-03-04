@@ -1,16 +1,32 @@
 ## Contributors
-Philip Lapinski, Viet Le, Steven Zhou, Jake Taylor, Themba Binns, Nathanael Hansell
+Philip Lapinski, Gabriella Massarow, Viet Le, Steven Zhou, Jake Taylor, Themba Binns, Nathanael Hansell
 
-## [WatchIT](http://18.207.245.254/) :white_check_mark:
+# [WatchIT](https://main.d3dxfq1h6egsaq.amplifyapp.com/)
 
-# WatchIT Overview
-WatchIT is user defined action system driven by object detection and identification designed to work with Single Board Computers (SBC) and low-powered peripherals. As object detection software grows more intelligent, the potential use cases grow as well. WatchIT strives to give users the expressive power to drive meaningful actions based on the object’s they want to act upon. Our system can be broken up into a few key sub systems: the web application, API server, and SBC.
+## Description
+WatchIT is user-defined action web application driven by object detection. As object detection software grows more intelligent, the potential use cases grow as well. WatchIT wants to bring object detection into everyday people's hands. All you need is a WatchIT account, a computer and a webcam. 
 
-The **web application** provides the user with an interface to manage how they’d like to control their SBC. With account management, the user can create an account and begin defining their watcher’s configuration in the matter of minutes. They’re provided with an intuitive configuration interface which gives them the options to configure device, object, and action configurations. Users have the option to select from dozens of pretrained objects, giving them a wide range of flexibility when using the system. There are also user defined actions (UDA) that the user can customize and include in the action list such as video recording, pictures, notifications, logs, sounds, and more. In addition to managing their watchers, they can view the results that their watchers aggregate such as videos and logs. 
- 
-The **API Server** oversees managing the flow of data to and from the web applications and SBCs. This server connects to MongoDB Atlas, a fully managed cloud database, that handles vital data. For storage we’ve opted for an S3 cloud storage bucket which holds pictures, videos, and logs for our users. The API server acts as a bridge to connect to these vital services. The client and SBCs interact with the server by using URIs that are defined through the server. 
- 
-The **SBCs** provide the main functionality of our system. Since our system revolves around object detection and identification, the SBC needs to have a connected camera. After the setup, the device logs into the user's account and loads the watcher configuration. From there after, the device starts its video feed, and the SBC begins object detection once every 30 frames. Once the specified object is detected, the custom actions loaded from the watcher configuration get fired off.
+## High-level System Overview
+WatchIT is an object detection web application designed to work with a computer, camera, and some common peripherals. The idea is to be able to pick common objects for your camera to recognize, and pick actions to trigger when those objects get detected. Users first set up an account on our web application. Then, they create a “watcher” configuration, which tells your computer what objects to detect and actions to fire. Finally, the user downloads and installs our watcher program on any computer, signs in, and selects the watcher configuration of their choosing. To get this to work, we can think of the individual components needed.
+ 1. A front-facing user interface
+ 2. Architecture to provide and process information
+ 3. A program to deliver object detection and execute actions
+
+A good user interface for such a project would be a web application. A website provides an easy way for users to interact with our project. By creating an account, a user can get registered into our system and begin to input information that we can transform and relay to our child watcher program. The web app should have a landing page, account management pages, and product features such as watcher configuration and a dashboard to view configured watchers.
+
+The architecture to provide and process information would be composed of several different technologies. We’ll use a serverless architectural approach which promotes scalability and minimizes waste. To hold information, we’ll need a database such as dynamoDB. Information will flow from system to system via APIs. More about the details of the implementation soon.
+
+Finally we have the object detection and action system. This will materialize in the form of a program downloaded from our web site. It features a basic GUI that allows the user to sign into their WatchIT account, and manage their watcher. As long as the user’s device has a camera connected to it, the watcher can begin recording and provide object detection. This program interfaces with our APIs to transmit data.
+
+![image](https://user-images.githubusercontent.com/41872747/156835049-48b73864-c361-4982-9a41-f1659070d9b4.png)
+
+
+## General Requirements
+_Some things you'll need as a user to make this work._
+
+ 1. Access to a modern web browser (such as Chrome, Firefox)
+ 2. Internet Connectivity
+ 3. Computer with a camera
 
 ## Features
 
@@ -21,18 +37,16 @@ The **SBCs** provide the main functionality of our system. Since our system revo
 | `Watcher Configuration` | Setup and manage your watcher configurations which customize your object detection experience |
 | `Detect Objects` | Detect objects using your SBC's camera paired with your watcher configuration |
 | `User Defined Actions` | Attach and customize predefined actions to your watcher configuration to fit your use case |
-| `Watch your videos` | Watch the videos that your watcher saves on our web application |
-| `Admin Page` | Get the ultimate overview of your current system by utilizing the admin page |
+| `Log Viewer` | See detailed logs about the activity of your watcher |
 
 #### Customizable Actions (UDA)
 These actions execute when the selected object is detected.
-| UDA | Description |
-| --- | --- |
-| `Video` | A user action that allows your SBC to record a video |
-| `Email` | Send a customized email to any chosen recipient |
-| `Sound` | Play an audio file through SBC's connected audio devices |
-| `Log` | Record the triggers in a file so that you have history of detections |
-
+| UDA | Description | Status |
+| --- | --- | -- |
+| `Video` | A user action that allows your computer to record a video | ❌
+| `Email` | Send a customized email to any chosen recipient | ❌
+| `Sound` | Play an audio file through computers's connected audio devices | ❌
+| `SmartHome` | Use your smarthome devices through object detection | ❌
 
 ## Bugs
 | Bug | Description | Issue |
@@ -45,48 +59,3 @@ These actions execute when the selected object is detected.
 | `Deleting Watcher Config` | User should not have to refresh screen to delete watcher configuration | #56
 | `Save Watcher Configuration` | Watcher Configuration should update if changes made and saved. They duplicate as of now | #57
 | `Email Body field` | Email body should be reflected in the actual email | #58
-
-
-### To Test
-I strongly recommend that you test our product through our production site listed above. There are secret values that are not included in source control that we keep hidden. Setting up your own backend would take hours of configuration.
-
-### Setting up Frontend
-If you'd like to run a development version of our frontend, here are the steps.
-1. Clone the repository
-2. cd to project-watchit/client
-3. npm install
-4. npm start
-
-#### If you'd like to make a production build
-1. Create a file in project-watchit/client called ".env"
-2. Create a key-value pair for your API server.
-   The key must be REACT_APP_SERVER
-   The value should be the public IP of your hosting server with port 5000. Ex: "http://12.345.678.901:5000"
-3. In your terminal, type the command `npm run-script build`
-4. Once completed, paste the build folder into your deployment server. If you're using AWS, there are tutorials online that can take you through this process.
-
-### Setting up the Backend
-If you'd like to run a development version of our backend, here's what you need to do.
-1. Setup MongoDB Atlas - https://account.mongodb.com/account/register
-2. Follow this tutorial to aquire your ATLAS_URI https://www.mongodb.com/languages/mern-stack-tutorial
-3. `cd to project-watchit/server`
-4. Create a new file at project-watcher/server named "config.env"
-5. Paste in your ATLAS_URI key-value pair aquired from step 2
-6. Setup an S3 bucket - follow this [link](https://www.youtube.com/watch?v=e6w9LwZJFIA)
-7. In config.env, create key-value pairs for these values [AWS_BUCKET_NAME, AWS_BUCKET_REGION, AWS_ACCESS_KEY, AWS_SECRET_KEY]
-8. Create a programmatic access key for your S3 bucket.
-9. Create key-value pairs for [AWS_DEVICE_ACCESS_KEY, AWS_DEVICE_SECRET_ACCESS_KEY]
-10. Focus back to your terminal and `npm start`
-
-### Pi Setup
-1. Create conda env using the requirements.txt
-2. Setup Pi Camera by entering raspi-vid go to interface options and enable camera
-3. Setup env variables
-4. Run main.py
-
-#### Required ENV Variables
-1. AWS_ACCESS_KEY - Access Key for AWS EC2 instance
-2. AWS_SECRET_KEY - Secret Key for AWS EC2 instance
-3. AWS_BUCKET_NAME - Name of S3 bucket
-4. MONGO_USER - Username for mongoDB database access
-5. MONGO_PASS - Password for mongoDB database access
