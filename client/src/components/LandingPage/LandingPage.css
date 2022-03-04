@@ -1,6 +1,6 @@
 .landing-header {
   display: flex;
-  height: 100px;
+  height: 80px;
   background-color: var(--clr-dark-blue);
   justify-content: space-between;
   align-items: center;
@@ -85,7 +85,7 @@
   position: absolute;
   bottom: 0;
   width: 100vw;
-  height: 150px;
+  height: 100px;
   background-color: var(--clr-dark-blue);
   justify-content: space-between;
   align-items: center;
