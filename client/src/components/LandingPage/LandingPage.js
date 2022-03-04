@@ -20,7 +20,7 @@ function LandingPage() {
               <Link to="/discover">Discover</Link>
             </li>
             <li>
-              <Link to="/join">Join</Link>
+              <Link to="/join">Sign Up</Link>
             </li>
             <li>
               <Link to="/login">Login</Link>
