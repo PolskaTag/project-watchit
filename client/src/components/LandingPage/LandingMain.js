@@ -14,6 +14,23 @@ export default function LandingMain() {
           <h3>A lightweight user-defined action and object detection app.</h3>
         </div>
       </div>
+      <section className="action-section">
+        <div className="action-description">
+          <h1>Try detecting today!</h1>
+          <p>
+            WatchIT lets people turn their computer into lightweight object
+            detectors. Simply sign in to get started.
+          </p>
+        </div>
+        <div className="action-buttons">
+          <Link to="/discover" className="action-button" id="learn-more">
+            Learn More
+          </Link>
+          <Link to="/join" className="action-button" id="sign-up">
+            Sign Up
+          </Link>
+        </div>
+      </section>
       <footer className="landing-footer">
         <div className="plugs">
           <a>
@@ -28,14 +45,6 @@ export default function LandingMain() {
           <a>
             <img src={twitterIcon} />
           </a>
-        </div>
-        <div className="action-buttons">
-          <Link to="/discover" className="action-button">
-            Learn More
-          </Link>
-          <Link to="/join" className="action-button">
-            Sign Up
-          </Link>
         </div>
       </footer>
     </>

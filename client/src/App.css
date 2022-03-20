@@ -14,14 +14,16 @@
   --fw-bold: 900;
 
   --clr-light: #f6f6f6;
-  --clr-light-gray: #d2daf5;
+  --clr-light-gray: rgb(210, 210, 218);
+  --clr-dark-gray: rgb(27, 27, 29);
   --clr-dark-blue: #203239;
+  --clr-dark-blue-transparent: #203239ce;
   --clr-light-green: rgb(68, 205, 3);
 
   --fs-h1: 3rem;
   --fs-h2: 2.25rem;
   --fs-h3: 1.25rem;
-  --fs-body: 1rem;
+  --fs-body: 1.2rem;
   --bs: 0.25em 0.25em 0.75em rgba(0, 0, 0, 0.25),
     0.125em 0.125em 0.25em rgba(0, 0, 0, 0.15);
 
@@ -31,13 +33,10 @@
 body {
   padding: 0;
   margin: 0;
-  /* background-color: #212121; */
   font-family: var(--ff-primary);
   color: var(--clr-light);
   min-height: 100vh;
   width: auto;
-  /* display: flex;
-  flex-direction: column; */
   -webkit-font-smoothing: antialiased;
   line-height: 1.3;
 }
