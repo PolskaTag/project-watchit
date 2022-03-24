@@ -25,6 +25,7 @@ import Discover from "./components/LandingPage/Discover";
 import Join from "./components/LandingPage/Join";
 import Login from "./components/LandingPage/Login";
 import { json } from "body-parser";
+import Dashboard from "./components/Dashboard/DashboardMain";
 Amplify.configure({
   ...awsExports,
   API: {
@@ -63,7 +64,8 @@ const App = ({ signOut, user }) => {
       <p style={{ color: "black" }}>{apiData}</p>
       <button onClick={signOut}>signOut</button>
       <button onClick={handleClick}>Click me!</button> */}
-      <LandingPage />
+      {/* <LandingPage /> */}
+      <Dashboard></Dashboard>
       {/* <BrowserRouter>
         <Switch>
           <Route component={AdminUser} exact path="/admin/user" />
